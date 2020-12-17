@@ -10,7 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationService;
+using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.EntityFramework;
+using Lazcat.Blog.Models.Domain.Categories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.BlogApiService
@@ -29,6 +32,7 @@ namespace Lazcat.BlogApiService
         {
             services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
                 b => b.MigrationsAssembly("Lazcat.BlogApiService")));
+            services.AddTransient<IRepository<int,Category>, Repository<int,Category>>();
             services.AddControllers();
         }
 

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.15.2" />
+    <PackageReference Include="ShouldBe" Version="0.3.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lazcat.Blog.Domain\Lazcat.Blog.Domain.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
+    <ProjectReference Include="..\Lazcat.BlogApiService\Lazcat.BlogApiService.csproj" />
+  </ItemGroup>
+
+</Project>
