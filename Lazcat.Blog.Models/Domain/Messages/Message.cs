@@ -8,10 +8,8 @@ using Lazcat.Blog.Models.Domain.Articles;
 
 namespace Lazcat.Blog.Models.Domain.Messages
 {
-    public class Message
+    public class Message : Entity<Guid>
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
         public string Sender { get; set; }
         public string Content { get; set; }
         public int ArticleId { get; set; }

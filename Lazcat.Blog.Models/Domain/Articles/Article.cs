@@ -10,9 +10,8 @@ using Lazcat.Blog.Models.Domain.Messages;
 
 namespace Lazcat.Blog.Models.Domain.Articles
 {
-    public class Article
+    public class Article : Entity<int>
     {
-        public int Id { get; set; }
         [MaxLength(50, ErrorMessage = "Title length should less than 50")]
         public string Title { get; set; }
         public string Content { get; set; }
