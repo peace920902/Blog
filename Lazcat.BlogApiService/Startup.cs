@@ -32,7 +32,7 @@ namespace Lazcat.BlogApiService
         {
             services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
                 b => b.MigrationsAssembly("Lazcat.BlogApiService")));
-            services.AddTransient<IRepository<int,Category>, Repository<int,Category>>();
+            services.AddScoped<IRepository<int,Category>, Repository<int,Category>>();
             services.AddControllers();
         }
 

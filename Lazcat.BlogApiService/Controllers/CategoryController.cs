@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using ApplicationService.Categories;
 using Microsoft.AspNetCore.Mvc;
 

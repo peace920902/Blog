@@ -24,5 +24,11 @@ namespace Lazcat.Blog.Models.Domain.Articles
         public string Cover { get; set; }
         public ICollection<ArticleTag> ArticleTags { get; set; }
         public ICollection<Message> Messages { get; set; }
+
+        internal Article(){}
+
+        private void SetTitle(string name)
+        {
+        }
     }
 }
