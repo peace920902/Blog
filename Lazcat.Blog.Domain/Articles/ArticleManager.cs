@@ -6,6 +6,7 @@ using Lazcat.Blog.Models.Domain.Articles;
 
 namespace Lazcat.Blog.Domain.Articles
 {
+
     public class ArticleManager
     {
         private readonly IRepository<int, Article> _repository;
@@ -17,7 +18,8 @@ namespace Lazcat.Blog.Domain.Articles
 
         public async Task<Article> CreateAsync([NotNull] string title, string content, bool isPublish = false, string cover = "")
         {
-            
+            //todo
+            return default;
         }
     }
 }

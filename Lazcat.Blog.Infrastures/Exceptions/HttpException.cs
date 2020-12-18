@@ -1,21 +1,17 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿
+using System;
+using System.Net;
 
 namespace Lazcat.Blog.Infrastructure.Exceptions
 {
-    public class HttpException
+    public class HttpException 
     {
-        private HttpResponseMessage _httpResponse;
+        public string Content { get; set; }
+        public DateTime DateTime { get; set; }
 
         public HttpException()
         {
-        }
-
-        public async Task<HttpResponseMessage> Create(HttpStatusCode status, string content)
-        {
-            var httpResponseMessage = new HttpResponseMessage(status) {Content = new StringContent(content)};
-            return httpResponseMessage;
+            DateTime = DateTime.Now;
         }
     }
 }

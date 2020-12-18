@@ -1,7 +1,19 @@
-﻿namespace Lazcat.Blog.Infrastructure
+﻿using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using System.Web.Http;
+using Lazcat.Blog.Infrastructure.Exceptions;
+
+namespace Lazcat.Blog.Infrastructure
 {
-    public class ExceptionBuilder
+    public static class ExceptionBuilder
     {
-        
+        public static HttpResponseException Build(HttpStatusCode statusCode, HttpException ex)
+        {
+            return new HttpResponseException(new HttpResponseMessage(statusCode)
+            {
+                ReasonPhrase = JsonSerializer.Serialize(ex)
+            });
+        }
     }
 }

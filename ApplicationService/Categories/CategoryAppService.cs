@@ -6,7 +6,7 @@ using Lazcat.Blog.Models.Domain.Categories;
 namespace ApplicationService.Categories
 {
     
-    public class CategoryAppService
+    public class CategoryAppService:ICategoryAppService
     {
         private readonly IRepository<int, Category> _repository;
 

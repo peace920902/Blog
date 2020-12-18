@@ -18,6 +18,7 @@ namespace Lazcat.BlogApiService.Controllers
         [HttpPost,Route("test")]
         public async Task Index()
         {
+            await _categoryService.CreateCategoryAsync();
         }
     }
 }

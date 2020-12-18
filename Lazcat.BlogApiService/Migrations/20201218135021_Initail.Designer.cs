@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lazcat.BlogApiService.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20201216141136_Initial")]
-    partial class Initial
+    [Migration("20201218135021_Initail")]
+    partial class Initail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
