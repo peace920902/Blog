@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
   </ItemGroup>
 

@@ -13,5 +13,10 @@ namespace Lazcat.Blog.Infrastructure.Exceptions
         {
             DateTime = DateTime.Now;
         }
+        public HttpException(string content)
+        {
+            content = Content;
+            DateTime = DateTime.Now;
+        }
     }
 }

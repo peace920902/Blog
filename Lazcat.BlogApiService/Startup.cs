@@ -14,6 +14,7 @@ using ApplicationService;
 using ApplicationService.Categories;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.EntityFramework;
+using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Categories;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,6 +52,8 @@ namespace Lazcat.BlogApiService
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCustomerExceptionMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

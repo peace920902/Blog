@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Lazcat.Blog.EntityFramework;
 using Lazcat.Blog.Models.Domain;
@@ -20,7 +21,10 @@ namespace Lazcat.Blog.Domain.Repository
 
         public IQueryable<T> GetAll() => _set;
 
-        public async Task<T> GetAsync(TId id) => await _set.FindAsync(id);
+        public async Task<T> FindAsync(TId id) => await _set.FindAsync(id);
+
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp) => await _set.FirstOrDefaultAsync(exp);
+        
 
         public async Task<T> CreateAsync(T item)
         {
@@ -39,7 +43,7 @@ namespace Lazcat.Blog.Domain.Repository
         public async Task<T> UpdateAsync(TId id, T item, bool insertIfNotExisted = false)
         {
             if (!item.Id.Equals(id)) return null;
-            var entity = await GetAsync(id);
+            var entity = await FindAsync(id);
             if (entity == null)
             {
                 if (insertIfNotExisted)
@@ -53,7 +57,7 @@ namespace Lazcat.Blog.Domain.Repository
 
         public async Task<bool> DeleteAsync(TId id)
         {
-            var entity = await GetAsync(id);
+            var entity = await FindAsync(id);
             if (entity == null) return false;
             var entry = _set.Remove(entity);
             await _context.SaveChangesAsync();
