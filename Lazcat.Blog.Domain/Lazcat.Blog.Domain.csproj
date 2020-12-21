@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />

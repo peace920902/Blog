@@ -24,7 +24,7 @@ namespace Lazcat.Blog.Domain.Articles
         public async Task<Article> CreateAsync(string title, string content, bool isPublished = false, string cover = null)
         {
             //todo
-            var newArticle = new Article() { Content = content, IsPublished = isPublished, Cover = cover };
+            var newArticle = new Article { Content = content, IsPublished = isPublished, Cover = cover };
             await SetTitle(newArticle, title);
             return await _repository.CreateAsync(newArticle);
         }
