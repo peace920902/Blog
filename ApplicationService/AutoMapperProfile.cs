@@ -12,7 +12,6 @@ namespace ApplicationService
         {
             CreateMap<Article, ArticleDto>().ForMember(x => x.CategoryName
                 , x => x.MapFrom(y => y.Category.Name));
-            CreateMap<ArticleDto, Article>();
             CreateMap<CreateUpdateArticleInput, Article>();
             CreateMap<Category, CategoryDto>();
         }

@@ -6,15 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
     <PackageReference Include="Moq" Version="4.15.2" />
     <PackageReference Include="ShouldBe" Version="0.3.4" />
+    <PackageReference Include="Shouldly" Version="4.0.3" />
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationService\ApplicationService.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Domain\Lazcat.Blog.Domain.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.Web\Lazcat.Blog.Web.csproj" />
     <ProjectReference Include="..\Lazcat.BlogApiService\Lazcat.BlogApiService.csproj" />
   </ItemGroup>
 
