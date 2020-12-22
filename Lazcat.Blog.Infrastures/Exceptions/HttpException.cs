@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Lazcat.Blog.Infrastructure.Exceptions
 {
-    public class HttpException 
+    public class HttpException
     {
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
@@ -15,7 +15,7 @@ namespace Lazcat.Blog.Infrastructure.Exceptions
         }
         public HttpException(string content)
         {
-            content = Content;
+            Content = content;
             DateTime = DateTime.Now;
         }
     }

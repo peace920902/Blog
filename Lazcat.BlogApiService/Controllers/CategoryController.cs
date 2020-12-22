@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using ApplicationService.Categories;
+using Lazcat.Blog.Models.Dtos.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lazcat.BlogApiService.Controllers
@@ -15,10 +16,10 @@ namespace Lazcat.BlogApiService.Controllers
         {
             _categoryService = categoryService;
         }
-        [HttpPost,Route("test")]
-        public async Task Index()
+        [HttpPost]
+        public async Task Index(CreateUpdateCategoryInput input)
         {
-            await _categoryService.CreateCategoryAsync();
+            await _categoryService.CreateCategoryAsync(input);
         }
     }
 }

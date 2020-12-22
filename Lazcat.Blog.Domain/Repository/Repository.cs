@@ -24,20 +24,15 @@ namespace Lazcat.Blog.Domain.Repository
         public async Task<T> FindAsync(TId id) => await _set.FindAsync(id);
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp) => await _set.FirstOrDefaultAsync(exp);
-        
+
 
         public async Task<T> CreateAsync(T item)
         {
-            try
-            {
-                var entry = await _set.AddAsync(item);
-                await _context.SaveChangesAsync();
-                return entry.Entity;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+
+            var entry = await _set.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return entry.Entity;
+
         }
 
         public async Task<T> UpdateAsync(TId id, T item, bool insertIfNotExisted = false)

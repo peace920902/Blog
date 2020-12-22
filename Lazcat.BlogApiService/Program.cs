@@ -18,6 +18,11 @@ namespace Lazcat.BlogApiService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(x=>
+                {
+                    x.ClearProviders();
+                    x.AddConsole();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

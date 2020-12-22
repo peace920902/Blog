@@ -11,10 +11,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApplicationService;
+using ApplicationService.Articles;
 using ApplicationService.Categories;
+using AutoMapper;
+using Lazcat.Blog.Domain.Articles;
+using Lazcat.Blog.Domain.Categories;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.EntityFramework;
 using Lazcat.Blog.Infrastructure;
+using Lazcat.Blog.Models.Domain.Articles;
 using Lazcat.Blog.Models.Domain.Categories;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,8 +39,13 @@ namespace Lazcat.BlogApiService
         {
             services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
                 b => b.MigrationsAssembly("Lazcat.BlogApiService")));
-            services.AddScoped<IRepository<int,Category>, Repository<int,Category>>();
+            services.AddScoped<IRepository<int, Category>, Repository<int, Category>>();
+            services.AddScoped<IRepository<int, Article>, Repository<int, Article>>();
             services.AddScoped<ICategoryAppService, CategoryAppService>();
+            services.AddScoped<IArticleAppService, ArticleAppService>();
+            services.AddScoped<IArticleManager, ArticleManager>();
+            services.AddScoped<ICategoryManager, CategoryManager>();
+            services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddControllers();
         }
 

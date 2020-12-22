@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Lazcat.Blog.Models.Domain.Articles;
-using Lazcat.Blog.Models.Dtos;
+using Lazcat.Blog.Models.Domain.Categories;
+using Lazcat.Blog.Models.Dtos.Articles;
+using Lazcat.Blog.Models.Dtos.Categories;
 
 namespace ApplicationService
 {
@@ -12,6 +14,7 @@ namespace ApplicationService
                 , x => x.MapFrom(y => y.Category.Name));
             CreateMap<ArticleDto, Article>();
             CreateMap<CreateUpdateArticleInput, Article>();
+            CreateMap<Category, CategoryDto>();
         }
     }
 }

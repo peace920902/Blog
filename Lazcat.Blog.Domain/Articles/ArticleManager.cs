@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Lazcat.Blog.Domain.Articles
 {
 
-    public class ArticleManager
+    public class ArticleManager : IArticleManager
     {
         private readonly IRepository<int, Article> _repository;
 
@@ -21,12 +21,12 @@ namespace Lazcat.Blog.Domain.Articles
             _repository = repository;
         }
 
-        public async Task<Article> CreateAsync(string title, string content, bool isPublished = false, string cover = null)
+        public async Task<Article> CreateAsync(string title, string content, int categoryId, bool isPublished = false, string cover = null)
         {
             //todo
-            var newArticle = new Article { Content = content, IsPublished = isPublished, Cover = cover };
-            await SetTitle(newArticle, title);
-            return await _repository.CreateAsync(newArticle);
+            var article = new Article { Content = content, CategoryId = categoryId,IsPublished = isPublished, Cover = cover };
+            await SetTitle(article, title);
+            return article;
         }
 
         public async Task<string> RenderMarkdown(string content)

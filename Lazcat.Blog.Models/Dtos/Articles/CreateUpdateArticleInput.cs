@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lazcat.Blog.Models.Dtos
+namespace Lazcat.Blog.Models.Dtos.Articles
 {
     public class CreateUpdateArticleInput
     {
