@@ -17,7 +17,7 @@ namespace Lazcat.Blog.Models.Domain.Articles
         public string Content { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateTime { get; init; }
         public DateTime EditTime { get; set; }
         public bool IsPublished { get; set; }
         public DateTime? PublishTime { get; set; }
@@ -28,6 +28,7 @@ namespace Lazcat.Blog.Models.Domain.Articles
         public Article()
         {
             CreateTime = DateTime.Now;
+            EditTime = CreateTime;
         }
     }
 }

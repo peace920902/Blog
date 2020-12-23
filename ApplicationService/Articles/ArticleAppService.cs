@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -44,10 +45,11 @@ namespace ApplicationService.Articles
 
         public async Task UpdateArticle(int id, CreateUpdateArticleInput input)
         {
-            //todo
             var article = await _articleRepository.FindAsync(id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {id} not match any article"));
+            _mapper.Map(input, article);
             if(input.Title!=article.Title) await _articleManager.SetTitle(article,input.Title);
+            article.EditTime = DateTime.Now;
             await _articleRepository.UpdateAsync(id, article);
         }
 

@@ -25,7 +25,6 @@ namespace Lazcat.Blog.Domain.Repository
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp) => await _set.FirstOrDefaultAsync(exp);
 
-
         public async Task<T> CreateAsync(T item)
         {
 

@@ -12,7 +12,7 @@ namespace ApplicationService
         {
             CreateMap<Article, ArticleDto>().ForMember(x => x.CategoryName
                 , x => x.MapFrom(y => y.Category.Name));
-            CreateMap<CreateUpdateArticleInput, Article>();
+            CreateMap<CreateUpdateArticleInput, Article>().ForMember(x=>x.Title, x=>x.Ignore());
             CreateMap<Category, CategoryDto>();
         }
     }
