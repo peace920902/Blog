@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,7 +18,6 @@ namespace ApplicationService.Categories
         private readonly IRepository<int, Category> _repository;
         private readonly ICategoryManager _categoryManager;
         private readonly IMapper _mapper;
-
 
         public CategoryAppService(IRepository<int, Category> repository, ICategoryManager categoryManager, IMapper mapper)
         {

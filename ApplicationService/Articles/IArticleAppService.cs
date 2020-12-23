@@ -11,6 +11,6 @@ namespace ApplicationService.Articles
         Task<ArticleDto> GetArticle(int id);
         Task<IEnumerable<ArticleDto>> GetArticleList();
         Task UpdateArticle(int id, CreateUpdateArticleInput input);
-        Task DeleteArticle(int id);
+        Task<bool> DeleteArticle(int id);
     }
 }

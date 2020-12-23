@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ApplicationService.Categories;
 using Lazcat.Blog.Models.Dtos.Categories;
@@ -16,10 +18,29 @@ namespace Lazcat.BlogApiService.Controllers
         {
             _categoryService = categoryService;
         }
+
         [HttpPost]
-        public async Task Index(CreateUpdateCategoryInput input)
+        public async Task Create(CreateUpdateCategoryInput input)
         {
             await _categoryService.CreateCategoryAsync(input);
+        }
+
+        [HttpDelete]
+        public async Task Delete(int id)
+        {
+            await _categoryService.DeleteCategory(id);
+        }
+
+        [HttpPut]
+        public async Task Update(CreateUpdateCategoryInput input)
+        {
+            await _categoryService.UpdateCategoryAsync(input.Id, input);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<CategoryDto>> GetList()
+        {
+            return await _categoryService.GetCategoryList();
         }
     }
 }

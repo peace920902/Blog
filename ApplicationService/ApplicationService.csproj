@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lazcat.Blog.Domain\Lazcat.Blog.Domain.csproj" />
+    <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
   </ItemGroup>
 

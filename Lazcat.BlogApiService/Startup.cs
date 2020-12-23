@@ -37,6 +37,7 @@ namespace Lazcat.BlogApiService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
             services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
                 b => b.MigrationsAssembly("Lazcat.BlogApiService")));
             services.AddScoped<IRepository<int, Category>, Repository<int, Category>>();
@@ -58,12 +59,19 @@ namespace Lazcat.BlogApiService
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseCustomerExceptionMiddleware();
+            
 
             app.UseEndpoints(endpoints =>
             {

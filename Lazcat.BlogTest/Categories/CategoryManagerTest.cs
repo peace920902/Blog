@@ -26,7 +26,7 @@ namespace Lazcat.Blog.Test.Categories
         [Fact]
         public async Task Should_Create_New()
         {
-            _repository.FirstOrDefaultAsync((x) => true).Returns(Task.FromResult((Category)null));
+            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult((Category)null));
             var category = await _manager.CreateCategory("test");
             category.Name.ShouldBe("test");
         }
@@ -34,8 +34,8 @@ namespace Lazcat.Blog.Test.Categories
         [Fact]
         public void Should_Create_New_Failed()
         {
-            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category,bool>>>()).Returns(Task.FromResult(new Category{Name = "test"}));
-            var httpResponseException = Should.Throw<HttpResponseException>(async ()=>await _manager.CreateCategory("test"));
+            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult(new Category { Name = "test" }));
+            var httpResponseException = Should.Throw<HttpResponseException>(async () => await _manager.CreateCategory("test"));
             httpResponseException.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             httpResponseException.Response.ReasonPhrase?.ShouldContain($"This category name test is existed");
         }

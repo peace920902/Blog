@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ApplicationService.Articles;
 using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
@@ -18,9 +20,33 @@ namespace Lazcat.BlogApiService.Controllers
         }
         
         [HttpPost]
-        public async Task CreateArticle(CreateUpdateArticleInput input)
+        public async Task Create(CreateUpdateArticleInput input)
         {
             await _articleAppService.CreateArticle(input);
+        }
+
+        [HttpGet, Route("getAll")]
+        public async Task<IEnumerable<ArticleDto>> GetAll()
+        {
+            return await _articleAppService.GetArticleList();
+        }
+
+        [HttpGet,Route("{id}")]
+        public async Task<ArticleDto> Get(int id)
+        {
+            return await _articleAppService.GetArticle(id);
+        }
+
+        [HttpPut]
+        public async Task Update(CreateUpdateArticleInput input)
+        {
+            await _articleAppService.UpdateArticle(input.Id, input);
+        }
+
+        [HttpDelete]
+        public async Task<bool> Delete(CreateUpdateArticleInput input)
+        {
+            return await _articleAppService.DeleteArticle(input.Id);
         }
     }
 }

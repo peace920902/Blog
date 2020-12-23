@@ -5,6 +5,7 @@ namespace Lazcat.Blog.Models.Dtos.Articles
 {
     public class CreateUpdateArticleInput
     {
+        public int Id { get; set; }
         [MaxLength(50, ErrorMessage = "Title length should less than 50")]
         public string Title { get; set; }
         public string Content { get; set; }
