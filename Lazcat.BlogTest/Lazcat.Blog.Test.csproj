@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationService\ApplicationService.csproj" />
+    <ProjectReference Include="..\ApplicationService\Lazcat.Blog.ApplicationService.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Domain\Lazcat.Blog.Domain.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />

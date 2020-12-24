@@ -4,7 +4,7 @@ using Lazcat.Blog.Models.Domain.Categories;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Dtos.Categories;
 
-namespace ApplicationService
+namespace Lazcat.Blog.ApplicationService
 {
     public class AutoMapperProfile: Profile
     {

@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F70F6E85-8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazcat.Blog.Test", "Lazcat.BlogTest\Lazcat.Blog.Test.csproj", "{760CBA4D-768A-43CD-AF35-3133E78EB9A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationService", "ApplicationService\ApplicationService.csproj", "{BC404A54-31B3-4941-92C7-CB0191207BCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazcat.Blog.ApplicationService", "ApplicationService\Lazcat.Blog.ApplicationService.csproj", "{BC404A54-31B3-4941-92C7-CB0191207BCA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazcat.Blog.Infrastructure", "Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj", "{74D17A32-1DF3-427C-AD23-0B31931B0E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazcat.Blog.Web", "Lazcat.Blog.Web\Lazcat.Blog.Web.csproj", "{9B4B8F95-7181-4445-9861-04EE11FC8133}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazcat.Blog.Web", "Lazcat.Blog.Web\Lazcat.Blog.Web.csproj", "{9B4B8F95-7181-4445-9861-04EE11FC8133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

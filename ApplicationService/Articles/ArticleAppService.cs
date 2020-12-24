@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using ApplicationService.Articles;
 using AutoMapper;
 using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Repository;
@@ -12,7 +13,7 @@ using Lazcat.Blog.Models.Domain.Articles;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationService.Articles
+namespace Lazcat.Blog.ApplicationService.Articles
 {
     public class ArticleAppService : IArticleAppService
     {

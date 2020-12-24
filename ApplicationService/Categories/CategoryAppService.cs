@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.Domain.Categories;
 using Lazcat.Blog.Domain.Repository;
@@ -10,7 +11,7 @@ using Lazcat.Blog.Models.Domain.Categories;
 using Lazcat.Blog.Models.Dtos.Categories;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationService.Categories
+namespace Lazcat.Blog.ApplicationService.Categories
 {
 
     public class CategoryAppService : ICategoryAppService
