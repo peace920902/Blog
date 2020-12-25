@@ -36,7 +36,9 @@ namespace Lazcat.Blog.ApplicationService.Articles
 
         public async Task<ArticleDto> GetArticle(int id)
         {
-            return _mapper.Map<Article, ArticleDto>(await _articleRepository.GetAll().Include(x=>x.Category).SingleOrDefaultAsync(x=>x.Id==id));
+            var article = await _articleRepository.GetAll().Include(x => x.Category).SingleOrDefaultAsync(x => x.Id == id);
+            article.Content = _articleManager.RenderMarkdown(article.Content);
+            return _mapper.Map<Article, ArticleDto>(article);
         }
 
         public async Task<IEnumerable<ArticleDto>> GetArticleList()

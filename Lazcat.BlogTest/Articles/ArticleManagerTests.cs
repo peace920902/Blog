@@ -36,9 +36,9 @@ namespace Lazcat.Blog.Domain.Articles.Tests
 
         [Theory]
         [ClassData(typeof(CreateNewData))]
-        public async Task Should_Not_Create_New(string title, string content, int categoryId, bool isPublished = false, string cover = null)
+        public void Should_Not_Create_New(string title, string content, int categoryId, bool isPublished = false, string cover = null)
         {
-            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Article, bool>>>()).Returns(Task.FromResult<Article>(new Article{Title = title}));
+            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Article, bool>>>()).Returns(Task.FromResult(new Article{Title = title}));
             var exception = Should.Throw<HttpResponseException>(async ()=>await _manager.CreateAsync(title, content, categoryId, isPublished, cover));
             exception.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             exception.Response.ReasonPhrase?.ShouldContain("title is already Existed");
@@ -47,7 +47,9 @@ namespace Lazcat.Blog.Domain.Articles.Tests
         [Fact()]
         public void RenderMarkdownTest()
         {
-            Assert.True(true);
+            var input = "This is a text with some *emphasis*";
+            var markdown = _manager.RenderMarkdown(input);
+            markdown.ShouldContain("<p>This is a text with some <em>emphasis</em></p>");
         }
 
         private class CreateNewData : IEnumerable<object[]>
