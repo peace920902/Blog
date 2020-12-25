@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+
+<Layout>
+    <Sider Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
+        <Menu Theme="MenuTheme.Light" Mode="MenuMode.Inline">
+            <MenuItem Key="1">
+                <Icon Type="user" Theme="outline"></Icon>
+                <NavLink href="counter">Counter</NavLink>
+            </MenuItem>
+        </Menu>
+    </Sider>
+    <Layout Class="site-layout" Style="margin-left: 200px">
+        <Header Class="site-layout-background" Style="padding: 0; margin: 0 16px; box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;">
+            <Title Level="1" Style="text-align: center;font-family: DFKai-sb, cursive;margin-bottom : 0px;">後臺管理系統</Title>
+        </Header>
+        <Content Style="margin: 24px 16px 0; overflow: initial; min-height: 800px">
+            <div class="site-layout-background" style="padding: 24px; text-align: center; min-height: 100%">
+                @Body
+            </div>
+        </Content>
+        <Footer Style="text-align: center; color: blueviolet">Lazcat blog for test</Footer>
+    </Layout>
+</Layout>
+<style>
+    .site-layout .site-layout-background {
+        background: #fff;
+    }
+</style>
+@code {
+
+}
