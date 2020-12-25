@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApplicationService;
-using ApplicationService.Articles;
 using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.ApplicationService;

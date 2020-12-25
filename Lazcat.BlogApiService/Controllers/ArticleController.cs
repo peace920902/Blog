@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApplicationService.Articles;
+using Lazcat.Blog.ApplicationService.Articles;
 using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace Lazcat.BlogApiService.Controllers
             await _articleAppService.CreateArticle(input);
         }
 
-        [HttpGet, Route("getAll")]
+        [HttpGet, Route("all")]
         public async Task<IEnumerable<ArticleDto>> GetAll()
         {
             return await _articleAppService.GetArticleList();
@@ -43,10 +43,11 @@ namespace Lazcat.BlogApiService.Controllers
             await _articleAppService.UpdateArticle(input.Id, input);
         }
 
-        [HttpDelete]
-        public async Task<bool> Delete(CreateUpdateArticleInput input)
+        [HttpDelete, Route( "{id}")]
+
+        public async Task<bool> Delete(int id)
         {
-            return await _articleAppService.DeleteArticle(input.Id);
+            return await _articleAppService.DeleteArticle(id);
         }
     }
 }
