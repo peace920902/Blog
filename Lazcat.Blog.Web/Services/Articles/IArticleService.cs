@@ -12,6 +12,6 @@ namespace Lazcat.Blog.Web.Services.Articles
         Task CreateArticle(CreateUpdateArticleInput input);
         Task UpdateArticle(CreateUpdateArticleInput input);
         Task DeleteArticle(int id);
-        Task<string> ConvertToHtml(string markdown);
+        string ConvertToHtml(string markdown);
     }
 }

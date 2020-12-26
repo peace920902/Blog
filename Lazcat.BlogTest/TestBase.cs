@@ -29,9 +29,9 @@ namespace Lazcat.Blog.Test
 
                 context.Categories.AddRange(new List<Category>
                 {
-                    new Category {Name = "dotnet 5"}, 
-                    new Category {Name = "DDD"},
-                    new Category{Name = "Database"}}
+                    new() {Name = "dotnet 5"}, 
+                    new() {Name = "DDD"},
+                    new() {Name = "Database"}}
                 );
 
                 context.AddRange();

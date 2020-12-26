@@ -4,6 +4,7 @@ using AutoMapper;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.ViewModel;
 using Lazcat.Blog.Web.Provider.Articles;
+using Markdig;
 
 namespace Lazcat.Blog.Web.Services.Articles
 {
@@ -11,11 +12,13 @@ namespace Lazcat.Blog.Web.Services.Articles
     {
         private readonly IArticleProvider _articleProvider;
         private readonly IMapper _mapper;
+        private readonly MarkdownPipeline _pipeline;
 
-        public ArticleService(IArticleProvider articleProvider, IMapper mapper)
+        public ArticleService(IArticleProvider articleProvider, IMapper mapper, MarkdownPipeline pipeline)
         {
             _articleProvider = articleProvider;
             _mapper = mapper;
+            _pipeline = pipeline;
         }
 
         public async Task<IEnumerable<SimpleArticle>> GetArticleList()
@@ -44,9 +47,10 @@ namespace Lazcat.Blog.Web.Services.Articles
             await _articleProvider.DeleteArticle(id);
         }
         
-        public async Task<string> ConvertToHtml(string markdown)
+        public string ConvertToHtml(string markdown)
         {
-            return "";
+            return Markdown.ToHtml(markdown, _pipeline);
         }
+        
     }
 }

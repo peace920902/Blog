@@ -18,10 +18,10 @@ namespace Lazcat.Blog.Domain.Articles
         private readonly IRepository<int, Article> _repository;
         private readonly MarkdownPipeline _pipeline;
 
-        public ArticleManager(IRepository<int, Article> repository)
+        public ArticleManager(IRepository<int, Article> repository, MarkdownPipeline pipeline)
         {
             _repository = repository;
-            _pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            _pipeline = pipeline;
         }
 
         public async Task<Article> CreateAsync(string title, string content, int categoryId, bool isPublished = false, string cover = null)

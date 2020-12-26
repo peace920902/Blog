@@ -1,0 +1,18 @@
+﻿@using Lazcat.Blog.Models.Dtos.Articles
+
+@if (ArticleDto == null)
+{
+    <p><span>Loading...</span></p>
+}
+else
+{
+    <Title Level="1">@ArticleDto.Title</Title>
+    <div>
+        @((MarkupString) ArticleDto.Content)
+    </div>
+}
+
+@code {
+    [Parameter]
+    public ArticleDto ArticleDto { get; set; }
+}

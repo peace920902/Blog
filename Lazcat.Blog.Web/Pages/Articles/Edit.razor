@@ -1,0 +1,22 @@
+﻿@page "/article/edit/{id:int}"
+@using Lazcat.Blog.Web.Services.Articles
+@using Lazcat.Blog.Models.Dtos.Articles
+@layout ManagerLayout
+@inject IArticleService ArticleService
+
+<Article ArticleDto="ArticleDto"></Article>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; } = 8;
+
+    public ArticleDto ArticleDto { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        ArticleDto = await ArticleService.GetArticle(Id);
+        await base.SetParametersAsync(parameters);
+    }
+
+}

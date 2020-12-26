@@ -9,7 +9,6 @@ namespace Lazcat.Blog.Web
         public ViewProfile()
         {
             CreateMap<ArticleDto, SimpleArticle>().ForMember(x => x.PublishTime, x => x.MapFrom(y => y.PublishTime));
-            
         }
     }
 }

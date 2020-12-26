@@ -5,14 +5,15 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Xunit;
+using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Models.Domain.Articles;
-using Lazcat.Blog.Models.Domain.Categories;
+using Markdig;
 using NSubstitute;
 using Shouldly;
+using Xunit;
 
-namespace Lazcat.Blog.Domain.Articles.Tests
+namespace Lazcat.Blog.Test.Articles
 {
     public class ArticleManagerTests
     {
@@ -22,7 +23,7 @@ namespace Lazcat.Blog.Domain.Articles.Tests
         public ArticleManagerTests()
         {
             _repository = Substitute.For<IRepository<int, Article>>();
-            _manager = new ArticleManager(_repository);
+            _manager = new ArticleManager(_repository, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         }
 
         [Theory]

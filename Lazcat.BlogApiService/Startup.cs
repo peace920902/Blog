@@ -1,16 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApplicationService;
+using Microsoft.AspNetCore.Cors;
 using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.ApplicationService;
@@ -23,6 +16,7 @@ using Lazcat.Blog.EntityFramework;
 using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Articles;
 using Lazcat.Blog.Models.Domain.Categories;
+using Markdig;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.BlogApiService
@@ -35,6 +29,7 @@ namespace Lazcat.BlogApiService
         }
 
         public IConfiguration Configuration { get; }
+        public const string DefaultPolicy = "DefaultPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -48,13 +43,26 @@ namespace Lazcat.BlogApiService
             services.AddScoped<IArticleAppService, ArticleAppService>();
             services.AddScoped<IArticleManager, ArticleManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
+            services.AddScoped<MarkdownPipeline>((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddCors(opt => opt.AddPolicy(DefaultPolicy ,builder => 
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                // builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
+                // builder.WithOrigins("http://127.0.0.1:5567","https://127.0.0.1:5568")
+                //     .AllowAnyHeader()
+                //     .AllowAnyMethod()
+                //     .AllowCredentials()
+                //     .SetIsOriginAllowedToAllowWildcardSubdomains()
+                ));
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,11 +77,10 @@ namespace Lazcat.BlogApiService
             });
 
             app.UseRouting();
-
+            app.UseCors(DefaultPolicy);
             app.UseAuthorization();
 
             app.UseCustomerExceptionMiddleware();
-            
 
             app.UseEndpoints(endpoints =>
             {
