@@ -1,22 +1,28 @@
 ﻿@page "/article/edit/{id:int}"
 @using Lazcat.Blog.Web.Services.Articles
 @using Lazcat.Blog.Models.Dtos.Articles
+@using System.Security.Cryptography.X509Certificates
+@using System.Text.Json
+@using Lazcat.Blog.Models.ViewModel
 @layout ManagerLayout
 @inject IArticleService ArticleService
 
 <Article ArticleDto="ArticleDto"></Article>
+
+@JsonSerializer.Serialize(s);
 
 @code {
 
     [Parameter]
     public int Id { get; set; } = 8;
 
+    public IEnumerable<SimpleArticle> s;
     public ArticleDto ArticleDto { get; set; }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
+    protected override async Task OnInitializedAsync()
     {
         ArticleDto = await ArticleService.GetArticle(Id);
-        await base.SetParametersAsync(parameters);
+        //s = await ArticleService.GetArticleList();
     }
 
 }

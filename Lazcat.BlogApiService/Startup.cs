@@ -17,23 +17,42 @@ using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Articles;
 using Lazcat.Blog.Models.Domain.Categories;
 using Markdig;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.BlogApiService
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+            HostEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment HostEnvironment { get; }
         public const string DefaultPolicy = "DefaultPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (HostEnvironment.IsDevelopment())
+            {
+                services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                    options.HttpsPort = 5001;
+                });
+            }
+            else
+            {
+                services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                    options.HttpsPort = 443;
+                });
+            }
             services.AddSwaggerGen();
             services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
                 b => b.MigrationsAssembly("Lazcat.BlogApiService")));
@@ -45,16 +64,16 @@ namespace Lazcat.BlogApiService
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<MarkdownPipeline>((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             services.AddAutoMapper(typeof(AutoMapperProfile));
-            services.AddCors(opt => opt.AddPolicy(DefaultPolicy ,builder => 
-                    builder.AllowAnyOrigin()
+            services.AddCors(opt => opt.AddDefaultPolicy(builder => 
+                    // builder.AllowAnyOrigin()
+                    // .AllowAnyHeader()
+                    // .AllowAnyMethod()
+                // builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
+                builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                // builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
-                // builder.WithOrigins("http://127.0.0.1:5567","https://127.0.0.1:5568")
-                //     .AllowAnyHeader()
-                //     .AllowAnyMethod()
-                //     .AllowCredentials()
-                //     .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .AllowCredentials()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
                 ));
             services.AddControllers();
         }
@@ -68,20 +87,19 @@ namespace Lazcat.BlogApiService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            app.UseRouting();
+            app.UseCors();
+            app.UseAuthorization();
+
+            app.UseCustomerExceptionMiddleware();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
-
-            app.UseRouting();
-            app.UseCors(DefaultPolicy);
-            app.UseAuthorization();
-
-            app.UseCustomerExceptionMiddleware();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

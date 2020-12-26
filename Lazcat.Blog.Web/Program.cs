@@ -23,7 +23,7 @@ namespace Lazcat.Blog.Web
             builder.Services.AddScoped<IArticleProvider, ArticleProviders>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5000/api/") , });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5000/api/")});
             builder.Services
                 .AddBlazorise(options =>
                 {

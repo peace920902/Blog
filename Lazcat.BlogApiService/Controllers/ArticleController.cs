@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Articles;
 using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lazcat.BlogApiService.Controllers
