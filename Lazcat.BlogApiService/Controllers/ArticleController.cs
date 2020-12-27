@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Articles;
-using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lazcat.BlogApiService.Controllers
@@ -19,7 +16,7 @@ namespace Lazcat.BlogApiService.Controllers
         {
             _articleAppService = articleAppService;
         }
-        
+
         [HttpPost]
         public async Task Create(CreateUpdateArticleInput input)
         {
@@ -32,7 +29,7 @@ namespace Lazcat.BlogApiService.Controllers
             return await _articleAppService.GetArticleList();
         }
 
-        [HttpGet,Route("{id}")]
+        [HttpGet, Route("{id}")]
         public async Task<ArticleDto> Get(int id)
         {
             return await _articleAppService.GetArticle(id);
@@ -44,7 +41,7 @@ namespace Lazcat.BlogApiService.Controllers
             await _articleAppService.UpdateArticle(input.Id, input);
         }
 
-        [HttpDelete, Route( "{id}")]
+        [HttpDelete, Route("{id}")]
 
         public async Task<bool> Delete(int id)
         {

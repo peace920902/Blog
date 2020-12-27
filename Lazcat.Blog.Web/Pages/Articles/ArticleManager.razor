@@ -1,0 +1,59 @@
+﻿@page "/manager/article/articleManager"
+@using Lazcat.Blog.Models.ViewModel
+@using Lazcat.Blog.Web.Services.Articles
+@layout ManagerLayout
+@inject IArticleService ArticleService
+
+@if (SimpleArticles == null|| SimpleArticles.Count()==0)
+{
+    <Card Loading="true">
+        <Skeleton Loading="true" Avatar Active>
+            <CardMeta Title="Card title"
+                      Description="This is the description"
+                      Avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        </Skeleton>
+    </Card>
+}
+else
+{
+    <div>
+        <Row Gutter="(8,24)">
+            @foreach (var simpleArticle in SimpleArticles)
+            {
+                <SimpleArticleCard SimpleArticle="simpleArticle"></SimpleArticleCard>
+            }
+        </Row>
+    </div>
+}
+
+@code {
+    private IEnumerable<SimpleArticle> SimpleArticles { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            SimpleArticles = await ArticleService.GetArticleList();
+            // SimpleArticles = new List<SimpleArticle>
+            // {
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"},
+            //     new SimpleArticle {CategoryName = "Test", Title = "123"}
+            // };
+        }
+        catch (NotSupportedException e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+}

@@ -1,0 +1,17 @@
+﻿@using Lazcat.Blog.Models.ViewModel
+
+
+<Col Span="24">
+    <Card Hoverable="true" Actions="new[]{editAction}">
+        <CardMeta Avatar="avatarTemplate" Title ="@(SimpleArticle.Title)" Description="@(SimpleArticle.CategoryName)">
+        </CardMeta>
+    </Card>
+</Col>
+
+@code {
+    [Parameter]
+    public SimpleArticle SimpleArticle { get; set; }
+
+    private RenderFragment editAction = @<Template><Icon Type="edit"></Icon></Template>;
+    private RenderFragment avatarTemplate = @<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
+}

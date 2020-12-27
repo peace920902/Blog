@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper;
 using Lazcat.Blog.Domain.Articles;
@@ -36,12 +35,12 @@ namespace Lazcat.Blog.ApplicationService.Articles
         public async Task<ArticleDto> GetArticle(int id)
         {
             var article = await _articleRepository.GetAll().Include(x => x.Category).SingleOrDefaultAsync(x => x.Id == id);
-            return _mapper.Map<Article, ArticleDto>(article);
+            return _mapper.Map<Article, ArticleDto>(article ?? new Article());
         }
 
         public async Task<IEnumerable<ArticleDto>> GetArticleList()
         {
-            return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(await _articleRepository.GetAll().Include(x=>x.Category).ToListAsync());
+            return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(await _articleRepository.GetAll().Include(x => x.Category).ToListAsync() ?? new List<Article>());
         }
 
         public async Task UpdateArticle(int id, CreateUpdateArticleInput input)
@@ -49,14 +48,14 @@ namespace Lazcat.Blog.ApplicationService.Articles
             var article = await _articleRepository.FindAsync(id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {id} not match any article"));
             _mapper.Map(input, article);
-            if(input.Title!=article.Title) await _articleManager.SetTitle(article,input.Title);
+            if (input.Title != article.Title) await _articleManager.SetTitle(article, input.Title);
             article.EditTime = DateTime.Now;
             await _articleRepository.UpdateAsync(id, article);
         }
 
         public async Task<bool> DeleteArticle(int id)
         {
-           return await _articleRepository.DeleteAsync(id);
+            return await _articleRepository.DeleteAsync(id);
         }
     }
 }
