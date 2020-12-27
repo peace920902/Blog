@@ -1,9 +1,9 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Cors;
 using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.ApplicationService;
@@ -68,8 +68,8 @@ namespace Lazcat.BlogApiService
                     // builder.AllowAnyOrigin()
                     // .AllowAnyHeader()
                     // .AllowAnyMethod()
-                // builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
-                builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
+                  builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
+                //builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
@@ -87,7 +87,7 @@ namespace Lazcat.BlogApiService
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors();

@@ -6,13 +6,16 @@
 
 @if (SimpleArticles == null|| SimpleArticles.Count()==0)
 {
-    <Card Loading="true">
-        <Skeleton Loading="true" Avatar Active>
-            <CardMeta Title="Card title"
-                      Description="This is the description"
-                      Avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        </Skeleton>
-    </Card>
+    @for (var i = 0; i < 5; i++)
+    {
+        <Card Loading="true">
+            <Skeleton Loading="true" Avatar Active>
+                <CardMeta Title="Card title"
+                          Description="This is the description"
+                          Avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
+            </Skeleton>
+        </Card>
+    }
 }
 else
 {

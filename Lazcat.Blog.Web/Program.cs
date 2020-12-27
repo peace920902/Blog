@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blazorise;
+using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Lazcat.Blog.Web.Provider.Articles;
 using Lazcat.Blog.Web.Services.Articles;
@@ -23,12 +24,12 @@ namespace Lazcat.Blog.Web
             builder.Services.AddScoped<IArticleProvider, ArticleProviders>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5000/api/")});
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://127.0.0.1:5001/api/")});
             builder.Services
                 .AddBlazorise(options =>
                 {
                     options.ChangeTextOnKeyPress = true;
-                })
+                }).AddBootstrapProviders()
                 .AddFontAwesomeIcons();
 
             await builder.Build().RunAsync();
