@@ -62,14 +62,14 @@ namespace Lazcat.BlogApiService
             services.AddScoped<IArticleAppService, ArticleAppService>();
             services.AddScoped<IArticleManager, ArticleManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
-            services.AddScoped<MarkdownPipeline>((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            services.AddScoped(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddCors(opt => opt.AddDefaultPolicy(builder => 
                     // builder.AllowAnyOrigin()
                     // .AllowAnyHeader()
                     // .AllowAnyMethod()
                   builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
-                //builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
+                 //builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()

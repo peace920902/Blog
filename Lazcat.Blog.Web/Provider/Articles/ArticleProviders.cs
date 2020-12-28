@@ -3,44 +3,46 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Lazcat.Blog.Models.Dtos.Articles;
+using Lazcat.Blog.Models.Web;
 
 namespace Lazcat.Blog.Web.Provider.Articles
 {
-    public class ArticleProviders: IArticleProvider
+    public class ArticleProviders : ProviderBase, IArticleProvider
     {
         private readonly HttpClient _http;
-
-        public ArticleProviders(HttpClient http)
+        public const string Article = "Article";
+        public ArticleProviders(IHttpClientFactory httpFactory)
         {
-            _http = http;
+            _http = httpFactory.CreateClient(Setting.DefaultHttpClient);
         }
-        public async Task<IEnumerable<ArticleDto>> GetArticles()
+        public async Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles()
         {
-            var articles = await _http.GetFromJsonAsync<IEnumerable<ArticleDto>>("Article/all");
-            return articles;
-        }
-
-        public async Task<ArticleDto> GetArticle(int id)
-        {
-            var article = await _http.GetFromJsonAsync<ArticleDto>($"Article/{id}");
-            return article;
+            return await SendRequest($"{Article}/all", _http.GetFromJsonAsync<IEnumerable<ArticleDto>>);
         }
 
-        public async Task CreateArticle(CreateUpdateArticleInput input)
+        public async Task<ResponseMessage<ArticleDto>> GetArticle(int id)
         {
-            await _http.PostAsJsonAsync("Article", input);
+            return await SendRequest($"{Article}/{id}", _http.GetFromJsonAsync<ArticleDto>);
         }
 
-        public async Task UpdateArticle(CreateUpdateArticleInput input)
+        public async Task<ResponseMessage<bool>> CreateArticle(CreateUpdateArticleInput input)
         {
-            await _http.PutAsJsonAsync("Article", input);
+            return await SendEmptyResponseBodyRequest(Article, _http.PostAsJsonAsync, input);
+
         }
 
-        public async Task DeleteArticle(int id)
+        public async Task<ResponseMessage<bool>> UpdateArticle(CreateUpdateArticleInput input)
         {
-            await _http.DeleteAsync($"Article/{id}");
+            return await SendEmptyResponseBodyRequest("Article", _http.PutAsJsonAsync, input);
         }
+
+        public async Task<ResponseMessage<bool>> DeleteArticle(int id)
+        {
+            return await SendEmptyResponseBodyRequest($"Article/{id}", _http.DeleteAsync);
+        }
+
     }
 }

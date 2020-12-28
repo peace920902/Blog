@@ -10,7 +10,7 @@ namespace Lazcat.BlogApiService
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Information()
                 .CreateLogger();
             CreateHostBuilder(args).Build().Run();
         }

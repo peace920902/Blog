@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.ViewModel;
+using Lazcat.Blog.Models.Web;
 using Lazcat.Blog.Web.Provider.Articles;
 using Markdig;
 
@@ -23,13 +24,15 @@ namespace Lazcat.Blog.Web.Services.Articles
 
         public async Task<IEnumerable<SimpleArticle>> GetArticleList()
         {
-            var articles = await _articleProvider.GetArticles();
-            return _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(articles); 
+            var responseMessage = await _articleProvider.GetArticles();
+            if (responseMessage.StateCode != Setting.StateCode.Ok) return new List<SimpleArticle>();
+            return _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity);
         }
 
         public async Task<ArticleDto> GetArticle(int id)
         {
-            return await _articleProvider.GetArticle(id);
+            var message = await _articleProvider.GetArticle(id);
+            return message.Entity;
         }
 
         public async Task CreateArticle(CreateUpdateArticleInput input)
@@ -46,11 +49,11 @@ namespace Lazcat.Blog.Web.Services.Articles
         {
             await _articleProvider.DeleteArticle(id);
         }
-        
+
         public string ConvertToHtml(string markdown)
         {
             return Markdown.ToHtml(markdown, _pipeline);
         }
-        
+
     }
 }

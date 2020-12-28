@@ -25,7 +25,8 @@ namespace Lazcat.BlogApiService.Controllers
             await _categoryService.CreateCategoryAsync(input);
         }
 
-        [HttpDelete]
+        [HttpDelete, Route("{id}")]
+
         public async Task Delete(int id)
         {
             await _categoryService.DeleteCategory(id);

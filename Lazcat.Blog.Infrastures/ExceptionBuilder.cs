@@ -10,7 +10,7 @@ namespace Lazcat.Blog.Infrastructure
     {
         public static HttpResponseException Build(HttpStatusCode statusCode, HttpException ex)
         {
-            return new HttpResponseException(new HttpResponseMessage(statusCode)
+            return new(new HttpResponseMessage(statusCode)
             {
                 ReasonPhrase = JsonSerializer.Serialize(ex)
             });

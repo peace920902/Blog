@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.Models.Dtos.Articles;
+using Lazcat.Blog.Models.Web;
 
 namespace Lazcat.Blog.Web.Provider.Articles
 {
     public interface IArticleProvider
     {
-        Task<IEnumerable<ArticleDto>> GetArticles();
-        Task<ArticleDto> GetArticle(int id);
-        Task CreateArticle(CreateUpdateArticleInput input);
-        Task UpdateArticle(CreateUpdateArticleInput input);
-        Task DeleteArticle(int id);
+        Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles();
+        Task<ResponseMessage<ArticleDto>> GetArticle(int id);
+        Task<ResponseMessage<bool>> CreateArticle(CreateUpdateArticleInput input);
+        Task<ResponseMessage<bool>> UpdateArticle(CreateUpdateArticleInput input);
+        Task<ResponseMessage<bool>> DeleteArticle(int id);
     }
 }

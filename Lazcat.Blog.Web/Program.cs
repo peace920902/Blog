@@ -7,7 +7,9 @@ using AutoMapper;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Lazcat.Blog.Models.Web;
 using Lazcat.Blog.Web.Provider.Articles;
+using Lazcat.Blog.Web.Provider.Categories;
 using Lazcat.Blog.Web.Services.Articles;
 using Markdig;
 
@@ -21,10 +23,12 @@ namespace Lazcat.Blog.Web
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddAntDesign();
             builder.Services.AddAutoMapper(typeof(ViewProfile));
-            builder.Services.AddScoped<IArticleProvider, ArticleProviders>();
-            builder.Services.AddScoped<IArticleService, ArticleService>();
-            builder.Services.AddScoped((s) => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://127.0.0.1:5001/api/")});
+            builder.Services.AddSingleton<IArticleProvider, ArticleProviders>();
+            builder.Services.AddSingleton<IArticleService, ArticleService>();
+            builder.Services.AddSingleton<ICategoryProvider, CategoryProvider>();
+            builder.Services.AddSingleton(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            builder.Services.AddHttpClient(Setting.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
+            //builder.Services.AddScoped(_=>new HttpClient {BaseAddress = new Uri("https://127.0.0.1:5001/api/")});
             builder.Services
                 .AddBlazorise(options =>
                 {
