@@ -1,5 +1,94 @@
-﻿
+﻿@using Lazcat.Blog.Models.Dtos.Categories
+@using Blazorise.Components
+@using Lazcat.Blog.Web.Services.Categories
+@using Blazorise
+@using ButtonType = Blazorise.ButtonType
+@inject ICategoryService CategoryService
+@inject IToastService ToastService
+
+<SelectList TItem="CategoryDto"
+            TValue="int"
+            Data="@_categories"
+            TextField="@((item)=>item.Name)"
+            ValueField="@((item)=>item.Id)"
+            SelectedValue="@SelectCategory"
+            SelectedValueChanged="@CategoryChanged" />
+<div class="row">
+    <Blazorise.Modal class="col-8 offset-2" @ref="_modalRef">
+        <ModalBackdrop />
+        <ModalContent IsCentered="true">
+            <Blazorise.Form>
+                <ModalHeader>
+                    <ModalTitle>Create new category</ModalTitle>
+                    <CloseButton Clicked="HideModal" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validation Validator="@ValidateEmpty">
+                        <Field>
+                            <FieldLabel>Category Name</FieldLabel>
+                            <TextEdit @bind-Text="@_name" Placeholder="C#" />
+                            <Feedback>
+                                <ValidationError>name can't not be empty</ValidationError>
+                            </Feedback>
+                        </Field>
+                    </Validation>
+                </ModalBody>
+                <Blazorise.ModalFooter>
+                    <Blazorise.Button Color="Color.Secondary" Clicked="@HideModal">Close</Blazorise.Button>
+                    <Blazorise.Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" Clicked="@(async _=>await CreateNewCategoryAsync())">Save</Blazorise.Button>
+                </Blazorise.ModalFooter>
+            </Blazorise.Form>
+        </ModalContent>
+    </Blazorise.Modal>
+</div>
 
 @code {
-    
+    private IEnumerable<CategoryDto> _categories;
+    private int SelectCategory { get; set; } = -2;
+    private string _name;
+    private Blazorise.Modal _modalRef;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCategories();
+    }
+
+    private void CategoryChanged(int id)
+    {
+        if (id == -1)
+        {
+            _modalRef.Show();
+        }
+    }
+
+    private async Task GetCategories()
+    {
+        _categories = await CategoryService.GetCategories();
+        _categories = _categories.Append(new CategoryDto { Id = -2, Name = "select category" });
+        _categories = _categories.Append(new CategoryDto { Id = -1, Name = "AddNew" });
+    }
+
+    private async Task CreateNewCategoryAsync()
+    {
+        var response = await CategoryService.CreateCategory(_name);
+        if (response.Entity)
+            ToastService.ShowSuccess(response.Message);
+        else
+            ToastService.ShowError(response.Message);
+        HideModal();
+        await GetCategories();
+        StateHasChanged();
+    }
+
+    private void HideModal()
+    {
+        _modalRef.Hide();
+    }
+
+    private void ValidateEmpty(ValidatorEventArgs obj)
+    {
+        var name = Convert.ToString(obj.Value);
+        obj.Status = string.IsNullOrEmpty(name) ? ValidationStatus.Error : ValidationStatus.Success;
+    }
+
 }

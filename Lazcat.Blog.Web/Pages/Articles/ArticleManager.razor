@@ -2,9 +2,10 @@
 @using Lazcat.Blog.Models.ViewModel
 @using Lazcat.Blog.Web.Services.Articles
 @layout ManagerLayout
-@inject IArticleService ArticleService
 
-@if (SimpleArticles == null|| SimpleArticles.Count()==0)
+<CategoryList/>
+
+@if (SimpleArticles == null|| !SimpleArticles.Any())
 {
     @for (var i = 0; i < 5; i++)
     {
@@ -35,7 +36,7 @@ else
     {
         try
         {
-            SimpleArticles = await ArticleService.GetArticleList();
+            //SimpleArticles = await ArticleService.GetArticleList();
             // SimpleArticles = new List<SimpleArticle>
             // {
             //     new SimpleArticle {CategoryName = "Test", Title = "123"},

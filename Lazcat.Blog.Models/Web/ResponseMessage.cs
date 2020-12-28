@@ -4,6 +4,6 @@
     {
         public T Entity { get; set; }
         public string ErrorMessage { get; set; }
-        public Setting.StateCode StateCode { get; set; } = Setting.StateCode.Ok;
+        public Setting.StateCode StateCode { get; set; } = Setting.StateCode.OK;
     }
 }

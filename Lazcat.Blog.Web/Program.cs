@@ -4,6 +4,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Blazored.Toast;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
@@ -11,6 +12,7 @@ using Lazcat.Blog.Models.Web;
 using Lazcat.Blog.Web.Provider.Articles;
 using Lazcat.Blog.Web.Provider.Categories;
 using Lazcat.Blog.Web.Services.Articles;
+using Lazcat.Blog.Web.Services.Categories;
 using Markdig;
 
 namespace Lazcat.Blog.Web
@@ -26,8 +28,11 @@ namespace Lazcat.Blog.Web
             builder.Services.AddSingleton<IArticleProvider, ArticleProviders>();
             builder.Services.AddSingleton<IArticleService, ArticleService>();
             builder.Services.AddSingleton<ICategoryProvider, CategoryProvider>();
+            builder.Services.AddSingleton<ICategoryService, CategoryService>();
             builder.Services.AddSingleton(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.AddHttpClient(Setting.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
+            builder.Services.AddBlazoredToast();
+           
             //builder.Services.AddScoped(_=>new HttpClient {BaseAddress = new Uri("https://127.0.0.1:5001/api/")});
             builder.Services
                 .AddBlazorise(options =>

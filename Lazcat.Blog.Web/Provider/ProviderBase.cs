@@ -18,6 +18,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     Entity = message.IsSuccessStatusCode,
+                    StateCode = (Setting.StateCode)message.StatusCode,
                     ErrorMessage = message.ReasonPhrase
                 };
             }
@@ -39,6 +40,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     Entity = message.IsSuccessStatusCode,
+                    StateCode = (Setting.StateCode)message.StatusCode,
                     ErrorMessage = message.ReasonPhrase
                 };
             }
@@ -63,6 +65,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     Entity = message.IsSuccessStatusCode,
+                    StateCode = (Setting.StateCode)message.StatusCode,
                     ErrorMessage = message.ReasonPhrase
                 };
             }
