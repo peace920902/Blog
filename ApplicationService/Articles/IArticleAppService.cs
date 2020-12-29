@@ -11,5 +11,6 @@ namespace Lazcat.Blog.ApplicationService.Articles
         Task<IEnumerable<ArticleDto>> GetArticleList();
         Task UpdateArticle(int id, CreateUpdateArticleInput input);
         Task<bool> DeleteArticle(int id);
+        Task PublishArticle(CreateUpdateArticleInput input);
     }
 }

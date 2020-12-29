@@ -36,13 +36,17 @@ namespace Lazcat.Blog.Web.Provider.Articles
 
         public async Task<ResponseMessage<bool>> UpdateArticle(CreateUpdateArticleInput input)
         {
-            return await SendEmptyResponseBodyRequest("Article", _http.PutAsJsonAsync, input);
+            return await SendEmptyResponseBodyRequest($"{Article}/content", _http.PutAsJsonAsync, input);
         }
 
         public async Task<ResponseMessage<bool>> DeleteArticle(int id)
         {
-            return await SendEmptyResponseBodyRequest($"Article/{id}", _http.DeleteAsync);
+            return await SendEmptyResponseBodyRequest($"{Article}/{id}", _http.DeleteAsync);
         }
 
+        public async Task<ResponseMessage<bool>> PublishArticle(CreateUpdateArticleInput input)
+        {
+            return await SendEmptyResponseBodyRequest($"{Article}/publish", _http.PutAsJsonAsync, input);
+        }
     }
 }

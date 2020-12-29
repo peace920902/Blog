@@ -35,12 +35,18 @@ namespace Lazcat.BlogApiService.Controllers
             return await _articleAppService.GetArticle(id);
         }
 
-        [HttpPut]
-        public async Task Update(CreateUpdateArticleInput input)
+        [HttpPut, Route("content")]
+        public async Task UpdateContent(CreateUpdateArticleInput input)
         {
             await _articleAppService.UpdateArticle(input.Id, input);
         }
-
+        
+        [HttpPut,Route("publish")]
+        public async Task PublishArticle(CreateUpdateArticleInput input)
+        {
+            await _articleAppService.PublishArticle(input);
+        }
+        
         [HttpDelete, Route("{id}")]
 
         public async Task<bool> Delete(int id)

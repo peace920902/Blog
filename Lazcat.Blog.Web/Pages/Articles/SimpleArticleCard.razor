@@ -1,17 +1,71 @@
 ﻿@using Lazcat.Blog.Models.ViewModel
-
+@using Lazcat.Blog.Models.Web
+@inject NavigationManager NavigationManager
+@using Blazorise
 
 <Col Span="24">
-    <Card Hoverable="true" Actions="new[]{editAction}">
-        <CardMeta Avatar="avatarTemplate" Title ="@(SimpleArticle.Title)" Description="@(SimpleArticle.CategoryName)">
-        </CardMeta>
-    </Card>
+    @* <AntDesign.Card Hoverable="true" Actions="new[] {_editAction /*, _delegateAction, _publishAction*/}"> *@
+    @*     <CardMeta Avatar="_avatarTemplate" Title="@(SimpleArticle.Title)" Description="@(SimpleArticle.CategoryName)"> *@
+    @*     </CardMeta> *@
+    @* </AntDesign.Card> *@
+    <Blazorise.Card Class="ant-card-hoverable">
+        <CardBody>
+            <CardTitle Alignment="TextAlignment.Center" Size="2">@SimpleArticle.Title</CardTitle>
+            <CardText>@("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                        "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")</CardText>
+        </CardBody>
+        <CardFooter Style="padding: 0">
+            <AntDesign.Row>
+                <Col Span="6">
+                    <Blazorise.Button Clicked="EditArticle"><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
+                </Col>
+                <Col Span="6">
+                    <Blazorise.Button><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
+                </Col>
+                <Col Span="6">
+                    <Blazorise.Button><AntDesign.Icon  Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
+                </Col>
+                <Col Span="6">
+                    <Blazorise.Button><AntDesign.Icon  Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
+                </Col>
+            </AntDesign.Row>
+        </CardFooter>
+    </Blazorise.Card>
 </Col>
+
+
+
 
 @code {
     [Parameter]
     public SimpleArticle SimpleArticle { get; set; }
+    private RenderFragment _editAction = @<Template><AntDesign.Icon Type="edit"></AntDesign.Icon></Template>;
+    private RenderFragment _delegateAction = @<Template><AntDesign.Icon Type="delete" Theme="twotone" /></Template>;
+    private RenderFragment _publishAction = @<Template>
+                                                <AntDesign.Switch Checked="false">
+                                                    <CheckedChildrenTemplate>
+                                                        <AntDesign.Icon Type="check"></AntDesign.Icon>
+                                                    </CheckedChildrenTemplate>
+                                                    <UnCheckedChildrenTemplate>
+                                                        <AntDesign.Icon Type="close"></AntDesign.Icon>
+                                                    </UnCheckedChildrenTemplate>
+                                                </AntDesign.Switch>
+                                            </Template>;
+    private RenderFragment _avatarTemplate = @<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
 
-    private RenderFragment editAction = @<Template><Icon Type="edit"></Icon></Template>;
-    private RenderFragment avatarTemplate = @<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
+
+    private async Task PublishArticle(bool isPublished)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void EditArticle()
+    {
+        NavigationManager.NavigateTo($"{Setting.UrlName.Manager}/{Setting.UrlName.Article}/{Setting.UrlName.Edit}/{SimpleArticle.Id}");
+    }
 }
+
+

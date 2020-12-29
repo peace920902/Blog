@@ -1,14 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Infrastructure.Exceptions;
 using Lazcat.Blog.Models.Domain.Articles;
 using Markdig;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.Blog.Domain.Articles
 {

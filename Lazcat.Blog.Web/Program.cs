@@ -32,8 +32,6 @@ namespace Lazcat.Blog.Web
             builder.Services.AddSingleton(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             builder.Services.AddHttpClient(Setting.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
             builder.Services.AddBlazoredToast();
-           
-            //builder.Services.AddScoped(_=>new HttpClient {BaseAddress = new Uri("https://127.0.0.1:5001/api/")});
             builder.Services
                 .AddBlazorise(options =>
                 {

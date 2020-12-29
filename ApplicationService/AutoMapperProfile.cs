@@ -12,7 +12,7 @@ namespace Lazcat.Blog.ApplicationService
         {
             CreateMap<Article, ArticleDto>().ForMember(x => x.CategoryName
                 , x => x.MapFrom(y => y.Category.Name));
-            CreateMap<CreateUpdateArticleInput, Article>().ForMember(x=>x.Title, x=>x.Ignore());
+            CreateMap<CreateUpdateArticleInput, Article>().ForMember(x=>x.Title, x=>x.Ignore()).ForMember(x=>x.Id, x=>x.Ignore()).ForMember(x => x.IsPublished, x => x.Ignore());
             CreateMap<Category, CategoryDto>();
         }
     }

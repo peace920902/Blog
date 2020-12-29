@@ -1,9 +1,8 @@
 ﻿@page "/manager/article/articleManager"
 @using Lazcat.Blog.Models.ViewModel
 @using Lazcat.Blog.Web.Services.Articles
+@inject IArticleService ArticleService
 @layout ManagerLayout
-
-<CategoryList/>
 
 @if (SimpleArticles == null|| !SimpleArticles.Any())
 {
@@ -36,7 +35,8 @@ else
     {
         try
         {
-            //SimpleArticles = await ArticleService.GetArticleList();
+            SimpleArticles = await ArticleService.GetArticleList();
+
             // SimpleArticles = new List<SimpleArticle>
             // {
             //     new SimpleArticle {CategoryName = "Test", Title = "123"},
@@ -58,6 +58,5 @@ else
         {
             Console.WriteLine(e);
         }
-
     }
 }

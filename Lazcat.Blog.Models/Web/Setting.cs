@@ -6,6 +6,14 @@ namespace Lazcat.Blog.Models.Web
     {
         public const string DefaultHttpClient = "Default";
 
+        public class UrlName
+        {
+            public const string Article = "Article";
+            public const string Category = "Category";
+            public const string Manager = "Manager";
+            public const string Edit = "Edit";
+        }
+        
         public enum StateCode
         {
             OK = 200,

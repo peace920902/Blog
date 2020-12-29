@@ -49,6 +49,13 @@ namespace Lazcat.Blog.Web.Services.Articles
             await _articleProvider.DeleteArticle(id);
         }
 
+        public async Task<StandardOutput<bool>> PublishArticle(CreateUpdateArticleInput input)
+        {
+            var responseMessage = await _articleProvider.PublishArticle(input);
+            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool> {Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is not existed"} 
+                : new StandardOutput<bool> {Entity = true, Message = "publish succeed"};
+        }
+
         public string ConvertToHtml(string markdown)
         {
             return Markdown.ToHtml(markdown, _pipeline);

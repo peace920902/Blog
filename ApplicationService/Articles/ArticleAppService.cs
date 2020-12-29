@@ -50,9 +50,28 @@ namespace Lazcat.Blog.ApplicationService.Articles
             _mapper.Map(input, article);
             if (input.Title != article.Title) await _articleManager.SetTitle(article, input.Title);
             article.EditTime = DateTime.Now;
-            await _articleRepository.UpdateAsync(id, article);
+            await _articleRepository.UpdateAsync(article.Id, article);
         }
 
+        public async Task PublishArticle(CreateUpdateArticleInput input)
+        {
+            var article = await _articleRepository.FindAsync(input.Id);
+            if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {input.Id} not match any article"));
+            if(article.IsPublished == input.IsPublished) return;
+            if (input.IsPublished)
+            {
+                article.IsPublished = true;
+                article.PublishTime = DateTime.Now;
+            }
+            else
+            {
+                article.IsPublished = false;
+                article.PublishTime = null;
+            }
+
+            await _articleRepository.UpdateAsync(article.Id, article);
+        }
+        
         public async Task<bool> DeleteArticle(int id)
         {
             return await _articleRepository.DeleteAsync(id);
