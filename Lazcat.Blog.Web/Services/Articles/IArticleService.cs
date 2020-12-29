@@ -10,9 +10,9 @@ namespace Lazcat.Blog.Web.Services.Articles
     {
         Task<IEnumerable<SimpleArticle>> GetArticleList();
         Task<ArticleDto> GetArticle(int id);
-        Task CreateArticle(CreateUpdateArticleInput input);
-        Task UpdateArticle(CreateUpdateArticleInput input);
-        Task DeleteArticle(int id);
+        Task<StandardOutput<bool>> CreateArticle(CreateUpdateArticleInput input);
+        Task<StandardOutput<bool>> UpdateArticle(CreateUpdateArticleInput input);
+        Task<StandardOutput<bool>> DeleteArticle(int id);
         string ConvertToHtml(string markdown);
         Task<StandardOutput<bool>> PublishArticle(CreateUpdateArticleInput input);
     }

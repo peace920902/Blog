@@ -13,6 +13,7 @@
             ValueField="@((item)=>item.Id)"
             SelectedValue="@SelectCategory"
             SelectedValueChanged="@CategoryChanged" />
+
 <div class="row">
     <Blazorise.Modal class="col-8 offset-2" @ref="_modalRef">
         <ModalBackdrop />
@@ -77,6 +78,7 @@
             ToastService.ShowError(response.Message);
         HideModal();
         await GetCategories();
+        _name = null;
         StateHasChanged();
     }
 

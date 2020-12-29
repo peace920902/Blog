@@ -1,39 +1,46 @@
 ﻿@using Lazcat.Blog.Models.ViewModel
 @using Lazcat.Blog.Models.Web
 @inject NavigationManager NavigationManager
+@inject ModalService ModalService
+@inject MessageService MessageService
+@inject IArticleService ArticleService
 @using Blazorise
+@using Lazcat.Blog.Web.Services.Articles
+@using ModalClosingEventArgs = AntDesign.ModalClosingEventArgs
 
 <Col Span="24">
-    @* <AntDesign.Card Hoverable="true" Actions="new[] {_editAction /*, _delegateAction, _publishAction*/}"> *@
-    @*     <CardMeta Avatar="_avatarTemplate" Title="@(SimpleArticle.Title)" Description="@(SimpleArticle.CategoryName)"> *@
-    @*     </CardMeta> *@
-    @* </AntDesign.Card> *@
-    <Blazorise.Card Class="ant-card-hoverable">
-        <CardBody>
-            <CardTitle Alignment="TextAlignment.Center" Size="2">@SimpleArticle.Title</CardTitle>
-            <CardText>@("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+@* <AntDesign.Card Hoverable="true" Actions="new[] {_editAction /*, _delegateAction, _publishAction*/}"> *@
+@*     <CardMeta Avatar="_avatarTemplate" Title="@(SimpleArticle.Title)" Description="@(SimpleArticle.CategoryName)"> *@
+@*     </CardMeta> *@
+@* </AntDesign.Card> *@
+<Blazorise.Card Class="ant-card-hoverable">
+    <CardBody>
+        <CardTitle Alignment="TextAlignment.Center" Size="2">@SimpleArticle.Title</CardTitle>
+        <CardText>
+            @("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                         "111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                         "111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
                         "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
-                        "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")</CardText>
-        </CardBody>
-        <CardFooter Style="padding: 0">
-            <AntDesign.Row>
-                <Col Span="6">
-                    <Blazorise.Button Clicked="EditArticle"><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
-                </Col>
-                <Col Span="6">
-                    <Blazorise.Button><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
-                </Col>
-                <Col Span="6">
-                    <Blazorise.Button><AntDesign.Icon  Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
-                </Col>
-                <Col Span="6">
-                    <Blazorise.Button><AntDesign.Icon  Width="100%" Type="edit"></AntDesign.Icon></Blazorise.Button>
-                </Col>
-            </AntDesign.Row>
-        </CardFooter>
-    </Blazorise.Card>
+                        "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
+        </CardText>
+    </CardBody>
+    <CardFooter Style="padding: 0">
+        <AntDesign.Row>
+            <Col Span="6">
+            <AntDesign.Button Type="dashed" OnClick="EditArticle"><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></AntDesign.Button>
+            </Col>
+            <Col Span="6">
+            <AntDesign.Button Type="dashed" OnClick="@ShowDeleteConfirm"><AntDesign.Icon Width="100%" Type="delete" Theme="twotone"></AntDesign.Icon></AntDesign.Button>
+            </Col>
+            <Col Span="6">
+            <AntDesign.Button Type="dashed"><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></AntDesign.Button>
+            </Col>
+            <Col Span="6">
+            <AntDesign.Button Type="dashed"><AntDesign.Icon Width="100%" Type="edit"></AntDesign.Icon></AntDesign.Button>
+            </Col>
+        </AntDesign.Row>
+    </CardFooter>
+</Blazorise.Card>
 </Col>
 
 
@@ -42,30 +49,55 @@
 @code {
     [Parameter]
     public SimpleArticle SimpleArticle { get; set; }
-    private RenderFragment _editAction = @<Template><AntDesign.Icon Type="edit"></AntDesign.Icon></Template>;
-    private RenderFragment _delegateAction = @<Template><AntDesign.Icon Type="delete" Theme="twotone" /></Template>;
-    private RenderFragment _publishAction = @<Template>
-                                                <AntDesign.Switch Checked="false">
-                                                    <CheckedChildrenTemplate>
-                                                        <AntDesign.Icon Type="check"></AntDesign.Icon>
-                                                    </CheckedChildrenTemplate>
-                                                    <UnCheckedChildrenTemplate>
-                                                        <AntDesign.Icon Type="close"></AntDesign.Icon>
-                                                    </UnCheckedChildrenTemplate>
-                                                </AntDesign.Switch>
-                                            </Template>;
-    private RenderFragment _avatarTemplate = @<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
-
+    RenderFragment icon =@<AntDesign.Icon Type="exclamation-circle" Theme="outline"></AntDesign.Icon>;
 
     private async Task PublishArticle(bool isPublished)
     {
         throw new NotImplementedException();
     }
 
+    private async Task OnOk(ModalClosingEventArgs eventArgs)
+    {
+        var standardOutput = await ArticleService.DeleteArticle(SimpleArticle.Id);
+        if (standardOutput.Entity) await MessageService.Success(standardOutput.Message);
+        else await MessageService.Error(standardOutput.Message);
+    }
+
     private void EditArticle()
     {
         NavigationManager.NavigateTo($"{Setting.UrlName.Manager}/{Setting.UrlName.Article}/{Setting.UrlName.Edit}/{SimpleArticle.Id}");
     }
+
+    private void ShowDeleteConfirm()
+    {
+        ModalService.Confirm(new ConfirmOptions()
+        {
+            Title = "Are you sure delete this task?",
+            Icon = icon,
+            Content = "Some descriptions",
+            OnOk = async (e)=>await OnOk(e),
+            OnCancel = _ => Task.CompletedTask,
+            OkText = "Yes",
+            OkType = "danger",
+            CancelText = "No",
+        });
+    }
 }
+@*     private RenderFragment _editAction =@<Template> *@
+@*         <AntDesign.Icon Type="edit"></AntDesign.Icon></Template>; *@
+@* private RenderFragment _delegateAction = @<Template> *@
+@*     <AntDesign.Icon Type="delete" Theme="twotone" /></Template>; *@
+@* private RenderFragment _publishAction = @<Template> *@
+@*     <AntDesign.Switch Checked="false"> *@
+@*         <CheckedChildrenTemplate> *@
+@*             <AntDesign.Icon Type="check"></AntDesign.Icon> *@
+@*         </CheckedChildrenTemplate> *@
+@*         <UnCheckedChildrenTemplate> *@
+@*             <AntDesign.Icon Type="close"></AntDesign.Icon> *@
+@*         </UnCheckedChildrenTemplate> *@
+@*     </AntDesign.Switch> *@
+@* </Template>; *@
+@* private RenderFragment _avatarTemplate = @<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>; *@
+
 
 
