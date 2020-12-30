@@ -23,7 +23,7 @@ else
         <Row Gutter="(8,24)">
             @foreach (var simpleArticle in SimpleArticles)
             {
-                <SimpleArticleCard SimpleArticle="simpleArticle"></SimpleArticleCard>
+                <SimpleArticleCard ArticleDeleted="RemoveDeleteItem" SimpleArticle="simpleArticle"></SimpleArticleCard>
             }
         </Row>
     </div>
@@ -31,6 +31,7 @@ else
 
 @code {
     private IEnumerable<SimpleArticle> SimpleArticles { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -57,5 +58,11 @@ else
         {
             Console.WriteLine(e);
         }
+    }
+
+    private void RemoveDeleteItem(int id)
+    {
+        SimpleArticles = SimpleArticles?.Where(x => x.Id != id);
+        StateHasChanged();
     }
 }

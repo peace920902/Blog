@@ -3,13 +3,17 @@
     <Sider Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
         <div class ="logo"><Title Level="4" Style="text-align: center;font-family: DFKai-sb, cursive;margin-bottom : 0; line-height: 64px; color: whitesmoke">後臺管理系統</Title></div>
         <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline">
-            <MenuItem Key="1">
-                <Icon Type="user" Theme="outline"></Icon>
-                <NavLink href="counter">Counter</NavLink>
+            <MenuItem>
+                <Icon Type="file-add" Theme="outline" />
+                <NavLink href="manager/article/new" Match="NavLinkMatch.All">新增文章</NavLink>
             </MenuItem>
             <MenuItem>
-                <Icon Type="file-add" Theme="fill" />
-                <NavLink href="manager/article/articlemanager">文章管理</NavLink>
+                <Icon Type="folder-open" Theme="outline" />
+                <NavLink href="manager/article/articlemanager" Match="NavLinkMatch.All">文章管理</NavLink>
+            </MenuItem>
+            <MenuItem>
+                <Icon Type="bar-chart" Theme="outline" />
+                <NavLink href="manager/article/new" Match="NavLinkMatch.All">流量分析</NavLink>
             </MenuItem>
         </Menu>
     </Sider>
