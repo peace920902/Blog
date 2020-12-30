@@ -6,10 +6,14 @@
 }
 else
 {
-    <Title Level="1">@ArticleDto.Title</Title>
-    <div>
-        @((MarkupString) ArticleDto.Content)
+    <div style="text-align: left">
+        <Title Level="1">@ArticleDto.Title</Title>
+        <div>
+             @((MarkupString) ArticleDto.Content)
+        </div>
     </div>
+
+
 }
 
 @code {

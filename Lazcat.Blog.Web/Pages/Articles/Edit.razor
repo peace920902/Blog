@@ -15,6 +15,7 @@
     protected override async Task OnInitializedAsync()
     {
         ArticleDto = await ArticleService.GetArticle(Id);
+        ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
     }
 
 }

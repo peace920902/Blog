@@ -4,7 +4,7 @@
 @using Blazorise
 @using ButtonType = Blazorise.ButtonType
 @inject ICategoryService CategoryService
-@inject IToastService ToastService
+@inject MessageService MessageService
 
 <SelectList TItem="CategoryDto"
             TValue="int"
@@ -73,9 +73,9 @@
     {
         var response = await CategoryService.CreateCategory(_name);
         if (response.Entity)
-            ToastService.ShowSuccess(response.Message);
+            await MessageService.Success(response.Message);
         else
-            ToastService.ShowError(response.Message);
+            await MessageService.Error(response.Message);
         HideModal();
         await GetCategories();
         _name = null;
