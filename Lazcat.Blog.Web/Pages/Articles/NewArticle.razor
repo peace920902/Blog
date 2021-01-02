@@ -2,7 +2,6 @@
 @using Blazorise;
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
-@using System.Text.Json
 @layout ManagerLayout
 @inject MessageService MessageService
 @inject IArticleService ArticleService
@@ -45,7 +44,6 @@
 
     private async Task SaveArticle()
     {
-        
         var article = await ArticleService.CreateOrUpdateArticle(createUpdateArticleInput);
         if (article.Entity == null)
         {

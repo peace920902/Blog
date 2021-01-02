@@ -1,0 +1,36 @@
+﻿@page "/Yee"
+@using Lazcat.Blog.Web.Services.Articles
+@inject IArticleService ArticleService
+<textarea @bind="@c.a" @bind:event="oninput" @onkeyup="t"></textarea>
+
+<div>
+    @((MarkupString)c.b)
+</div>
+
+@code {
+    public string a = "# 我就只是想要測試一下\n```csharp=\nConsole.WriteLine(\"123\");\n//123\n```\n\n**YEE**\n```csharp=\npublic class det{\n    public void test(){\n        Console.WriteLine(321);\n    }\n}\n```";
+
+    public string b;
+
+    private MyClass c= new(){a = String.Empty};
+
+
+    private class MyClass
+    {
+        public string a { get; set; }
+        public string b { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+
+        Console.WriteLine(b);
+        Console.WriteLine(123);
+    }
+
+    private void t()
+    {
+        c.b = ArticleService.ConvertToHtml(c.a);
+    }
+
+}
