@@ -6,9 +6,10 @@ namespace Lazcat.Blog.Models.Dtos.Articles
     public class CreateUpdateArticleInput
     {
         public int Id { get; set; }
-        [MaxLength(50, ErrorMessage = "Title length should less than 50")]
+        [Required, MaxLength(50, ErrorMessage = "Title length should less than 50")]
         public string Title { get; set; }
         public string Content { get; set; }
+        [Required, Range(1, int.MaxValue) ]
         public int CategoryId { get; set; }
         public bool IsPublished { get; set; }
         public string Cover { get; set; }

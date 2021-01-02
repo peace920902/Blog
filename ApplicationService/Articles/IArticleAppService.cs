@@ -6,10 +6,10 @@ namespace Lazcat.Blog.ApplicationService.Articles
 {
     public interface IArticleAppService
     {
-        Task CreateArticle(CreateUpdateArticleInput input);
+        Task<ArticleDto> CreateOrUpdateArticle(CreateUpdateArticleInput input);
         Task<ArticleDto> GetArticle(int id);
         Task<IEnumerable<ArticleDto>> GetArticleList();
-        Task UpdateArticle(int id, CreateUpdateArticleInput input);
+        Task<ArticleDto> UpdateArticle(int id, CreateUpdateArticleInput input);
         Task<bool> DeleteArticle(int id);
         Task PublishArticle(CreateUpdateArticleInput input);
     }

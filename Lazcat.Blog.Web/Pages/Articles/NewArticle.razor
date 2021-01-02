@@ -1,7 +1,63 @@
 ﻿@page "/manager/article/new"
+@using Blazorise;
+@using Lazcat.Blog.Models.Dtos.Articles
+@using Lazcat.Blog.Web.Services.Articles
+@using System.Text.Json
+@layout ManagerLayout
+@inject MessageService MessageService
+@inject IArticleService ArticleService
 
+<Blazorise.Form>
+    <Validations Mode="ValidationMode.Auto" Model="@createUpdateArticleInput">
+        <Field Horizontal="true">
+            <Validation>
+                <FieldLabel For="title" ColumnSize="ColumnSize.Is1">
+                    <p style="font-size: 16px;">標題:</p>
+                </FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is8">
+                    <TextEdit id="title" @bind-Text="@createUpdateArticleInput.Title">
+                        <Feedback>
+                            <ValidationError />
+                        </Feedback>
+                    </TextEdit>
+                </FieldBody>
+            </Validation>
+            <FieldLabel For="category" ColumnSize="ColumnSize.Is1">
+                <p style="font-size: 16px;">分類:</p>
+            </FieldLabel>
+            <FieldBody ColumnSize="ColumnSize.Is2">
+                <CategoryList CategoryChoose="ChangeCategory" SelectCategory="@(createUpdateArticleInput.CategoryId == 0 ? -2 : createUpdateArticleInput.CategoryId)"></CategoryList>
+            </FieldBody>
+        </Field>
+        <Field>
+            <MemoEdit Rows="25" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
+        </Field>
+        <Field>
+            <Blazorise.Button Color="Color.Success" Type="Blazorise.ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
+                Save
+            </Blazorise.Button>
+        </Field>
+    </Validations>
+</Blazorise.Form>
 
+@code { 
+    private CreateUpdateArticleInput createUpdateArticleInput = new();
 
-@code {
-    
+    private async Task SaveArticle()
+    {
+        
+        var article = await ArticleService.CreateOrUpdateArticle(createUpdateArticleInput);
+        if (article.Entity == null)
+        {
+            await MessageService.Error(article.Message);
+            return;
+        }
+        createUpdateArticleInput.Id = article.Entity.Id;
+    }
+
+    private void ChangeCategory(int id)
+    {
+        createUpdateArticleInput.CategoryId = id;
+    }
+
 }

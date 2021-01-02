@@ -28,7 +28,7 @@ namespace Lazcat.Blog.Web.Services.Articles
         {
             var responseMessage = await _articleProvider.GetArticles();
             return responseMessage.StateCode != Setting.StateCode.OK ?
-                new List<SimpleArticle>() : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity??new List<ArticleDto>());
+                new List<SimpleArticle>() : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity ?? new List<ArticleDto>());
         }
 
         public async Task<ArticleDto> GetArticle(int id)
@@ -37,26 +37,24 @@ namespace Lazcat.Blog.Web.Services.Articles
             return message.Entity;
         }
 
-        public async Task<StandardOutput<bool>> CreateArticle(CreateUpdateArticleInput input)
+        public async Task<StandardOutput<ArticleDto>> CreateOrUpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.CreateArticle(input);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool>
+            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<ArticleDto>
             {
-                Entity = false,
-                Message = $"CreateArticle failed." +
-                    $" Check if id {input.Id} is not existed or duplicate title: {input.Title}"
-            } : new StandardOutput<bool> { Entity = true, Message = "CreateArticle succeed" };
+                Entity = null,
+                Message = $"CreateOrUpdateArticle failed. Reason {responseMessage.ErrorMessage}"
+            } : new StandardOutput<ArticleDto> { Entity = responseMessage.Entity, Message = "CreateOrUpdateArticle succeed" };
         }
 
-        public async Task<StandardOutput<bool>> UpdateArticle(CreateUpdateArticleInput input)
+        public async Task<StandardOutput<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.UpdateArticle(input);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool>
+            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<ArticleDto>
             {
-                Entity = false,
-                Message = $"UpdateArticle failed." +
-                    $" Check if id {input.Id} is not existed or duplicate title: {input.Title}"
-            } : new StandardOutput<bool> { Entity = true, Message = "UpdateArticle succeed" };
+                Entity = null,
+                Message = $"UpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
+            } : new StandardOutput<ArticleDto> { Entity = responseMessage.Entity, Message = "UpdateArticle succeed" };
         }
 
         public async Task<StandardOutput<bool>> DeleteArticle(int id)
@@ -77,6 +75,5 @@ namespace Lazcat.Blog.Web.Services.Articles
         {
             return Markdown.ToHtml(markdown, _pipeline);
         }
-
     }
 }

@@ -2,11 +2,10 @@
 @using Blazorise.Components
 @using Lazcat.Blog.Web.Services.Categories
 @using Blazorise
-@using ButtonType = Blazorise.ButtonType
 @inject ICategoryService CategoryService
 @inject MessageService MessageService
 
-<SelectList TItem="CategoryDto"
+<SelectList id="category" TItem="CategoryDto"
             TValue="int"
             Data="@_categories"
             TextField="@((item)=>item.Name)"
@@ -36,7 +35,7 @@
                 </ModalBody>
                 <Blazorise.ModalFooter>
                     <Blazorise.Button Color="Color.Secondary" Clicked="@HideModal">Close</Blazorise.Button>
-                    <Blazorise.Button Color="Color.Primary" Type="ButtonType.Submit" PreventDefaultOnSubmit="true" Clicked="@(async _=>await CreateNewCategoryAsync())">Save</Blazorise.Button>
+                    <Blazorise.Button Color="Color.Primary" Type="Blazorise.ButtonType.Submit" PreventDefaultOnSubmit="true" Clicked="@(async _=>await CreateNewCategoryAsync())">Save</Blazorise.Button>
                 </Blazorise.ModalFooter>
             </Blazorise.Form>
         </ModalContent>
@@ -44,8 +43,13 @@
 </div>
 
 @code {
+    [Parameter]
+    public EventCallback<int> CategoryChoose { get; set; }
+
+    [Parameter]
+    public int SelectCategory { get; set; } = -2;
+    
     private IEnumerable<CategoryDto> _categories;
-    private int SelectCategory { get; set; } = -2;
     private string _name;
     private Blazorise.Modal _modalRef;
 
@@ -56,9 +60,14 @@
 
     private void CategoryChanged(int id)
     {
-        if (id == -1)
+        switch (id)
         {
-            _modalRef.Show();
+            case -1:
+                _modalRef.Show();
+                break;
+            case > 0:
+                CategoryChoose.InvokeAsync(id);
+                break;
         }
     }
 
@@ -92,5 +101,4 @@
         var name = Convert.ToString(obj.Value);
         obj.Status = string.IsNullOrEmpty(name) ? ValidationStatus.Error : ValidationStatus.Success;
     }
-
 }

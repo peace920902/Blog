@@ -18,9 +18,9 @@ namespace Lazcat.BlogApiService.Controllers
         }
 
         [HttpPost]
-        public async Task Create(CreateUpdateArticleInput input)
+        public async Task<ArticleDto> CreateOrUpdateArticle(CreateUpdateArticleInput input)
         {
-            await _articleAppService.CreateArticle(input);
+            return await _articleAppService.CreateOrUpdateArticle(input);
         }
 
         [HttpGet, Route("all")]
@@ -36,9 +36,9 @@ namespace Lazcat.BlogApiService.Controllers
         }
 
         [HttpPut, Route("content")]
-        public async Task UpdateContent(CreateUpdateArticleInput input)
+        public async Task<ArticleDto> UpdateContent(CreateUpdateArticleInput input)
         {
-            await _articleAppService.UpdateArticle(input.Id, input);
+            return await _articleAppService.UpdateArticle(input.Id, input);
         }
         
         [HttpPut,Route("publish")]

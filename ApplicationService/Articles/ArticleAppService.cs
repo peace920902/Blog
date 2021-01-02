@@ -26,10 +26,14 @@ namespace Lazcat.Blog.ApplicationService.Articles
             _mapper = mapper;
         }
 
-        public async Task CreateArticle(CreateUpdateArticleInput input)
+        public async Task<ArticleDto> CreateOrUpdateArticle(CreateUpdateArticleInput input)
         {
+            if (input.CategoryId <= 0)
+                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("category not exist"));
+            if (input.Id > 0) return await UpdateArticle(input.Id, input);
             var article = await _articleManager.CreateAsync(input.Title, input.Content, input.CategoryId, input.IsPublished, input.Cover);
-            await _articleRepository.CreateAsync(article);
+            var createdArticle = await _articleRepository.CreateAsync(article);
+            return _mapper.Map<Article, ArticleDto>(createdArticle);
         }
 
         public async Task<ArticleDto> GetArticle(int id)
@@ -43,21 +47,24 @@ namespace Lazcat.Blog.ApplicationService.Articles
             return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(await _articleRepository.GetAll().Include(x => x.Category).ToListAsync() ?? new List<Article>());
         }
 
-        public async Task UpdateArticle(int id, CreateUpdateArticleInput input)
+        public async Task<ArticleDto> UpdateArticle(int id, CreateUpdateArticleInput input)
         {
+            if (input.CategoryId <= 0)
+                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("category not exist"));
             var article = await _articleRepository.FindAsync(id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {id} not match any article"));
             _mapper.Map(input, article);
             if (input.Title != article.Title) await _articleManager.SetTitle(article, input.Title);
             article.EditTime = DateTime.Now;
-            await _articleRepository.UpdateAsync(article.Id, article);
+            var updateArticle = await _articleRepository.UpdateAsync(article.Id, article);
+            return _mapper.Map<Article, ArticleDto>(updateArticle);
         }
 
         public async Task PublishArticle(CreateUpdateArticleInput input)
         {
             var article = await _articleRepository.FindAsync(input.Id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {input.Id} not match any article"));
-            if(article.IsPublished == input.IsPublished) return;
+            if (article.IsPublished == input.IsPublished) return;
             if (input.IsPublished)
             {
                 article.IsPublished = true;
@@ -71,7 +78,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
 
             await _articleRepository.UpdateAsync(article.Id, article);
         }
-        
+
         public async Task<bool> DeleteArticle(int id)
         {
             return await _articleRepository.DeleteAsync(id);

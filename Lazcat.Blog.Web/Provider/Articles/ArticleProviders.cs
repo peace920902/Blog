@@ -28,15 +28,15 @@ namespace Lazcat.Blog.Web.Provider.Articles
             return await SendRequest($"{Article}/{id}", _http.GetFromJsonAsync<ArticleDto>);
         }
 
-        public async Task<ResponseMessage<bool>> CreateArticle(CreateUpdateArticleInput input)
+        public async Task<ResponseMessage<ArticleDto>> CreateArticle(CreateUpdateArticleInput input)
         {
-            return await SendEmptyResponseBodyRequest(Article, _http.PostAsJsonAsync, input);
+            return await SendNeedDeserializedRequest<ArticleDto, CreateUpdateArticleInput>(Article, _http.PostAsJsonAsync, input);
 
         }
 
-        public async Task<ResponseMessage<bool>> UpdateArticle(CreateUpdateArticleInput input)
+        public async Task<ResponseMessage<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input)
         {
-            return await SendEmptyResponseBodyRequest($"{Article}/content", _http.PutAsJsonAsync, input);
+            return await SendNeedDeserializedRequest<ArticleDto, CreateUpdateArticleInput>($"{Article}/content", _http.PutAsJsonAsync, input);
         }
 
         public async Task<ResponseMessage<bool>> DeleteArticle(int id)
