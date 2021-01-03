@@ -54,10 +54,13 @@
         var standardOutput = await ArticleService.DeleteArticle(SimpleArticle.Id);
         if (standardOutput.Entity)
         {
-            await MessageService.Success(standardOutput.Message);
+            MessageService.Success(standardOutput.Message);
             await ArticleDeleted.InvokeAsync(SimpleArticle.Id);
         }
-        else await MessageService.Error(standardOutput.Message);
+        else
+        {
+            MessageService.Error(standardOutput.Message);
+        }
     }
 
     private void EditArticle()

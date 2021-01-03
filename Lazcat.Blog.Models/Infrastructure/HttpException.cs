@@ -1,8 +1,6 @@
-﻿
-using System;
-using System.Net;
+﻿using System;
 
-namespace Lazcat.Blog.Infrastructure.Exceptions
+namespace Lazcat.Blog.Models.Infrastructure
 {
     public class HttpException
     {

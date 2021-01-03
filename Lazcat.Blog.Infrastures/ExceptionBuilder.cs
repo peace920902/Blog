@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Web.Http;
-using Lazcat.Blog.Infrastructure.Exceptions;
+using Lazcat.Blog.Models.Infrastructure;
 
 namespace Lazcat.Blog.Infrastructure
 {

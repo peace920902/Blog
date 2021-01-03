@@ -6,9 +6,9 @@ using AutoMapper;
 using Lazcat.Blog.Domain.Categories;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
-using Lazcat.Blog.Infrastructure.Exceptions;
 using Lazcat.Blog.Models.Domain.Categories;
 using Lazcat.Blog.Models.Dtos.Categories;
+using Lazcat.Blog.Models.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.Blog.ApplicationService.Categories

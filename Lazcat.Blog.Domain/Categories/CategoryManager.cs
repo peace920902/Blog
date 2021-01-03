@@ -1,10 +1,9 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
-using Lazcat.Blog.Infrastructure.Exceptions;
 using Lazcat.Blog.Models.Domain.Categories;
+using Lazcat.Blog.Models.Infrastructure;
 
 namespace Lazcat.Blog.Domain.Categories
 {

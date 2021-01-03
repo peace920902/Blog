@@ -4,6 +4,7 @@
 @layout ManagerLayout
 @inject IArticleService ArticleService
 
+
 <Article ArticleDto="ArticleDto"></Article>
 
 @code {
@@ -17,5 +18,4 @@
         ArticleDto = await ArticleService.GetArticle(Id);
         ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
     }
-
 }

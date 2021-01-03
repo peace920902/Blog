@@ -5,6 +5,7 @@
 @layout ManagerLayout
 @inject MessageService MessageService
 @inject IArticleService ArticleService
+@inject IJSRuntime JSRuntime
 
 <Blazorise.Form>
     <Validations Mode="ValidationMode.Auto" Model="@createUpdateArticleInput">
@@ -29,7 +30,7 @@
             </FieldBody>
         </Field>
         <Field>
-            <MemoEdit Rows="25" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
+            <MemoEdit Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content" @onkeydown="AddEditKey"></MemoEdit>
         </Field>
         <Field>
             <Blazorise.Button Color="Color.Success" Type="Blazorise.ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
@@ -42,6 +43,11 @@
 @code { 
     private CreateUpdateArticleInput createUpdateArticleInput = new();
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("jsinteropFunc.preventTabEvent");
+    }
+
     private async Task SaveArticle()
     {
         var article = await ArticleService.CreateOrUpdateArticle(createUpdateArticleInput);
@@ -51,11 +57,21 @@
             return;
         }
         createUpdateArticleInput.Id = article.Entity.Id;
+        await MessageService.Success(article.Message);
     }
 
     private void ChangeCategory(int id)
     {
         createUpdateArticleInput.CategoryId = id;
+    }
+
+    private void AddEditKey(KeyboardEventArgs obj)
+    {
+        if (obj.Key == "Tab")
+        {
+            createUpdateArticleInput.Content += "\t";
+        }
+        Console.WriteLine(obj.Key);
     }
 
 }

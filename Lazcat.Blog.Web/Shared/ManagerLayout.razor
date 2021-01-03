@@ -1,7 +1,11 @@
 ﻿@inherits LayoutComponentBase
 <Layout>
     <Sider Style="overflow: auto; height: 100vh; position: fixed; left: 0;">
-        <div class ="logo"><Title Level="4" Style="text-align: center;font-family: DFKai-sb, cursive;margin-bottom : 0; line-height: 64px; color: whitesmoke">後臺管理系統</Title></div>
+        <div class="logo">
+            <NavLink href="manager/article/articlemanager" Match="NavLinkMatch.All">
+                <Title Level="4" Style="text-align: center; font-family: DFKai-sb, cursive; margin-bottom: 0; line-height: 64px; color: whitesmoke">後臺管理系統</Title>
+            </NavLink>
+        </div>
         <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline">
             <MenuItem>
                 <Icon Type="file-add" Theme="outline" />
@@ -16,8 +20,8 @@
                 <NavLink href="manager/article/new" Match="NavLinkMatch.All">流量分析</NavLink>
             </MenuItem>
             <MenuItem>
-                <Icon Type="bar-chart" Theme="outline" />
-                <NavLink href="yee" Match="NavLinkMatch.All">流量分析</NavLink>
+                <Icon Type="file-edit" Theme="outline" />
+                <NavLink href="yee" Match="NavLinkMatch.All">online markdown editor</NavLink>
             </MenuItem>
         </Menu>
     </Sider>
@@ -29,7 +33,7 @@
                 @Body
             </div>
         </Content>
-        <Footer Style="text-align: center; color: blueviolet">Lazcat blog for test</Footer>
+        <Footer Style="text-align: center; color: blueviolet">Lazcat blog</Footer>
     </Layout>
 </Layout>
 <style>

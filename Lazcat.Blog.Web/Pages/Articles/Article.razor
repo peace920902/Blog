@@ -1,4 +1,5 @@
 ﻿@using Lazcat.Blog.Models.Dtos.Articles
+@inject IJSRuntime JSRuntime
 
 @if (ArticleDto == null)
 {
@@ -10,7 +11,7 @@ else
         <Title Level="1">@ArticleDto.Title</Title>
         <Divider></Divider>
         <div>
-             @((MarkupString) ArticleDto.Content)
+            @((MarkupString) ArticleDto.Content)
         </div>
     </div>
 }
@@ -18,4 +19,9 @@ else
 @code {
     [Parameter]
     public ArticleDto ArticleDto { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("Prism.highlightAll");
+    }
 }

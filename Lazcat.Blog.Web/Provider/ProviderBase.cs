@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AntDesign;
+using Lazcat.Blog.Models.Infrastructure;
 using Lazcat.Blog.Models.Web;
 
 namespace Lazcat.Blog.Web.Provider
@@ -22,12 +23,16 @@ namespace Lazcat.Blog.Web.Provider
             try
             {
                 var message = await httpFunc(url);
-                return new ResponseMessage<bool>
+                var isSuccessStatusCode = message.IsSuccessStatusCode;
+                var responseMessage = new ResponseMessage<bool>
                 {
-                    Entity = message.IsSuccessStatusCode,
-                    StateCode = message.IsSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
-                    ErrorMessage = message.ReasonPhrase
+                    Entity = isSuccessStatusCode,
+                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
                 };
+                if (isSuccessStatusCode) return responseMessage;
+                var exception = await message.Content.ReadFromJsonAsync<HttpException>();
+                responseMessage.ErrorMessage = exception?.Content;
+                return responseMessage;
             }
             catch (Exception ex)
             {
@@ -50,12 +55,16 @@ namespace Lazcat.Blog.Web.Provider
             try
             {
                 var message = await httpFunc(url, null, default);
-                return new ResponseMessage<bool>
+                var isSuccessStatusCode = message.IsSuccessStatusCode;
+                var responseMessage = new ResponseMessage<bool>
                 {
-                    Entity = message.IsSuccessStatusCode,
-                    StateCode = message.IsSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
-                    ErrorMessage = message.ReasonPhrase
+                    Entity = isSuccessStatusCode,
+                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
                 };
+                if (isSuccessStatusCode) return responseMessage;
+                var exception = await message.Content.ReadFromJsonAsync<HttpException>();
+                responseMessage.ErrorMessage = exception?.Content;
+                return responseMessage;
             }
             catch (Exception ex)
             {
@@ -81,12 +90,16 @@ namespace Lazcat.Blog.Web.Provider
             try
             {
                 var message = await httpFunc(url, input, null, default);
-                return new ResponseMessage<bool>
+                var isSuccessStatusCode = message.IsSuccessStatusCode;
+                var responseMessage = new ResponseMessage<bool>
                 {
-                    Entity = message.IsSuccessStatusCode,
-                    StateCode = message.IsSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
-                    ErrorMessage = message.ReasonPhrase
+                    Entity = isSuccessStatusCode,
+                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
                 };
+                if (isSuccessStatusCode) return responseMessage;
+                var exception = await message.Content.ReadFromJsonAsync<HttpException>();
+                responseMessage.ErrorMessage = exception?.Content;
+                return responseMessage;
             }
             catch (Exception ex)
             {
@@ -183,8 +196,16 @@ namespace Lazcat.Blog.Web.Provider
             try
             {
                 var result = await httpFunc(url, input, null, default);
-                return result.IsSuccessStatusCode ? new ResponseMessage<T> { Entity = await result.Content.ReadFromJsonAsync<T>() }
-                    : new ResponseMessage<T> { Entity = default, StateCode = result.IsSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)result.StatusCode, ErrorMessage = result.ReasonPhrase };
+                var isSuccessStatusCode = result.IsSuccessStatusCode;
+                if (isSuccessStatusCode)
+                    return new ResponseMessage<T> { Entity = await result.Content.ReadFromJsonAsync<T>(), StateCode = Setting.StateCode.OK };
+                var errorMessage = await result.Content.ReadFromJsonAsync<HttpException>();
+                return new ResponseMessage<T>
+                {
+                    Entity = default,
+                    StateCode = (Setting.StateCode)result.StatusCode,
+                    ErrorMessage = errorMessage?.Content
+                };
             }
             catch (JsonException jsonException)
             {
