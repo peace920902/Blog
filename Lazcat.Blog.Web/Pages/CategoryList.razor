@@ -26,10 +26,11 @@
                     <Validation Validator="@ValidateEmpty">
                         <Field>
                             <FieldLabel>Category Name</FieldLabel>
-                            <TextEdit @bind-Text="@_name" Placeholder="C#" />
-                            <Feedback>
-                                <ValidationError>name can't not be empty</ValidationError>
-                            </Feedback>
+                            <TextEdit @bind-Text="@_name" Placeholder="C#">
+                                <Feedback>
+                                    <ValidationError>name can't not be empty</ValidationError>
+                                </Feedback>
+                            </TextEdit>
                         </Field>
                     </Validation>
                 </ModalBody>

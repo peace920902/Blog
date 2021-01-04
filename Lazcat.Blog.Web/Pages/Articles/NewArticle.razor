@@ -2,6 +2,7 @@
 @using Blazorise;
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
+@using System.Text.Json
 @layout ManagerLayout
 @inject MessageService MessageService
 @inject IArticleService ArticleService
@@ -30,7 +31,7 @@
             </FieldBody>
         </Field>
         <Field>
-            <MemoEdit Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content" @onkeydown="AddEditKey"></MemoEdit>
+            <MemoEdit Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
         </Field>
         <Field>
             <Blazorise.Button Color="Color.Success" Type="Blazorise.ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
@@ -40,12 +41,24 @@
     </Validations>
 </Blazorise.Form>
 
-@code { 
-    private CreateUpdateArticleInput createUpdateArticleInput = new();
+@code {
+
+    [Parameter]
+    public CreateUpdateArticleInput createUpdateArticleInput { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        createUpdateArticleInput ??= new();
+        Console.WriteLine(JsonSerializer.Serialize(createUpdateArticleInput));
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("jsinteropFunc.preventTabEvent");
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("jsinteropFunc.preventTabEvent");
+        }
     }
 
     private async Task SaveArticle()
@@ -64,14 +77,4 @@
     {
         createUpdateArticleInput.CategoryId = id;
     }
-
-    private void AddEditKey(KeyboardEventArgs obj)
-    {
-        if (obj.Key == "Tab")
-        {
-            createUpdateArticleInput.Content += "\t";
-        }
-        Console.WriteLine(obj.Key);
-    }
-
 }
