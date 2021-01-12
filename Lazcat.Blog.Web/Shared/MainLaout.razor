@@ -1,10 +1,12 @@
 ﻿@inherits LayoutComponentBase
-
 <Layout>
     <Header Style="padding: 0; background: blue">
         <MainHeader />
     </Header>
-    <Layout Style="padding:0 7.5%; background: yellow;">
+    <Layout>
+        <Content><MainCarousel></MainCarousel></Content>
+    </Layout>
+    <Layout Style="padding: 0 7.5%; background: yellow;">
         <Content Style="min-height: 800px; background: chartreuse">@Body</Content>
         <Sider Style="background: pink" Width="200">Sider</Sider>
     </Layout>
