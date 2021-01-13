@@ -8,7 +8,7 @@ namespace Lazcat.Blog.Web.Services.Articles
 {
     public interface IArticleService
     {
-        Task<IEnumerable<SimpleArticle>> GetArticleList();
+        Task<IEnumerable<SimpleArticle>> GetArticleList(bool isGetContent = false);
         Task<ArticleDto> GetArticle(int id);
         Task<StandardOutput<ArticleDto>> CreateOrUpdateArticle(CreateUpdateArticleInput input);
         Task<StandardOutput<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input);

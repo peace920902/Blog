@@ -18,9 +18,9 @@ namespace Lazcat.Blog.Web.Provider.Articles
         {
             _http = httpFactory.CreateClient(Setting.DefaultHttpClient);
         }
-        public async Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles()
+        public async Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles(bool isGetContent=false)
         {
-            return await SendRequest($"{Article}/all", _http.GetFromJsonAsync<IEnumerable<ArticleDto>>);
+            return await SendRequest($"{Article}/all?isGetContent={isGetContent}", _http.GetFromJsonAsync<IEnumerable<ArticleDto>>);
         }
 
         public async Task<ResponseMessage<ArticleDto>> GetArticle(int id)

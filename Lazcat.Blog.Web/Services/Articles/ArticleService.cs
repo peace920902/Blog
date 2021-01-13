@@ -24,9 +24,9 @@ namespace Lazcat.Blog.Web.Services.Articles
             _pipeline = pipeline;
         }
 
-        public async Task<IEnumerable<SimpleArticle>> GetArticleList()
+        public async Task<IEnumerable<SimpleArticle>> GetArticleList(bool isGetContent = false)
         {
-            var responseMessage = await _articleProvider.GetArticles();
+            var responseMessage = await _articleProvider.GetArticles(isGetContent);
             return responseMessage.StateCode != Setting.StateCode.OK ?
                 new List<SimpleArticle>() : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity ?? new List<ArticleDto>());
         }

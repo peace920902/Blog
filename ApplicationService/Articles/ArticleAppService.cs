@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -43,9 +44,24 @@ namespace Lazcat.Blog.ApplicationService.Articles
             return _mapper.Map<Article, ArticleDto>(article ?? new Article());
         }
 
-        public async Task<IEnumerable<ArticleDto>> GetArticleList()
+        public async Task<IEnumerable<ArticleDto>> GetArticleList(bool isGetContent = false)
         {
-            return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(await _articleRepository.GetAll().Include(x => x.Category).ToListAsync() ?? new List<Article>());
+            var articleList = isGetContent
+                ? await _articleRepository.GetAll().Include(x => x.Category).ToListAsync()
+                : await _articleRepository.GetAll().Include(x => x.Category)
+                    .Select(x => new Article
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        EditTime = x.EditTime,
+                        IsPublished = x.IsPublished,
+                        PublishTime = x.PublishTime,
+                        Cover = x.Cover,
+                        Category = x.Category
+                    }).ToListAsync();
+            articleList ??= new List<Article>();
+
+            return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(articleList);
         }
 
         public async Task<ArticleDto> UpdateArticle(int id, CreateUpdateArticleInput input)

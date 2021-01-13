@@ -7,7 +7,7 @@ namespace Lazcat.Blog.Web.Provider.Articles
 {
     public interface IArticleProvider
     {
-        Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles();
+        Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles(bool isGetContent = false);
         Task<ResponseMessage<ArticleDto>> GetArticle(int id);
         Task<ResponseMessage<ArticleDto>> CreateArticle(CreateUpdateArticleInput input);
         Task<ResponseMessage<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input);

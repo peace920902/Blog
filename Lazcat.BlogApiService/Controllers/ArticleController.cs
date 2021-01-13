@@ -24,9 +24,9 @@ namespace Lazcat.BlogApiService.Controllers
         }
 
         [HttpGet, Route("all")]
-        public async Task<IEnumerable<ArticleDto>> GetAll()
+        public async Task<IEnumerable<ArticleDto>> GetAll(bool isGetContent)
         {
-            return await _articleAppService.GetArticleList();
+            return await _articleAppService.GetArticleList(isGetContent);
         }
 
         [HttpGet, Route("{id}")]

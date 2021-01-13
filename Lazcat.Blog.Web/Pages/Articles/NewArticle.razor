@@ -27,7 +27,7 @@
                 <p style="font-size: 16px;">分類:</p>
             </FieldLabel>
             <FieldBody ColumnSize="ColumnSize.Is2">
-                <CategoryList CategoryChoose="ChangeCategory" SelectCategory="@(createUpdateArticleInput.CategoryId == 0 ? -2 : createUpdateArticleInput.CategoryId)"></CategoryList>
+                <CategoryDropdownList CategoryChoose="ChangeCategory" SelectCategory="@(createUpdateArticleInput.CategoryId == 0 ? -2 : createUpdateArticleInput.CategoryId)"></CategoryDropdownList>
             </FieldBody>
         </Field>
         <Field>
