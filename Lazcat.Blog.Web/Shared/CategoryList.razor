@@ -1,8 +1,48 @@
-﻿@inject 
+﻿@using Lazcat.Blog.Web.Services.Articles
+@using Lazcat.Blog.Models.Dtos.Articles
+@using Lazcat.Blog.Models.ViewModel
+@inject IArticleService ArticleService
 
+<Row>
+    <Col Span="24" >
+        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline" Accordion Style="width: 90%; margin: 5%">
+            @if (_articleDtos == null)
+            {
+                <Spin></Spin>
+            }
+            else
+            {
+                @foreach (var (categoryName, simpleArticles) in _articleDtos)
+                {
+                    <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName)">
+                        @foreach (var simpleArticle in simpleArticles)
+                        {
+                            <MenuItem Key="@simpleArticle.Id.ToString()">@simpleArticle.Title</MenuItem>
+                        }
+                    </SubMenu>
+                }
+            }
+        </Menu>
+    </Col>
+</Row>
 
-<Menu></Menu>
 
 @code {
-    
+    private Dictionary<string, List<SimpleArticle>> _articleDtos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var simpleArticles = await ArticleService.GetArticleList();
+        _articleDtos = simpleArticles.GroupBy(x => x.CategoryName).ToDictionary(x => x.Key, x => x.ToList());
+    }
+
+    private RenderFragment getCategoryFragment(string categoryName)
+    {
+        return new(
+            @<span>
+                <Icon Type="book" Theme="outline"/>
+                <span>@categoryName</span>
+            </span>);
+    }
+
 }
