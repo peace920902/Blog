@@ -1,28 +1,39 @@
 ﻿@using Lazcat.Blog.Web.Services.Articles
-@using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Models.ViewModel
+@using System.ComponentModel.Design
 @inject IArticleService ArticleService
 
-<Row>
-    <Col Span="24" >
-        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline" Accordion Style="width: 90%; margin: 5%">
-            @if (_articleDtos == null)
-            {
-                <Spin></Spin>
-            }
-            else
-            {
+<Row Style="border-radius: 5%">
+    <Col Span="24">
+        <Col Style="border-top-right-radius: 5%; border-top-left-radius: 5%; background: cornflowerblue">
+            <Title Level="3" style="text-align: center; margin: 0;">文章分類</Title>
+        </Col>
+        @if (_articleDtos == null)
+        {
+            <Spin></Spin>
+        }
+        else if (!_articleDtos.Any())
+        {
+            <Empty></Empty>
+        }
+        else
+        {
+            <Menu Style="border-bottom-right-radius: 5%; border-bottom-left-radius: 5%;" Theme="MenuTheme.Light" Mode="MenuMode.Inline" Accordion>
                 @foreach (var (categoryName, simpleArticles) in _articleDtos)
                 {
                     <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName)">
                         @foreach (var simpleArticle in simpleArticles)
                         {
-                            <MenuItem Key="@simpleArticle.Id.ToString()">@simpleArticle.Title</MenuItem>
+                            <MenuItem Key="@simpleArticle.Id.ToString()">
+                            <Tooltip Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
+                                <p>@simpleArticle.Title</p>
+                            </Tooltip>
+                            </MenuItem >
                         }
                     </SubMenu>
                 }
-            }
-        </Menu>
+            </Menu>
+        }
     </Col>
 </Row>
 
@@ -38,11 +49,12 @@
 
     private RenderFragment getCategoryFragment(string categoryName)
     {
-        return new(
-            @<span>
-                <Icon Type="book" Theme="outline"/>
-                <span>@categoryName</span>
-            </span>);
+        return
+            @<Tooltip Placement="PlacementType.LeftTop" Title="@categoryName">
+                <span>
+                    <Icon Type="book" Theme="outline"/>
+                    <span style="word-wrap: break-word;">@categoryName</span>
+                </span>
+            </Tooltip>;
     }
-
 }
