@@ -1,10 +1,11 @@
 ﻿@namespace Lazcat.Blog.Web.Pages.Articles
 @using Lazcat.Blog.Web.Services.Articles
 @using Lazcat.Blog.Models.ViewModel
+@using Lazcat.Blog.Models.Web
 @inject IArticleService ArticleService
+@inject NavigationManager NavigationManager
 
-
-@if (_articles == null)
+@if (Articles == null)
 {
     <Spin Tip="Loading...">
         @for (int i = 0; i < 3; i++)
@@ -13,19 +14,16 @@
         }
     </Spin>
 }
-else if (!_articles.Any())
+else if (!Articles.Any())
 {
     <Empty></Empty>
 }
 else
 {
-    <AntList DataSource="@_articles" ItemLayout="ListItemLayout.Vertical">
+    <AntList DataSource="@Articles" ItemLayout="ListItemLayout.Vertical">
         <ChildContent Context="article">
-            <ListItem>
+            <ListItem OnClick="()=>NavigateToArticle(article.Id)" Class="ant-card-hoverable" Extra="@extra">
                 <ListItemMeta>
-                    <AvatarTemplate>
-                        @avatar
-                    </AvatarTemplate>
                     <TitleTemplate>
                         @article.Title
                     </TitleTemplate>
@@ -36,15 +34,35 @@ else
     </AntList>
 }
 
+<style>
+    .ant-list-split .ant-list-item {
+        border-color: #A1A1A1;
+        margin-bottom: 5px
+    }
+</style>
+
 
 @code {
-    private IEnumerable<SimpleArticle> _articles;
+    private IEnumerable<SimpleArticle> Articles;
 
-    RenderFragment avatar = @<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
+    RenderFragment extra = @<img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/>;
+
+        @*RenderFragment<string> extra = cover =>@<img width="272" alt="logo" src="@cover" />;*@
 
     protected override async Task OnInitializedAsync()
     {
-        _articles = await ArticleService.GetArticleList();
+        var simpleArticles = await ArticleService.GetArticleList();
+        Articles = simpleArticles.Where(x => x.IsPublished).OrderByDescending(x => x.PublishTime);
+        foreach (var simpleArticle in Articles)
+        {
+            simpleArticle.Description = "我像要測試看看敘述在標題列表的展示，如果敘述文字裡面有中文，英文English，" +
+                                        "超文本標記語言HTML<h1>你好</h1>或是javascript:<script>console.log(123)</script>\n這應該是第二排";
+        }
     }
 
+    private void NavigateToArticle(int id)
+    {
+        NavigationManager.NavigateTo($"{Setting.UrlName.Manager}/{Setting.UrlName.Article}/{Setting.UrlName.Edit}/{id}");
+        //todo nav to actual article
+    }
 }

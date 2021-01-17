@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Shared\NormalLayout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AntDesign" Version="0.4.1" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -26,6 +30,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\NormalLayout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\NormalLayout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\NormalLayout.razor" />
   </ItemGroup>
 
 </Project>

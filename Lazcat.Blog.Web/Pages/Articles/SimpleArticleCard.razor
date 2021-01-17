@@ -13,6 +13,9 @@
     <Blazorise.Card Class="ant-card-hoverable">
         <CardBody @onclick="EditArticle">
             <CardTitle Alignment="TextAlignment.Center" Size="2">@SimpleArticle.Title</CardTitle>
+            <CardText>
+                @SimpleArticle.Description
+            </CardText>
         </CardBody>
         <CardFooter Style="padding: 0">
             <AntDesign.Row>

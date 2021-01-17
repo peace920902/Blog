@@ -30,8 +30,27 @@
                 <CategoryDropdownList CategoryChoose="ChangeCategory" SelectCategory="@(createUpdateArticleInput.CategoryId == 0 ? -2 : createUpdateArticleInput.CategoryId)"></CategoryDropdownList>
             </FieldBody>
         </Field>
+        <Field Horizontal="true">
+            <Validation>
+                <FieldLabel ColumnSize="ColumnSize.Is1">
+                    <p style="font-size: 16px;">文章描述:</p>
+                </FieldLabel>
+                <FieldBody ColumnSize="ColumnSize.Is11">
+                    <MemoEdit Style="resize: none" Rows="3" @bind-Text="@createUpdateArticleInput.Description">
+                        <Feedback>
+                            <ValidationError />
+                        </Feedback>
+                    </MemoEdit>
+                </FieldBody>
+            </Validation>
+        </Field>
         <Field>
-            <MemoEdit Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
+            <FieldLabel>
+                <p style="font-size: 16px;">文章內容</p>
+            </FieldLabel>
+            <FieldBody>
+                <MemoEdit Style="resize: none" Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
+            </FieldBody>
         </Field>
         <Field>
             <Blazorise.Button Color="Color.Success" Type="Blazorise.ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
