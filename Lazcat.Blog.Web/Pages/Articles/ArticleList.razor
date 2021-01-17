@@ -1,0 +1,50 @@
+﻿@namespace Lazcat.Blog.Web.Pages.Articles
+@using Lazcat.Blog.Web.Services.Articles
+@using Lazcat.Blog.Models.ViewModel
+@inject IArticleService ArticleService
+
+
+@if (_articles == null)
+{
+    <Spin Tip="Loading...">
+        @for (int i = 0; i < 3; i++)
+        {
+            <Skeleton Active="true"></Skeleton>
+        }
+    </Spin>
+}
+else if (!_articles.Any())
+{
+    <Empty></Empty>
+}
+else
+{
+    <AntList DataSource="@_articles" ItemLayout="ListItemLayout.Vertical">
+        <ChildContent Context="article">
+            <ListItem>
+                <ListItemMeta>
+                    <AvatarTemplate>
+                        @avatar
+                    </AvatarTemplate>
+                    <TitleTemplate>
+                        @article.Title
+                    </TitleTemplate>
+                </ListItemMeta>
+                @article.Description
+            </ListItem>
+        </ChildContent>
+    </AntList>
+}
+
+
+@code {
+    private IEnumerable<SimpleArticle> _articles;
+
+    RenderFragment avatar = @<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _articles = await ArticleService.GetArticleList();
+    }
+
+}

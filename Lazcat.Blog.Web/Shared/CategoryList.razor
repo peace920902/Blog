@@ -3,10 +3,10 @@
 @using System.ComponentModel.Design
 @inject IArticleService ArticleService
 
-<Row Style="border-radius: 5%">
-    <Col Span="24">
-        <Col Style="border-top-right-radius: 5%; border-top-left-radius: 5%; background: cornflowerblue">
-            <Title Level="3" style="text-align: center; margin: 0;">文章分類</Title>
+<Row>
+    <Col Span="24" Class="border-top-radius-5" >
+        <Col Class="border-top-radius-5" Style="background: cornflowerblue">
+            <Title Level="3" Class="border-top-radius-5" style="text-align: center; margin: 0;">文章分類</Title>
         </Col>
         @if (_articleDtos == null)
         {
@@ -18,25 +18,32 @@
         }
         else
         {
-            <Menu Style="border-bottom-right-radius: 5%; border-bottom-left-radius: 5%;" Theme="MenuTheme.Light" Mode="MenuMode.Inline" Accordion>
+            <Menu Theme="MenuTheme.Light" Mode="MenuMode.Inline" Accordion>
                 @foreach (var (categoryName, simpleArticles) in _articleDtos)
                 {
-                    <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName)">
-                        @foreach (var simpleArticle in simpleArticles)
-                        {
-                            <MenuItem Key="@simpleArticle.Id.ToString()">
-                            <Tooltip Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
-                                <p>@simpleArticle.Title</p>
-                            </Tooltip>
-                            </MenuItem >
-                        }
-                    </SubMenu>
+                    <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName, simpleArticles.Count)">
+                            @foreach (var simpleArticle in simpleArticles)
+                            {
+                                <MenuItem Key="@simpleArticle.Id.ToString()">
+                                    <Tooltip Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
+                                        @simpleArticle.Title
+                                    </Tooltip>
+                                </MenuItem>
+                            }
+                        </SubMenu>
+                    
                 }
             </Menu>
         }
     </Col>
 </Row>
 
+<style>
+    .border-top-radius-5 {
+        border-top-right-radius: 20px; 
+        border-top-left-radius: 20px;
+    }
+</style>
 
 @code {
     private Dictionary<string, List<SimpleArticle>> _articleDtos;
@@ -44,10 +51,12 @@
     protected override async Task OnInitializedAsync()
     {
         var simpleArticles = await ArticleService.GetArticleList();
+        Console.WriteLine(123);
         _articleDtos = simpleArticles.GroupBy(x => x.CategoryName).ToDictionary(x => x.Key, x => x.ToList());
+        Console.WriteLine(321);
     }
 
-    private RenderFragment getCategoryFragment(string categoryName)
+    private RenderFragment getCategoryFragment(string categoryName, int count)
     {
         return
             @<Tooltip Placement="PlacementType.LeftTop" Title="@categoryName">
@@ -55,6 +64,7 @@
                     <Icon Type="book" Theme="outline"/>
                     <span style="word-wrap: break-word;">@categoryName</span>
                 </span>
+                @* <Badge Count="@count"></Badge> *@
             </Tooltip>;
     }
 }

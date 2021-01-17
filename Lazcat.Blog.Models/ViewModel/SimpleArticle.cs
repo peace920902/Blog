@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 
 namespace Lazcat.Blog.Models.ViewModel
 {
