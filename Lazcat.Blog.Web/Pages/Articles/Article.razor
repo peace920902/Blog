@@ -1,17 +1,16 @@
 ﻿@using Lazcat.Blog.Models.Dtos.Articles
-@using System.Text.Json
 @inject IJSRuntime JSRuntime
 
 @if (ArticleDto == null)
 {
-    <p><span>Loading...</span></p>
+    <p><Spin>Loading...</Spin></p>
 }
 else
 {
-    <div style="text-align: left">
-        <Title Level="1">@ArticleDto.Title</Title>
+    <div>
+        <Title Style="text-align: center" Level="1">@ArticleDto.Title</Title>
         <Divider></Divider>
-        <div>
+        <div style="text-align: left">
             @((MarkupString) ArticleDto.Content)
         </div>
     </div>
