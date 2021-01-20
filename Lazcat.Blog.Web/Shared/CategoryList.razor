@@ -51,9 +51,7 @@
     protected override async Task OnInitializedAsync()
     {
         var simpleArticles = await ArticleService.GetArticleList();
-        Console.WriteLine(123);
         _articleDtos = simpleArticles.GroupBy(x => x.CategoryName).ToDictionary(x => x.Key, x => x.ToList());
-        Console.WriteLine(321);
     }
 
     private RenderFragment getCategoryFragment(string categoryName, int count)

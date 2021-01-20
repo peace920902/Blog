@@ -3,8 +3,12 @@
 @using Lazcat.Blog.Web.Services.Articles
 @layout ArticleLayout
 @inject IArticleService ArticleService
+<Row>
+    <Col Span="22" Offset="1">
+        <Article ArticleDto="ArticleDto"></Article>
+    </Col>
+</Row>
 
-<Article ArticleDto="ArticleDto"></Article>
 
 @code {
 
