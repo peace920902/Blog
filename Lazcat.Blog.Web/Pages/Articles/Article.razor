@@ -10,11 +10,19 @@ else
     <div>
         <Title Style="text-align: center" Level="1">@ArticleDto.Title</Title>
         <Divider></Divider>
-        <div style="text-align: left">
+        <div  style="text-align: left">
             @((MarkupString) ArticleDto.Content)
         </div>
     </div>
 }
+
+<style>
+    div {
+        word-wrap: break-word
+        /* overflow: hidden; */
+    }
+</style>
+
 
 @code {
     [Parameter]

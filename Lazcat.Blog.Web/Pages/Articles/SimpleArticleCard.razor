@@ -8,6 +8,8 @@
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
 @using ModalClosingEventArgs = AntDesign.ModalClosingEventArgs
+@using System.Text.Json
+@using Lazcat.Blog.Models.Dtos
 
 <Col Span="24">
     <Blazorise.Card Class="ant-card-hoverable">
@@ -87,7 +89,8 @@
 
     private async Task PublishArticle(bool isPublished)
     {
-        var publishArticle = await ArticleService.PublishArticle(new CreateUpdateArticleInput {Id = SimpleArticle.Id, IsPublished = isPublished});
+        Console.WriteLine(JsonSerializer.Serialize(SimpleArticle));
+        var publishArticle = await ArticleService.PublishArticle(new PublishArticleInput() {Id = SimpleArticle.Id, IsPublished = isPublished});
     }
 }
 

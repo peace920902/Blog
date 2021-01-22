@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
 using AutoMapper;
+using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.ViewModel;
 using Lazcat.Blog.Models.Web;
@@ -64,7 +65,7 @@ namespace Lazcat.Blog.Web.Services.Articles
                 : new StandardOutput<bool> { Entity = true, Message = "DeleteArticle succeed" };
         }
 
-        public async Task<StandardOutput<bool>> PublishArticle(CreateUpdateArticleInput input)
+        public async Task<StandardOutput<bool>> PublishArticle(PublishArticleInput input)
         {
             var responseMessage = await _articleProvider.PublishArticle(input);
             return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is existed" }

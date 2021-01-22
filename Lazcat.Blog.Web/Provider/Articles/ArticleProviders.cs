@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Web;
 
@@ -44,7 +45,7 @@ namespace Lazcat.Blog.Web.Provider.Articles
             return await SendEmptyResponseBodyRequest($"{Article}/{id}", _http.DeleteAsync);
         }
 
-        public async Task<ResponseMessage<bool>> PublishArticle(CreateUpdateArticleInput input)
+        public async Task<ResponseMessage<bool>> PublishArticle(PublishArticleInput input)
         {
             return await SendEmptyResponseBodyRequest($"{Article}/publish", _http.PutAsJsonAsync, input);
         }

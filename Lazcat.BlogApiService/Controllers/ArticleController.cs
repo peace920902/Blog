@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Articles;
+using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +43,7 @@ namespace Lazcat.BlogApiService.Controllers
         }
         
         [HttpPut,Route("publish")]
-        public async Task PublishArticle(CreateUpdateArticleInput input)
+        public async Task PublishArticle(PublishArticleInput input)
         {
             await _articleAppService.PublishArticle(input);
         }

@@ -1,7 +1,11 @@
-﻿<Card Style="width: 100%">
-    
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+
+<Card Style="width: 100%" Cover="coverTemplate">
+
 </Card>
 
 @code {
-    
+    private RenderFragment coverTemplate =>@<img alt="金城武我本人" title="金城武" src="@Configuration["Author:AvatarPath"]" />;
 }

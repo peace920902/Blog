@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Web;
 
@@ -12,6 +13,6 @@ namespace Lazcat.Blog.Web.Provider.Articles
         Task<ResponseMessage<ArticleDto>> CreateArticle(CreateUpdateArticleInput input);
         Task<ResponseMessage<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input);
         Task<ResponseMessage<bool>> DeleteArticle(int id);
-        Task<ResponseMessage<bool>> PublishArticle(CreateUpdateArticleInput input);
+        Task<ResponseMessage<bool>> PublishArticle(PublishArticleInput input);
     }
 }

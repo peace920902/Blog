@@ -9,6 +9,7 @@ using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Infrastructure.Exceptions;
 using Lazcat.Blog.Models.Domain.Articles;
+using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -77,7 +78,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
             return _mapper.Map<Article, ArticleDto>(updateArticle);
         }
 
-        public async Task PublishArticle(CreateUpdateArticleInput input)
+        public async Task PublishArticle(PublishArticleInput input)
         {
             var article = await _articleRepository.FindAsync(input.Id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {input.Id} not match any article"));
