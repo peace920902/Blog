@@ -40,6 +40,13 @@ namespace Lazcat.Blog.Models.Web
             OtherException = 9999,
             OperationFailed = 9101,
         }
+
+        public class AuthorDefine
+        {
+            public const string Author = "Author";
+            public const string AvatarPath = "AvatarPath";
+            public const string Description = "Description";
+        }
         
         public class StateMessage
         {

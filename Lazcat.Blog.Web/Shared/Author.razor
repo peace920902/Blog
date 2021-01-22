@@ -1,10 +1,17 @@
 ﻿@using Microsoft.Extensions.Configuration
+@using Lazcat.Blog.Models.Web
 @inject IConfiguration Configuration
 
 
-<Card Style="width: 100%" Cover="coverTemplate">
-
+<Card Style="width: 240px" Cover="coverTemplate">
+    <CardMeta Style="text-align: justify" Title="關於我" Description="@Configuration[$"{Setting.AuthorDefine.Author}:{Setting.AuthorDefine.Description}"]"></CardMeta>
 </Card>
+
+<style>
+    .ant-card-meta > .ant-card-meta-detail > .ant-card-meta-title {
+        font-weight: bold;
+    }
+</style>
 
 @code {
     private RenderFragment coverTemplate =>@<img alt="金城武我本人" title="金城武" src="@Configuration["Author:AvatarPath"]" />;
