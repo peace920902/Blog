@@ -1,6 +1,8 @@
 ﻿@using Lazcat.Blog.Web.Services.Articles
 @using Lazcat.Blog.Models.ViewModel
+@inject NavigationManager NavigationManager
 @using System.ComponentModel.Design
+@using Lazcat.Blog.Models.Web
 @inject IArticleService ArticleService
 
 <Row>
@@ -21,16 +23,16 @@
             <Menu Theme="MenuTheme.Light" Mode="MenuMode.Inline" Accordion>
                 @foreach (var (categoryName, simpleArticles) in _articleDtos)
                 {
-                    <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName, simpleArticles.Count)">
-                            @foreach (var simpleArticle in simpleArticles)
-                            {
-                                <MenuItem Key="@simpleArticle.Id.ToString()">
-                                    <Tooltip Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
-                                        @simpleArticle.Title
-                                    </Tooltip>
-                                </MenuItem>
-                            }
-                        </SubMenu>
+                <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName, simpleArticles.Count)">
+                    @foreach (var simpleArticle in simpleArticles)
+                    {
+                        <Tooltip Class="categorylist-menu-item" Style="display: block" Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
+                        <MenuItem OnClick="_=>navToArticle(simpleArticle.Id)" Class="categorylist-menu-item" Key="@simpleArticle.Id.ToString()">
+                            @simpleArticle.Title
+                        </MenuItem>
+                        </Tooltip>
+                    }
+                </SubMenu>
                     
                 }
             </Menu>
@@ -42,6 +44,14 @@
     .border-top-radius-5 {
         border-top-right-radius: 20px; 
         border-top-left-radius: 20px;
+    }
+    .ant-menu ant-menu-sub > .categorylist-menu-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        width: 100%;
+        display: block
     }
 </style>
 
@@ -62,7 +72,13 @@
                     <Icon Type="book" Theme="outline"/>
                     <span style="word-wrap: break-word;">@categoryName</span>
                 </span>
-                @* <Badge Count="@count"></Badge> *@
             </Tooltip>;
     }
+
+    private void navToArticle(int simpleArticleId)
+    {
+        NavigationManager.NavigateTo($"{Setting.UrlName.Article}/{simpleArticleId}");
+    }
+
 }
+

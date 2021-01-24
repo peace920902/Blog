@@ -1,6 +1,7 @@
 ﻿@page "/Article/{id:int}"
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
+@using System.Text.Json
 @layout ArticleLayout
 @inject IArticleService ArticleService
 <Row>
@@ -18,7 +19,13 @@
     public ArticleDto ArticleDto { get; set; }
 
     protected override async Task OnInitializedAsync()
+    { 
+       
+    }
+
+    protected override async Task OnParametersSetAsync()
     {
+        await base.OnParametersSetAsync();
         ArticleDto = await ArticleService.GetArticle(Id);
         ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
     }
