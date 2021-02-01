@@ -10,7 +10,7 @@ namespace Lazcat.Blog.Models.Dtos.Articles
         [MaxLength(100, ErrorMessage = "Description length should less than 100")]
         public string Description { get; set; }
         public string Content { get; set; }
-        [Required, Range(1, int.MaxValue) ]
+        [Required, Range(1, int.MaxValue)]
         public int CategoryId { get; set; }
         public bool IsPublished { get; set; }
         public string Cover { get; set; }

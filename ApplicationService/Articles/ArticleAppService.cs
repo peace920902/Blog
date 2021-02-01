@@ -34,7 +34,8 @@ namespace Lazcat.Blog.ApplicationService.Articles
             if (input.CategoryId <= 0)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("category not exist"));
             if (input.Id > 0) return await UpdateArticle(input.Id, input);
-            var article = await _articleManager.CreateAsync(input.Title, input.Content, input.CategoryId, input.IsPublished, input.Cover);
+
+            var article = await _articleManager.CreateAsync(input);
             var createdArticle = await _articleRepository.CreateAsync(article);
             return _mapper.Map<Article, ArticleDto>(createdArticle);
         }
@@ -57,6 +58,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
                         EditTime = x.EditTime,
                         IsPublished = x.IsPublished,
                         PublishTime = x.PublishTime,
+                        Description = x.Description,
                         Cover = x.Cover,
                         Category = x.Category
                     }).ToListAsync();
@@ -83,16 +85,9 @@ namespace Lazcat.Blog.ApplicationService.Articles
             var article = await _articleRepository.FindAsync(input.Id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {input.Id} not match any article"));
             if (article.IsPublished == input.IsPublished) return;
-            if (input.IsPublished)
-            {
-                article.IsPublished = true;
-                article.PublishTime = DateTime.Now;
-            }
-            else
-            {
-                article.IsPublished = false;
-                article.PublishTime = null;
-            }
+
+            article.IsPublished = input.IsPublished;
+            article.PublishTime = input.IsPublished ? DateTime.Now : null;
 
             await _articleRepository.UpdateAsync(article.Id, article);
         }

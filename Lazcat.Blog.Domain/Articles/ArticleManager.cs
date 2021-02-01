@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Articles;
+using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Infrastructure;
 using Markdig;
 
@@ -19,13 +20,18 @@ namespace Lazcat.Blog.Domain.Articles
             _pipeline = pipeline;
         }
 
-        public async Task<Article> CreateAsync(string title, string content, int categoryId, bool isPublished = false,
-            string cover = null)
+        public async Task<Article> CreateAsync(CreateUpdateArticleInput input)
         {
-            //todo
+            //todo use auto mapper
             var article = new Article
-                {Content = content, CategoryId = categoryId, IsPublished = isPublished, Cover = cover};
-            await SetTitle(article, title);
+            {
+                Content = input.Content,
+                CategoryId = input.CategoryId,
+                IsPublished = input.IsPublished,
+                Description = input.Description,
+                Cover = input.Cover
+            };
+            await SetTitle(article, input.Title);
             return article;
         }
 
@@ -37,7 +43,7 @@ namespace Lazcat.Blog.Domain.Articles
         public async Task SetTitle(Article article, string title)
         {
             var oldArticle = await _repository.FirstOrDefaultAsync(x => x.Title.Equals(title));
-            if (oldArticle != null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException {Content = "Article's title is already Existed"});
+            if (oldArticle != null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException { Content = "Article's title is already Existed" });
             article.Title = title;
         }
     }

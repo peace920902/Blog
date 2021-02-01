@@ -5,9 +5,11 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AntDesign;
 using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Models.Domain.Articles;
+using Lazcat.Blog.Models.Dtos.Articles;
 using Markdig;
 using NSubstitute;
 using Shouldly;
@@ -28,19 +30,23 @@ namespace Lazcat.Blog.Test.Articles
 
         [Theory]
         [ClassData(typeof(CreateNewData))]
-        public async Task Should_Create_New(string title, string content, int categoryId, bool isPublished = false, string cover = null)
+        public async Task Should_Create_New(CreateUpdateArticleInput input)
         {
             _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Article, bool>>>()).Returns(Task.FromResult<Article>(null));
-            var article = await _manager.CreateAsync(title, content, categoryId, isPublished, cover);
-            article.Title.ShouldBe(title);
+            var article = await _manager.CreateAsync(input);
+            article.Title.ShouldBe(input.Title);
+            article.CategoryId.ShouldBe(input.CategoryId);
+            article.Content.ShouldBe(input.Content);
+            article.Cover.ShouldBe(input.Cover);
+            article.Description.ShouldBe(input.Description);
         }
 
         [Theory]
         [ClassData(typeof(CreateNewData))]
-        public void Should_Not_Create_New(string title, string content, int categoryId, bool isPublished = false, string cover = null)
+        public void SameTitle_Should_Not_Create_New(CreateUpdateArticleInput input)
         {
-            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Article, bool>>>()).Returns(Task.FromResult(new Article{Title = title}));
-            var exception = Should.Throw<HttpResponseException>(async ()=>await _manager.CreateAsync(title, content, categoryId, isPublished, cover));
+            _repository.FirstOrDefaultAsync(Arg.Any<Expression<Func<Article, bool>>>()).Returns(Task.FromResult(new Article { Title = input.Title }));
+            var exception = Should.Throw<HttpResponseException>(async () => await _manager.CreateAsync(input));
             exception.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
             exception.Response.ReasonPhrase?.ShouldContain("title is already Existed");
         }
@@ -57,8 +63,8 @@ namespace Lazcat.Blog.Test.Articles
         {
             public IEnumerator<object[]> GetEnumerator()
             {
-                yield return new object[] { "test", "It's a test article", 1, true };
-                yield return new object[] { "test2", "It's a test article", 6 };
+                yield return new object[] { new CreateUpdateArticleInput() { Title = "test", Content = "It's a test article", CategoryId = 1, Description = "it's a suck test",IsPublished = true } };
+                yield return new object[] { new CreateUpdateArticleInput { Title = "test2", Content = "It's a test article", Description = "I've tried to make it better", CategoryId = 6 } };
             }
 
             IEnumerator IEnumerable.GetEnumerator()
