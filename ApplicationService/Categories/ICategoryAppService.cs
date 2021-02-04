@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Lazcat.Blog.Models.Dtos.Categories;
 
-namespace ApplicationService.Categories
+namespace Lazcat.Blog.ApplicationService.Categories
 {
     public interface ICategoryAppService
     {

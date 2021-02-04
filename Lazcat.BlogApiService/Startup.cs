@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.ApplicationService;
 using Lazcat.Blog.ApplicationService.Articles;
 using Lazcat.Blog.ApplicationService.Categories;
+using Lazcat.Blog.ApplicationService.Messages;
 using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Categories;
 using Lazcat.Blog.Domain.Repository;
@@ -16,6 +16,8 @@ using Lazcat.Blog.EntityFramework;
 using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Articles;
 using Lazcat.Blog.Models.Domain.Categories;
+using Lazcat.Blog.Models.Domain.Messages;
+using Lazcat.Blog.Models.Setting;
 using Markdig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -54,12 +56,14 @@ namespace Lazcat.BlogApiService
                 });
             }
             services.AddSwaggerGen();
-            services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration["BlogDbConnectString"],
-                b => b.MigrationsAssembly("Lazcat.BlogApiService")));
+            services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration[GeneralSetting.DbConnectString],
+                b => b.MigrationsAssembly(GeneralSetting.MigrationsAssemblyLocation)));
             services.AddScoped<IRepository<int, Category>, Repository<int, Category>>();
             services.AddScoped<IRepository<int, Article>, Repository<int, Article>>();
+            services.AddScoped<IRepository<Guid, Message>, Repository<Guid, Message>>();
             services.AddScoped<ICategoryAppService, CategoryAppService>();
             services.AddScoped<IArticleAppService, ArticleAppService>();
+            services.AddScoped<IMessageAppService, MessageAppAppService>();
             services.AddScoped<IArticleManager, ArticleManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());

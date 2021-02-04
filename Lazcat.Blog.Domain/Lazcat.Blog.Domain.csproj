@@ -16,5 +16,9 @@
     <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Folder Include="Messages\" />
+  </ItemGroup>
 
 </Project>

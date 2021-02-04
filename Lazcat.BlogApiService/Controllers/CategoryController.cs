@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ApplicationService.Categories;
+using Lazcat.Blog.ApplicationService.Categories;
 using Lazcat.Blog.Models.Dtos.Categories;
 using Microsoft.AspNetCore.Mvc;
 

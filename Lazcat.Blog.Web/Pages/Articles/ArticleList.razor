@@ -53,11 +53,6 @@ else
     {
         var simpleArticles = await ArticleService.GetArticleList();
         Articles = simpleArticles.Where(x => x.IsPublished).OrderByDescending(x => x.PublishTime);
-        foreach (var simpleArticle in Articles)
-        {
-            simpleArticle.Description = "我像要測試看看敘述在標題列表的展示，如果敘述文字裡面有中文，英文English，" +
-                                        "超文本標記語言HTML<h1>你好</h1>或是javascript:<script>console.log(123)</script>\n這應該是第二排";
-        }
     }
 
     private void NavigateToArticle(int id)

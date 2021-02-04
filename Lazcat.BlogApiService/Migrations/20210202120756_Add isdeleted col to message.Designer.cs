@@ -4,14 +4,16 @@ using Lazcat.Blog.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lazcat.BlogApiService.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20210202120756_Add isdeleted col to message")]
+    partial class Addisdeletedcoltomessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,9 +131,6 @@ namespace Lazcat.BlogApiService.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("ReplyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Sender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -141,6 +140,31 @@ namespace Lazcat.BlogApiService.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.ReplyMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newid()");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RepliedMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ReplyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("RepliedMessageId");
+
+                    b.ToTable("ReplyMessages");
                 });
 
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.Articles.Article", b =>
@@ -184,6 +208,23 @@ namespace Lazcat.BlogApiService.Migrations
                     b.Navigation("Article");
                 });
 
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.ReplyMessage", b =>
+                {
+                    b.HasOne("Lazcat.Blog.Models.Domain.Messages.Message", "Message")
+                        .WithMany("ReplyMessages")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lazcat.Blog.Models.Domain.Messages.Message", "RepliedMessage")
+                        .WithMany()
+                        .HasForeignKey("RepliedMessageId");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("RepliedMessage");
+                });
+
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.Articles.Article", b =>
                 {
                     b.Navigation("ArticleTags");
@@ -199,6 +240,11 @@ namespace Lazcat.BlogApiService.Migrations
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.HashTags.HashTag", b =>
                 {
                     b.Navigation("ArticleTags");
+                });
+
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.Message", b =>
+                {
+                    b.Navigation("ReplyMessages");
                 });
 #pragma warning restore 612, 618
         }

@@ -49,7 +49,6 @@ namespace Lazcat.BlogApiService.Controllers
         }
         
         [HttpDelete, Route("{id}")]
-
         public async Task<bool> Delete(int id)
         {
             return await _articleAppService.DeleteArticle(id);

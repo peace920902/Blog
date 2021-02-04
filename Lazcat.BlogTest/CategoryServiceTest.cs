@@ -1,6 +1,6 @@
 ﻿using System.DirectoryServices.AccountManagement;
 using System.Threading.Tasks;
-using ApplicationService.Categories;
+using Lazcat.Blog.ApplicationService.Categories;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.EntityFramework;
 using Lazcat.Blog.Models.Domain.Categories;

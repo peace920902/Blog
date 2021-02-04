@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using ApplicationService.Categories;
 using AutoMapper;
 using Lazcat.Blog.Domain.Categories;
 using Lazcat.Blog.Domain.Repository;

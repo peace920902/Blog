@@ -13,8 +13,8 @@
 
 @code {
 
-    [Parameter]
-    public int Id { get; set; } = 8;
+    [Parameter] 
+    public int Id { get; set; }
 
     public ArticleDto ArticleDto { get; set; }
 
@@ -23,5 +23,4 @@
         ArticleDto = await ArticleService.GetArticle(Id);
         ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
     }
-
 }

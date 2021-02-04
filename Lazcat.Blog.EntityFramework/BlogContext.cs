@@ -12,7 +12,6 @@ namespace Lazcat.Blog.EntityFramework
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<ReplyMessage> ReplyMessages { get; set; }
         public DbSet<ArticleTag> ArticleTags { get; set; }
         public DbSet<HashTag> HashTags { get; set; }
 
@@ -37,10 +36,7 @@ namespace Lazcat.Blog.EntityFramework
             modelBuilder.Entity<Category>().Property(x => x.Id).IsRequired();
 
             modelBuilder.Entity<Message>().Property(x => x.Id).HasDefaultValueSql("newid()").IsRequired();
-            modelBuilder.Entity<Message>().HasMany(x => x.ReplyMessages).WithOne(x => x.Message)
-                .HasForeignKey(x => x.MessageId);
 
-            modelBuilder.Entity<ReplyMessage>().Property(x => x.Id).HasDefaultValueSql("newid()").IsRequired();
             modelBuilder.Entity<HashTag>().Property(x => x.Id).IsRequired();
         }
     }
