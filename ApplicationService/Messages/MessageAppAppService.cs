@@ -47,14 +47,23 @@ namespace Lazcat.Blog.ApplicationService.Messages
             return _mapper.Map<Message, MessageDto>(createMessage);
         }
 
-        public async Task UpdateMessage(CreateUpdateMessageInput input)
+        public async Task<MessageDto> UpdateMessage(CreateUpdateMessageInput input)
         {
-            throw new NotImplementedException();
+            var message = await _messageRepository.FindAsync(input.Id);
+            if (message == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest,
+                new HttpException($"Message Id:{input.Id} cannot bind any message"));
+            _mapper.Map(input, message);
+            return _mapper.Map<Message, MessageDto>(await _messageRepository.UpdateAsync(message.Id, message));
         }
 
-        public async Task DeleteMessage(Guid messageId)
+        public async Task<MessageDto> DeleteMessage(Guid messageId)
         {
-            throw new NotImplementedException();
+            var message = await _messageRepository.FindAsync(messageId);
+            if(message==null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest,
+                new HttpException($"Message Id:{messageId} cannot bind any message"));
+
+            message.IsDeleted = true;
+            return _mapper.Map<Message,MessageDto>(await _messageRepository.UpdateAsync(message.Id, message));
         }
     }
 }

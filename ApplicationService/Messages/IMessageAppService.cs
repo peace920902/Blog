@@ -9,7 +9,7 @@ namespace Lazcat.Blog.ApplicationService.Messages
     {
         Task<IEnumerable<MessageDto>> GetMessages(int articleId);
         Task<MessageDto> CreateMessage(CreateUpdateMessageInput input);
-        Task UpdateMessage(CreateUpdateMessageInput input);
-        Task DeleteMessage(Guid messageId);
+        Task<MessageDto> UpdateMessage(CreateUpdateMessageInput input);
+        Task<MessageDto> DeleteMessage(Guid messageId);
     }
 }
