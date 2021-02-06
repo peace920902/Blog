@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Messages;
 using Lazcat.Blog.Models.Dtos.Messages;
@@ -27,6 +28,18 @@ namespace Lazcat.BlogApiService.Controllers
         public async Task<MessageDto> CreateMessage(CreateUpdateMessageInput input)
         {
             return await _messageAppService.CreateMessage(input);
+        }
+        
+        [HttpPut]
+        public async Task<MessageDto> UpdateMessage(CreateUpdateMessageInput input)
+        {
+            return await _messageAppService.UpdateMessage(input);
+        }
+        
+        [HttpDelete,Route("{Id}")]
+        public async Task<MessageDto> DeleteMessage(Guid id)
+        {
+            return await _messageAppService.DeleteMessage(id);  
         }
     }
 }

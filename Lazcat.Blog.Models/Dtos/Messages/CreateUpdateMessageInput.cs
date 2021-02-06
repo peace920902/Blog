@@ -5,7 +5,7 @@ namespace Lazcat.Blog.Models.Dtos.Messages
 {
     public class CreateUpdateMessageInput
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public Guid? ReplyId { get; set; }
         [Required]
         public string Sender { get; set; }
