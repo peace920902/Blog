@@ -19,8 +19,7 @@ namespace Lazcat.Blog.Web.Services.Categories
         public async Task<IEnumerable<CategoryDto>> GetCategories()
         {
             var response = await _categoryProvider.GetAllCategories();
-            if (response.Entity == null)
-                return new List<CategoryDto>();
+            if (response.Entity == null) return new List<CategoryDto>();
             return response.Entity.OrderBy(x => x.Name);
         }
 

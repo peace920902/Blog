@@ -44,7 +44,7 @@ namespace Lazcat.Blog.Web.Services.Articles
             return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<ArticleDto>
             {
                 Entity = null,
-                Message = $"CreateOrUpdateArticle failed. Reason {responseMessage.ErrorMessage}"
+                Message = $"CreateOrUpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
             } : new StandardOutput<ArticleDto> { Entity = responseMessage.Entity, Message = "CreateOrUpdateArticle succeed" };
         }
 

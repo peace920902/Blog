@@ -49,7 +49,9 @@ namespace Lazcat.Blog.ApplicationService.Messages
 
         public async Task<MessageDto> UpdateMessage(CreateUpdateMessageInput input)
         {
-            var message = await _messageRepository.FindAsync(input.Id);
+            if(input.Id==null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest,
+                new HttpException($"Message Id:{input.Id} cannot be null"));
+            var message = await _messageRepository.FindAsync(input.Id.Value);
             if (message == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest,
                 new HttpException($"Message Id:{input.Id} cannot bind any message"));
             _mapper.Map(input, message);

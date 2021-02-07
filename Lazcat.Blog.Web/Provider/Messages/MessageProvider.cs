@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -34,9 +35,9 @@ namespace Lazcat.Blog.Web.Provider.Messages
             return await SendNeedDeserializedRequest<MessageDto, CreateUpdateMessageInput>(Message, _http.PutAsJsonAsync, input);
         }
 
-        public async Task<ResponseMessage<MessageDto>> DeleteMessage(int Id)
+        public async Task<ResponseMessage<MessageDto>> DeleteMessage(Guid id)
         {
-            return await SendNeedDeserializedRequest<MessageDto>(Message, _http.DeleteAsync);
+            return await SendNeedDeserializedRequest<MessageDto>($"{Message}/{id}", _http.DeleteAsync);
         }
     }
 }
