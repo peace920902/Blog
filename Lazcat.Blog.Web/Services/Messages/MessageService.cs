@@ -9,7 +9,7 @@ using Lazcat.Blog.Web.Provider.Messages;
 
 namespace Lazcat.Blog.Web.Services.Messages
 {
-    public class MessageService
+    public class MessageService : IMessageService
     {
         private readonly IMessageProvider _messageProvider;
 
@@ -19,13 +19,35 @@ namespace Lazcat.Blog.Web.Services.Messages
         }
 
         //todo make a tree to do this
-        public async Task<IEnumerable<MessageDto>> GetMessages(int articleId)
+        public async Task<Dictionary<MessageDto, List<MessageDto>>> GetMessages(int articleId)
         {
-            return default;
             var response = await _messageProvider.GetMessages(articleId);
-            var messages = response.Entity;
-            if (messages == null) return new List<MessageDto>();
-            var noneReplyMessages = messages.Where(x => !x.ReplyId.HasValue);
+            if (response.Entity == null) return new();
+            var messages = response.Entity.ToList();
+            var msgDict = messages.Where(x => !x.ReplyId.HasValue).ToDictionary(x => x, _ => new List<MessageDto>());
+            foreach (var replyMessage in messages.Where(x => x.ReplyId.HasValue))
+            {
+                foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
+                {
+                    message.Value.Add(replyMessage);
+                }
+            }
+            return msgDict;
+        }
+
+        public Dictionary<MessageDto, List<MessageDto>> GetMessages(IEnumerable<MessageDto> messages)
+        {
+            if (messages== null) return new();
+            var messageDtos = messages as MessageDto[] ?? messages.ToArray();
+            var msgDict = messageDtos.Where(x => !x.ReplyId.HasValue).ToDictionary(x => x, _ => new List<MessageDto>());
+            foreach (var replyMessage in messageDtos.Where(x => x.ReplyId.HasValue))
+            {
+                foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
+                {
+                    message.Value.Add(replyMessage);
+                }
+            }
+            return msgDict;
         }
 
         public async Task<StandardOutput<MessageDto>> UpdateMessage(CreateUpdateMessageInput input)
@@ -34,7 +56,7 @@ namespace Lazcat.Blog.Web.Services.Messages
             return responseMessage.StateCode != Setting.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
-                    Message = $"Update Message failed."
+                    Message = "Update Message failed."
                 }
                 : new StandardOutput<MessageDto>{Entity = responseMessage.Entity, Message = "Update Success"};
         }
@@ -45,7 +67,7 @@ namespace Lazcat.Blog.Web.Services.Messages
             return responseMessage.StateCode != Setting.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
-                    Message = $"Create Message failed."
+                    Message = "Create Message failed."
                 }
                 : new StandardOutput<MessageDto> { Entity = responseMessage.Entity, Message = "Create Success" };
         }
@@ -56,7 +78,7 @@ namespace Lazcat.Blog.Web.Services.Messages
             return responseMessage.StateCode != Setting.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
-                    Message = $"Delete Message failed."
+                    Message = "Delete Message failed."
                 }
                 : new StandardOutput<MessageDto> { Entity = responseMessage.Entity, Message = "Delete Success" };
         }

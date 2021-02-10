@@ -1,26 +1,35 @@
 ﻿@page "/Article/{id:int}"
 @using Lazcat.Blog.Models.Dtos.Articles
+@using Lazcat.Blog.Models.Dtos.Messages
 @using Lazcat.Blog.Web.Services.Articles
-@using System.Text.Json
+@using Lazcat.Blog.Web.Services.Messages
+@using Newtonsoft.Json
 @layout ArticleLayout
+@inject IMessageService MessageService
 @inject IArticleService ArticleService
 <Row>
     <Col Span="22" Offset="1">
-        <Article ArticleDto="ArticleDto"></Article>
+    <Article ArticleDto="ArticleDto"></Article>
     </Col>
+    
+        <Lazcat.Blog.Web.Pages.Message MessageDict="_msgDict"></Lazcat.Blog.Web.Pages.Message>
+   
 </Row>
 
 
 @code {
 
-    [Parameter] 
+    [Parameter]
     public int Id { get; set; }
 
     public ArticleDto ArticleDto { get; set; }
+
+    private Dictionary<MessageDto, List<MessageDto>> _msgDict;
 
     protected override async Task OnParametersSetAsync()
     {
         ArticleDto = await ArticleService.GetArticle(Id);
         ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
+        _msgDict =  MessageService.GetMessages(ArticleDto.Messages);
     }
 }

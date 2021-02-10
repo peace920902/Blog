@@ -9,6 +9,7 @@ using Lazcat.Blog.Infrastructure;
 using Lazcat.Blog.Models.Domain.Messages;
 using Lazcat.Blog.Models.Dtos.Messages;
 using Lazcat.Blog.Models.Infrastructure;
+using Lazcat.Blog.Models.Setting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.Blog.ApplicationService.Messages
@@ -29,6 +30,10 @@ namespace Lazcat.Blog.ApplicationService.Messages
         public async Task<IEnumerable<MessageDto>> GetMessages(int articleId)
         {
             var messages = await _messageRepository.GetAll().Where(x => x.ArticleId == articleId).ToListAsync();
+            foreach (var message in messages.Where(x=>x.IsDeleted))
+            {
+                message.Content = AppServiceSetting.DeletedMessage;
+            }
             return _mapper.Map<List<Message>, IEnumerable<MessageDto>>(messages);
         }
 

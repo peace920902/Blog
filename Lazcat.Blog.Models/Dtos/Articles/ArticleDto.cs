@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Lazcat.Blog.Models.Dtos.Messages;
 
 namespace Lazcat.Blog.Models.Dtos.Articles
 {
@@ -12,5 +14,6 @@ namespace Lazcat.Blog.Models.Dtos.Articles
         public bool IsPublished { get; set; }
         public DateTime? PublishTime { get; set; }
         public string Cover { get; set; }
+        public IEnumerable<MessageDto> Messages { get; set; }
     }
 }

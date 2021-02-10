@@ -12,6 +12,7 @@ using Lazcat.Blog.Web.Provider.Categories;
 using Lazcat.Blog.Web.Provider.Messages;
 using Lazcat.Blog.Web.Services.Articles;
 using Lazcat.Blog.Web.Services.Categories;
+using Lazcat.Blog.Web.Services.Messages;
 using Markdig;
 using Markdig.Prism;
 using Microsoft.Extensions.Configuration;
@@ -31,8 +32,8 @@ namespace Lazcat.Blog.Web
             builder.Services.AddSingleton<ICategoryProvider, CategoryProvider>();
             builder.Services.AddSingleton<ICategoryService, CategoryService>();
             builder.Services.AddSingleton<IMessageProvider, MessageProvider>();
-            
-            builder.Services.AddSingleton(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().UsePrism().Build());
+            builder.Services.AddSingleton<IMessageService, MessageService>();
+            builder.Services.AddSingleton(new MarkdownPipelineBuilder().UseAdvancedExtensions().UsePrism().Build());
             builder.Services.AddHttpClient(Setting.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
             builder.Services
                 .AddBlazorise(options =>

@@ -16,6 +16,6 @@ namespace Lazcat.Blog.Models.Web
         public void AddChild(T data)
         {
             _childrenTree.AddLast(new Tree<T>(data));
-        } 
+        }
     }
 }

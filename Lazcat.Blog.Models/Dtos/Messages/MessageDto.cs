@@ -10,6 +10,5 @@ namespace Lazcat.Blog.Models.Dtos.Messages
         public string Content { get; set; }
         public int ArticleId { get; set; }
         public DateTime CreateTime { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

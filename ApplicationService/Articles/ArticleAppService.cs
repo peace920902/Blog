@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Lazcat.Blog.ApplicationService.Messages;
 using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
@@ -19,12 +20,14 @@ namespace Lazcat.Blog.ApplicationService.Articles
     public class ArticleAppService : IArticleAppService
     {
         private readonly IRepository<int, Article> _articleRepository;
+        private readonly IMessageAppService _messageAppService;
         private readonly IArticleManager _articleManager;
         private readonly IMapper _mapper;
 
-        public ArticleAppService(IRepository<int, Article> articleRepository, IArticleManager articleManager, IMapper mapper)
+        public ArticleAppService(IRepository<int, Article> articleRepository,IMessageAppService messageAppService, IArticleManager articleManager, IMapper mapper)
         {
             _articleRepository = articleRepository;
+            _messageAppService = messageAppService;
             _articleManager = articleManager;
             _mapper = mapper;
         }
@@ -43,7 +46,11 @@ namespace Lazcat.Blog.ApplicationService.Articles
         public async Task<ArticleDto> GetArticle(int id)
         {
             var article = await _articleRepository.GetAll().Include(x => x.Category).SingleOrDefaultAsync(x => x.Id == id);
-            return _mapper.Map<Article, ArticleDto>(article ?? new Article());
+            if(article==null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("Article not exist"));
+            var returnArticle = new ArticleDto();
+            _mapper.Map(article, returnArticle);
+            returnArticle.Messages= await _messageAppService.GetMessages(id);
+            return returnArticle;
         }
 
         public async Task<IEnumerable<ArticleDto>> GetArticleList(bool isGetContent = false)

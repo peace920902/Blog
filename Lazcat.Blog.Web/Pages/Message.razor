@@ -1,12 +1,24 @@
-﻿
+﻿@using Lazcat.Blog.Web.Services.Messages
+@using Lazcat.Blog.Models.Dtos.Messages
+@using Newtonsoft.Json
+@inject IMessageService MessageService
+
+@if (MessageDict != null)
+{
+    @foreach(var (message, replyMessages) in MessageDict)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(message.Sender));
+            <Comment Style="width: 100%" Avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" Author="@(message.Sender)" Content="@(message.Content)">
+                @foreach (var replyMessage in replyMessages)
+                {
+                    <Comment Style="width: 100%" Avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" Author="@(replyMessage.Sender)" Content="@(replyMessage.Content)"></Comment>
+                }
+            </Comment>
+        }
+}
 
 @code {
     [Parameter]
-    public int ArticleId { get; set; }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        
-    }
+    public Dictionary<MessageDto, List<MessageDto>> MessageDict { get; set; }
 
 }
