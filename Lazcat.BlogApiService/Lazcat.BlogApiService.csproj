@@ -14,6 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
@@ -28,6 +29,10 @@
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 

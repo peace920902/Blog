@@ -29,7 +29,6 @@ namespace Lazcat.BlogApiService
             {
                 Log.Logger.Information("Host down");
             }
-            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

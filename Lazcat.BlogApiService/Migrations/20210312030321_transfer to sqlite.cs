@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Lazcat.BlogApiService.Migrations
 {
-    public partial class Initail : Migration
+    public partial class transfertosqlite : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,9 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,8 +24,8 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "HashTags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,16 +36,17 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(maxLength: 50, nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false),
-                    CreateTime = table.Column<DateTime>(nullable: false),
-                    EditTime = table.Column<DateTime>(nullable: false),
-                    IsPublished = table.Column<bool>(nullable: false),
-                    PublishTime = table.Column<DateTime>(nullable: true),
-                    Cover = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EditTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IsPublished = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PublishTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Cover = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,8 +63,8 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "ArticleTags",
                 columns: table => new
                 {
-                    ArticleId = table.Column<int>(nullable: false),
-                    HashTagId = table.Column<Guid>(nullable: false)
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HashTagId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,11 +87,13 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "newid()"),
-                    Sender = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    ArticleId = table.Column<int>(nullable: false),
-                    CreateTime = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false, defaultValueSql: "newid()"),
+                    Sender = table.Column<string>(type: "TEXT", nullable: false),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ReplyId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,32 +104,6 @@ namespace Lazcat.BlogApiService.Migrations
                         principalTable: "Articles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReplyMessages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "newid()"),
-                    MessageId = table.Column<Guid>(nullable: false),
-                    ReplyId = table.Column<Guid>(nullable: false),
-                    RepliedMessageId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReplyMessages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReplyMessages_Messages_MessageId",
-                        column: x => x.MessageId,
-                        principalTable: "Messages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ReplyMessages_Messages_RepliedMessageId",
-                        column: x => x.RepliedMessageId,
-                        principalTable: "Messages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -148,16 +125,6 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "IX_Messages_ArticleId",
                 table: "Messages",
                 column: "ArticleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReplyMessages_MessageId",
-                table: "ReplyMessages",
-                column: "MessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReplyMessages_RepliedMessageId",
-                table: "ReplyMessages",
-                column: "RepliedMessageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -166,13 +133,10 @@ namespace Lazcat.BlogApiService.Migrations
                 name: "ArticleTags");
 
             migrationBuilder.DropTable(
-                name: "ReplyMessages");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "HashTags");
-
-            migrationBuilder.DropTable(
-                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Articles");

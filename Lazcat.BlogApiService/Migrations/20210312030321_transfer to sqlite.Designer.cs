@@ -3,55 +3,55 @@ using System;
 using Lazcat.Blog.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lazcat.BlogApiService.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20201218135021_Initail")]
-    partial class Initail
+    [Migration("20210312030321_transfer to sqlite")]
+    partial class transfertosqlite
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.4");
 
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.Articles.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Cover")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EditTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("PublishTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -66,12 +66,11 @@ namespace Lazcat.BlogApiService.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -81,10 +80,10 @@ namespace Lazcat.BlogApiService.Migrations
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.HashTags.ArticleTag", b =>
                 {
                     b.Property<int>("ArticleId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("HashTagId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ArticleId", "HashTagId");
 
@@ -97,11 +96,11 @@ namespace Lazcat.BlogApiService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -112,51 +111,33 @@ namespace Lazcat.BlogApiService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("TEXT")
                         .HasDefaultValueSql("newid()");
 
                     b.Property<int>("ArticleId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("ReplyId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Sender")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.ReplyMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newid()");
-
-                    b.Property<Guid>("MessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("RepliedMessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ReplyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("RepliedMessageId");
-
-                    b.ToTable("ReplyMessages");
                 });
 
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.Articles.Article", b =>
@@ -166,6 +147,8 @@ namespace Lazcat.BlogApiService.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.HashTags.ArticleTag", b =>
@@ -181,6 +164,10 @@ namespace Lazcat.BlogApiService.Migrations
                         .HasForeignKey("HashTagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("HashTag");
                 });
 
             modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.Message", b =>
@@ -190,19 +177,25 @@ namespace Lazcat.BlogApiService.Migrations
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Messages.ReplyMessage", b =>
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Articles.Article", b =>
                 {
-                    b.HasOne("Lazcat.Blog.Models.Domain.Messages.Message", "Message")
-                        .WithMany("ReplyMessages")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ArticleTags");
 
-                    b.HasOne("Lazcat.Blog.Models.Domain.Messages.Message", "RepliedMessage")
-                        .WithMany()
-                        .HasForeignKey("RepliedMessageId");
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.Categories.Category", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("Lazcat.Blog.Models.Domain.HashTags.HashTag", b =>
+                {
+                    b.Navigation("ArticleTags");
                 });
 #pragma warning restore 612, 618
         }

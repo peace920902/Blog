@@ -3,6 +3,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# sqlite
+*.db
+*.db-shm
+*.db-wal
+
+# sonarqube
+.sonarqube/*
+
 # User-specific files
 *.rsuser
 *.suo

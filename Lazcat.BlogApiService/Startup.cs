@@ -34,7 +34,6 @@ namespace Lazcat.BlogApiService
 
         public IConfiguration Configuration { get; }
         public IHostEnvironment HostEnvironment { get; }
-        public const string DefaultPolicy = "DefaultPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -48,7 +47,7 @@ namespace Lazcat.BlogApiService
                 });
             }
             else
-            {
+            {  
                 services.AddHttpsRedirection(options =>
                 {
                     options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
@@ -56,7 +55,7 @@ namespace Lazcat.BlogApiService
                 });
             }
             services.AddSwaggerGen();
-            services.AddDbContext<BlogContext>(opt => opt.UseSqlServer(Configuration[GeneralSetting.DbConnectString],
+            services.AddDbContext<BlogContext>(opt => opt.UseSqlite(Configuration[GeneralSetting.DbConnectString],
                 b => b.MigrationsAssembly(GeneralSetting.MigrationsAssemblyLocation)));
             services.AddScoped<IRepository<int, Category>, Repository<int, Category>>();
             services.AddScoped<IRepository<int, Article>, Repository<int, Article>>();
@@ -68,16 +67,13 @@ namespace Lazcat.BlogApiService
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped(_ => new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             services.AddAutoMapper(typeof(AutoMapperProfile));
-            services.AddCors(opt => opt.AddDefaultPolicy(builder => 
-                    // builder.AllowAnyOrigin()
-                    // .AllowAnyHeader()
-                    // .AllowAnyMethod()
+            services.AddCors(opt => opt.AddDefaultPolicy(builder =>
+                  //builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
                   builder.WithOrigins(Configuration["App:CorsOrigins"].Split(",", StringSplitOptions.RemoveEmptyEntries))
-                 //builder.WithOrigins("http://127.0.0.1:5567", "https://localhost:5568")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .SetIsOriginAllowedToAllowWildcardSubdomains()
                 ));
             services.AddControllers();
         }
@@ -85,18 +81,16 @@ namespace Lazcat.BlogApiService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
-
             app.UseCustomerExceptionMiddleware();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
