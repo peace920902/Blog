@@ -2,7 +2,7 @@
 
 namespace Lazcat.Blog.Models.Web
 {
-    public class Setting
+    public class Define
     {
         public const string DefaultHttpClient = "Default";
 
@@ -47,6 +47,24 @@ namespace Lazcat.Blog.Models.Web
             public const string AvatarPath = "AvatarPath";
             public const string Description = "Description";
         }
+        
+        public class ProviderRoutes
+        {
+            public class ArticleRoute
+            {
+                public const string Article = "Article";
+                public const string GetAll = "All";
+                public const string GetOnlyPublished = "AllPublished";
+                public const string UpdateContent = "Content";
+                public const string Publish = "Publish";
+                public class QueryString
+                {
+                    public const string IsGetContent = "IsGetContent";
+                }
+            }
+            
+        }
+        
         
         public class StateMessage
         {

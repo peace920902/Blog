@@ -26,7 +26,7 @@ namespace Lazcat.Blog.Web.Services.Categories
         public async Task<StandardOutput<bool>> CreateCategory(string name)
         {
             var responseMessage = await _categoryProvider.CreateCategory(new CreateUpdateCategoryInput { Name = name });
-            if (responseMessage.StateCode != Setting.StateCode.OK)
+            if (responseMessage.StateCode != Define.StateCode.OK)
             {
                 return new StandardOutput<bool>
                 {
@@ -44,7 +44,7 @@ namespace Lazcat.Blog.Web.Services.Categories
         public async Task<StandardOutput<bool>> UpdateCategory(CreateUpdateCategoryInput input)
         {
             var responseMessage = await _categoryProvider.UpdateCategory(input);
-            if (responseMessage.StateCode != Setting.StateCode.OK)
+            if (responseMessage.StateCode != Define.StateCode.OK)
             {
                 return new StandardOutput<bool>
                 {
@@ -62,7 +62,7 @@ namespace Lazcat.Blog.Web.Services.Categories
         public async Task<StandardOutput<bool>> DeleteCategory(int id)
         {
             var responseMessage = await _categoryProvider.DeleteCategory(id);
-            if (responseMessage.StateCode != Setting.StateCode.OK)
+            if (responseMessage.StateCode != Define.StateCode.OK)
             {
                 return new StandardOutput<bool>
                 {

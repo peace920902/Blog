@@ -24,7 +24,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
         private readonly IArticleManager _articleManager;
         private readonly IMapper _mapper;
 
-        public ArticleAppService(IRepository<int, Article> articleRepository,IMessageAppService messageAppService, IArticleManager articleManager, IMapper mapper)
+        public ArticleAppService(IRepository<int, Article> articleRepository, IMessageAppService messageAppService, IArticleManager articleManager, IMapper mapper)
         {
             _articleRepository = articleRepository;
             _messageAppService = messageAppService;
@@ -46,18 +46,20 @@ namespace Lazcat.Blog.ApplicationService.Articles
         public async Task<ArticleDto> GetArticle(int id)
         {
             var article = await _articleRepository.GetAll().Include(x => x.Category).SingleOrDefaultAsync(x => x.Id == id);
-            if(article==null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("Article not exist"));
+            if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException("Article not exist"));
             var returnArticle = new ArticleDto();
             _mapper.Map(article, returnArticle);
-            returnArticle.Messages= await _messageAppService.GetMessages(id);
+            returnArticle.Messages = await _messageAppService.GetMessages(id);
             return returnArticle;
         }
 
-        public async Task<IEnumerable<ArticleDto>> GetArticleList(bool isGetContent = false)
+        public async Task<IEnumerable<ArticleDto>> GetArticleList(bool isGetContent, bool isOnlyPublished = false)
         {
+            var articles = isOnlyPublished ? _articleRepository.GetAll().Include(x => x.Category).Where(x => x.IsPublished) 
+                : _articleRepository.GetAll().Include(x => x.Category);
             var articleList = isGetContent
-                ? await _articleRepository.GetAll().Include(x => x.Category).ToListAsync()
-                : await _articleRepository.GetAll().Include(x => x.Category)
+                ? await articles.ToListAsync()
+                : await articles
                     .Select(x => new Article
                     {
                         Id = x.Id,

@@ -34,7 +34,7 @@ namespace Lazcat.Blog.Web
             builder.Services.AddSingleton<IMessageProvider, MessageProvider>();
             builder.Services.AddSingleton<IMessageService, MessageService>();
             builder.Services.AddSingleton(new MarkdownPipelineBuilder().UseAdvancedExtensions().UsePrism().Build());
-            builder.Services.AddHttpClient(Setting.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
+            builder.Services.AddHttpClient(Define.DefaultHttpClient, hc => hc.BaseAddress = new Uri("https://127.0.0.1:5001/api/"));
             builder.Services
                 .AddBlazorise(options =>
                 {

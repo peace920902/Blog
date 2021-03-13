@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AntDesign;
 using AutoMapper;
@@ -25,10 +26,10 @@ namespace Lazcat.Blog.Web.Services.Articles
             _pipeline = pipeline;
         }
 
-        public async Task<IEnumerable<SimpleArticle>> GetArticleList(bool isGetContent = false)
+        public async Task<IEnumerable<SimpleArticle>> GetArticleList(bool isGetContent = false, bool isOnlyPublished = false)
         {
-            var responseMessage = await _articleProvider.GetArticles(isGetContent);
-            return responseMessage.StateCode != Setting.StateCode.OK ?
+            var responseMessage = await _articleProvider.GetArticles(isGetContent,isOnlyPublished);
+            return responseMessage.StateCode != Define.StateCode.OK ?
                 new List<SimpleArticle>() : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity ?? new List<ArticleDto>());
         }
 
@@ -41,7 +42,7 @@ namespace Lazcat.Blog.Web.Services.Articles
         public async Task<StandardOutput<ArticleDto>> CreateOrUpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.CreateArticle(input);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<ArticleDto>
+            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<ArticleDto>
             {
                 Entity = null,
                 Message = $"CreateOrUpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
@@ -51,7 +52,7 @@ namespace Lazcat.Blog.Web.Services.Articles
         public async Task<StandardOutput<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.UpdateArticle(input);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<ArticleDto>
+            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<ArticleDto>
             {
                 Entity = null,
                 Message = $"UpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
@@ -61,20 +62,21 @@ namespace Lazcat.Blog.Web.Services.Articles
         public async Task<StandardOutput<bool>> DeleteArticle(int id)
         {
             var responseMessage = await _articleProvider.DeleteArticle(id);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"DeleteArticle failed. Check if id {id} is existed" }
+            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"DeleteArticle failed. Check if id {id} is existed" }
                 : new StandardOutput<bool> { Entity = true, Message = "DeleteArticle succeed" };
         }
 
         public async Task<StandardOutput<bool>> PublishArticle(PublishArticleInput input)
         {
             var responseMessage = await _articleProvider.PublishArticle(input);
-            return responseMessage.StateCode != Setting.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is existed" }
+            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is existed" }
                 : new StandardOutput<bool> { Entity = true, Message = "publish succeed" };
         }
 
         public string ConvertToHtml(string markdown)
         {
-            return Markdown.ToHtml(markdown, _pipeline);
+            var html = Markdown.ToHtml(markdown, _pipeline);
+            return html;
         }
     }
 }

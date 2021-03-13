@@ -13,6 +13,7 @@ else
         <Divider></Divider>
         <div  style="text-align: left">
             @((MarkupString) ArticleDto.Content)
+            @{ Console.WriteLine(ArticleDto.Content); }
         </div>
     </div>
 }

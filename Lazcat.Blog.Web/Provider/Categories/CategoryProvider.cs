@@ -14,7 +14,7 @@ namespace Lazcat.Blog.Web.Provider.Categories
         public const string Category = "category";
         public CategoryProvider(IHttpClientFactory httpClientFactory)
         {
-            _http = httpClientFactory.CreateClient(Setting.DefaultHttpClient);
+            _http = httpClientFactory.CreateClient(Define.DefaultHttpClient);
         }
 
         public async Task<ResponseMessage<IEnumerable<CategoryDto>>> GetAllCategories()

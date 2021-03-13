@@ -53,7 +53,7 @@ namespace Lazcat.Blog.Web.Services.Messages
         public async Task<StandardOutput<MessageDto>> UpdateMessage(CreateUpdateMessageInput input)
         {
             var responseMessage = await _messageProvider.UpdateMessage(input);
-            return responseMessage.StateCode != Setting.StateCode.OK
+            return responseMessage.StateCode != Define.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
                     Message = "Update Message failed."
@@ -64,7 +64,7 @@ namespace Lazcat.Blog.Web.Services.Messages
         public async Task<StandardOutput<MessageDto>> CreateMessage(CreateUpdateMessageInput input)
         {
             var responseMessage = await _messageProvider.CreateMessage(input);
-            return responseMessage.StateCode != Setting.StateCode.OK
+            return responseMessage.StateCode != Define.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
                     Message = "Create Message failed."
@@ -75,7 +75,7 @@ namespace Lazcat.Blog.Web.Services.Messages
         public async Task<StandardOutput<MessageDto>> DeleteMessage(Guid id)
         {
             var responseMessage = await _messageProvider.DeleteMessage(id);
-            return responseMessage.StateCode != Setting.StateCode.OK
+            return responseMessage.StateCode != Define.StateCode.OK
                 ? new StandardOutput<MessageDto>
                 {
                     Message = "Delete Message failed."

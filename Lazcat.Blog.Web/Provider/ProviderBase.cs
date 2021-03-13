@@ -27,7 +27,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -39,7 +39,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = false
                 };
             }
@@ -59,7 +59,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -71,7 +71,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = false
                 };
             }
@@ -94,7 +94,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Setting.StateCode.OK : (Setting.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -106,7 +106,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<bool>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = false
                 };
             }
@@ -131,7 +131,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = jsonException.Message,
-                    StateCode = Setting.StateCode.NoJsonContent,
+                    StateCode = Define.StateCode.NoJsonContent,
                     Entity = default
                 };
             }
@@ -140,7 +140,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = default
                 };
             }
@@ -167,7 +167,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = jsonException.Message,
-                    StateCode = Setting.StateCode.NoJsonContent,
+                    StateCode = Define.StateCode.NoJsonContent,
                     Entity = default
                 };
             }
@@ -176,7 +176,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = default
                 };
             }
@@ -198,12 +198,12 @@ namespace Lazcat.Blog.Web.Provider
                 var result = await httpFunc(url, input, null, default);
                 var isSuccessStatusCode = result.IsSuccessStatusCode;
                 if (isSuccessStatusCode)
-                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Setting.StateCode.OK };
+                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK };
                 var errorMessage = await result.Content.ReadFromJsonAsync<HttpException>();
                 return new ResponseMessage<TResponse>
                 {
                     Entity = default,
-                    StateCode = (Setting.StateCode)result.StatusCode,
+                    StateCode = (Define.StateCode)result.StatusCode,
                     ErrorMessage = errorMessage?.Content
                 };
             }
@@ -212,7 +212,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = jsonException.Message,
-                    StateCode = Setting.StateCode.NoJsonContent,
+                    StateCode = Define.StateCode.NoJsonContent,
                     Entity = default
                 };
             }
@@ -221,7 +221,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = default
                 };
             }
@@ -243,12 +243,12 @@ namespace Lazcat.Blog.Web.Provider
                 var result = await httpFunc(url,default);
                 var isSuccessStatusCode = result.IsSuccessStatusCode;
                 if (isSuccessStatusCode)
-                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Setting.StateCode.OK };
+                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK };
                 var errorMessage = await result.Content.ReadFromJsonAsync<HttpException>();
                 return new ResponseMessage<TResponse>
                 {
                     Entity = default,
-                    StateCode = (Setting.StateCode)result.StatusCode,
+                    StateCode = (Define.StateCode)result.StatusCode,
                     ErrorMessage = errorMessage?.Content
                 };
             }
@@ -257,7 +257,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = jsonException.Message,
-                    StateCode = Setting.StateCode.NoJsonContent,
+                    StateCode = Define.StateCode.NoJsonContent,
                     Entity = default
                 };
             }
@@ -266,7 +266,7 @@ namespace Lazcat.Blog.Web.Provider
                 return new ResponseMessage<TResponse>
                 {
                     ErrorMessage = ex.Message,
-                    StateCode = Setting.StateCode.OtherException,
+                    StateCode = Define.StateCode.OtherException,
                     Entity = default
                 };
             }

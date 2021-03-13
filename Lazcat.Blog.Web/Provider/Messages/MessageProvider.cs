@@ -17,7 +17,7 @@ namespace Lazcat.Blog.Web.Provider.Messages
         
         public MessageProvider(IHttpClientFactory httpClientFactory)
         {
-            _http = httpClientFactory.CreateClient(Setting.DefaultHttpClient);
+            _http = httpClientFactory.CreateClient(Define.DefaultHttpClient);
         }
 
         public async Task<ResponseMessage<IEnumerable<MessageDto>>> GetMessages(int articleId)

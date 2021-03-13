@@ -23,11 +23,11 @@
             <Menu Theme="MenuTheme.Light" Mode="MenuMode.Inline" Accordion>
                 @foreach (var (categoryName, simpleArticles) in _articleDtos)
                 {
-                <SubMenu Key="@categoryName" TitleTemplate="getCategoryFragment(categoryName, simpleArticles.Count)">
+                <SubMenu Key="@categoryName" TitleTemplate="GetCategoryFragment(categoryName, simpleArticles.Count)">
                     @foreach (var simpleArticle in simpleArticles)
                     {
                         <Tooltip Class="categorylist-menu-item" Style="display: block" Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
-                        <MenuItem OnClick="_=>navToArticle(simpleArticle.Id)" Class="categorylist-menu-item" Key="@simpleArticle.Id.ToString()">
+                        <MenuItem OnClick="_=>NavToArticle(simpleArticle.Id)" Class="categorylist-menu-item" Key="@simpleArticle.Id.ToString()">
                             @simpleArticle.Title
                         </MenuItem>
                         </Tooltip>
@@ -60,11 +60,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var simpleArticles = await ArticleService.GetArticleList();
+        var simpleArticles = await ArticleService.GetArticleList(isOnlyPublished:true);
         _articleDtos = simpleArticles.GroupBy(x => x.CategoryName).ToDictionary(x => x.Key, x => x.ToList());
     }
 
-    private RenderFragment getCategoryFragment(string categoryName, int count)
+    private RenderFragment GetCategoryFragment(string categoryName, int count)
     {
         return
             @<Tooltip Placement="PlacementType.LeftTop" Title="@categoryName">
@@ -75,9 +75,9 @@
             </Tooltip>;
     }
 
-    private void navToArticle(int simpleArticleId)
+    private void NavToArticle(int simpleArticleId)
     {
-        NavigationManager.NavigateTo($"{Setting.UrlName.Article}/{simpleArticleId}");
+        NavigationManager.NavigateTo($"{Define.UrlName.Article}/{simpleArticleId}");
     }
 
 }

@@ -30,6 +30,12 @@ namespace Lazcat.BlogApiService.Controllers
             return await _articleAppService.GetArticleList(isGetContent);
         }
 
+        [HttpGet, Route("AllPublished")]
+        public async Task<IEnumerable<ArticleDto>> GetAllPublished(bool isGetContent)
+        {
+            return await _articleAppService.GetArticleList(isGetContent, true);
+        }
+
         [HttpGet, Route("{id}")]
         public async Task<ArticleDto> Get(int id)
         {
@@ -41,13 +47,13 @@ namespace Lazcat.BlogApiService.Controllers
         {
             return await _articleAppService.UpdateArticle(input.Id, input);
         }
-        
-        [HttpPut,Route("publish")]
+
+        [HttpPut, Route("publish")]
         public async Task PublishArticle(PublishArticleInput input)
         {
             await _articleAppService.PublishArticle(input);
         }
-        
+
         [HttpDelete, Route("{id}")]
         public async Task<bool> Delete(int id)
         {

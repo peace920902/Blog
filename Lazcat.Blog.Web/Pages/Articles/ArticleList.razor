@@ -29,8 +29,7 @@ else
                         @article.Title
                     </TitleTemplate>
                 </ListItemMeta>
-                123
-                @* @article.Description *@
+                @article.Description
             </ListItem>
         </ChildContent>
     </AntList>
@@ -53,12 +52,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var simpleArticles = await ArticleService.GetArticleList();
-        Articles = simpleArticles.Where(x => x.IsPublished).OrderByDescending(x => x.PublishTime);
+        var simpleArticles = await ArticleService.GetArticleList(isOnlyPublished:true);
+        Articles = simpleArticles.OrderByDescending(x => x.PublishTime);
     }
 
     private void NavigateToArticle(int id)
     {
-        NavigationManager.NavigateTo($"{Setting.UrlName.Article}/{id}");
+        NavigationManager.NavigateTo($"{Define.UrlName.Article}/{id}");
     }
 }
