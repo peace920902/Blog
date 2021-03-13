@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.ViewModel;
 using Lazcat.Blog.Models.Web;

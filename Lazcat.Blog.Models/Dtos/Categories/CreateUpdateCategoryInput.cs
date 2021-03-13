@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Lazcat.Blog.Models.Dtos.Categories
+﻿namespace Lazcat.Blog.Models.Dtos.Categories
 {
     public class CreateUpdateCategoryInput
     {

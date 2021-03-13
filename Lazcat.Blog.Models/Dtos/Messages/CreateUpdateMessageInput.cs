@@ -7,10 +7,11 @@ namespace Lazcat.Blog.Models.Dtos.Messages
     {
         public Guid? Id { get; set; }
         public Guid? ReplyId { get; set; }
-        [Required]
-        public string Sender { get; set; }
+
+        [Required] public string Sender { get; set; }
+
         public string Content { get; set; }
-        [Required]
-        public int ArticleId { get; set; }
+
+        [Required] public int ArticleId { get; set; }
     }
 }

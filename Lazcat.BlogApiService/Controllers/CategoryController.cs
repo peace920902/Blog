@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Categories;
 using Lazcat.Blog.Models.Dtos.Categories;
@@ -25,8 +23,8 @@ namespace Lazcat.BlogApiService.Controllers
             await _categoryService.CreateCategoryAsync(input);
         }
 
-        [HttpDelete, Route("{id}")]
-
+        [HttpDelete]
+        [Route("{id}")]
         public async Task Delete(int id)
         {
             await _categoryService.DeleteCategory(id);

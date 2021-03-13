@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -8,10 +7,11 @@ using Lazcat.Blog.Models.Web;
 
 namespace Lazcat.Blog.Web.Provider.Categories
 {
-    public class CategoryProvider :ProviderBase, ICategoryProvider
+    public class CategoryProvider : ProviderBase, ICategoryProvider
     {
-        private readonly HttpClient _http;
         public const string Category = "category";
+        private readonly HttpClient _http;
+
         public CategoryProvider(IHttpClientFactory httpClientFactory)
         {
             _http = httpClientFactory.CreateClient(Define.DefaultHttpClient);

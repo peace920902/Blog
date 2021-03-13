@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
 using AutoMapper;
-using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.ViewModel;
 using Lazcat.Blog.Models.Web;
@@ -28,9 +24,10 @@ namespace Lazcat.Blog.Web.Services.Articles
 
         public async Task<IEnumerable<SimpleArticle>> GetArticleList(bool isGetContent = false, bool isOnlyPublished = false)
         {
-            var responseMessage = await _articleProvider.GetArticles(isGetContent,isOnlyPublished);
-            return responseMessage.StateCode != Define.StateCode.OK ?
-                new List<SimpleArticle>() : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity ?? new List<ArticleDto>());
+            var responseMessage = await _articleProvider.GetArticles(isGetContent, isOnlyPublished);
+            return responseMessage.StateCode != Define.StateCode.OK
+                ? new List<SimpleArticle>()
+                : _mapper.Map<IEnumerable<ArticleDto>, IEnumerable<SimpleArticle>>(responseMessage.Entity ?? new List<ArticleDto>());
         }
 
         public async Task<ArticleDto> GetArticle(int id)
@@ -42,35 +39,41 @@ namespace Lazcat.Blog.Web.Services.Articles
         public async Task<StandardOutput<ArticleDto>> CreateOrUpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.CreateArticle(input);
-            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<ArticleDto>
-            {
-                Entity = null,
-                Message = $"CreateOrUpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
-            } : new StandardOutput<ArticleDto> { Entity = responseMessage.Entity, Message = "CreateOrUpdateArticle succeed" };
+            return responseMessage.StateCode != Define.StateCode.OK
+                ? new StandardOutput<ArticleDto>
+                {
+                    Entity = null,
+                    Message = $"CreateOrUpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
+                }
+                : new StandardOutput<ArticleDto> {Entity = responseMessage.Entity, Message = "CreateOrUpdateArticle succeed"};
         }
 
         public async Task<StandardOutput<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input)
         {
             var responseMessage = await _articleProvider.UpdateArticle(input);
-            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<ArticleDto>
-            {
-                Entity = null,
-                Message = $"UpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
-            } : new StandardOutput<ArticleDto> { Entity = responseMessage.Entity, Message = "UpdateArticle succeed" };
+            return responseMessage.StateCode != Define.StateCode.OK
+                ? new StandardOutput<ArticleDto>
+                {
+                    Entity = null,
+                    Message = $"UpdateArticle failed. Reason: {responseMessage.ErrorMessage}"
+                }
+                : new StandardOutput<ArticleDto> {Entity = responseMessage.Entity, Message = "UpdateArticle succeed"};
         }
 
         public async Task<StandardOutput<bool>> DeleteArticle(int id)
         {
             var responseMessage = await _articleProvider.DeleteArticle(id);
-            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"DeleteArticle failed. Check if id {id} is existed" }
-                : new StandardOutput<bool> { Entity = true, Message = "DeleteArticle succeed" };
+            return responseMessage.StateCode != Define.StateCode.OK
+                ? new StandardOutput<bool> {Entity = false, Message = $"DeleteArticle failed. Check if id {id} is existed"}
+                : new StandardOutput<bool> {Entity = true, Message = "DeleteArticle succeed"};
         }
 
         public async Task<StandardOutput<bool>> PublishArticle(PublishArticleInput input)
         {
             var responseMessage = await _articleProvider.PublishArticle(input);
-            return responseMessage.StateCode != Define.StateCode.OK ? new StandardOutput<bool> { Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is existed" }
-                : new StandardOutput<bool> { Entity = true, Message = "publish succeed" };
+            return responseMessage.StateCode != Define.StateCode.OK
+                ? new StandardOutput<bool> {Entity = false, Message = $"Publish or unPublish failed. Check if id {input.Id} is existed"}
+                : new StandardOutput<bool> {Entity = true, Message = "publish succeed"};
         }
 
         public string ConvertToHtml(string markdown)

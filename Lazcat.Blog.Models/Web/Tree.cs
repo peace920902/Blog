@@ -4,8 +4,8 @@ namespace Lazcat.Blog.Models.Web
 {
     public class Tree<T>
     {
-        private T _data;
         private readonly LinkedList<Tree<T>> _childrenTree;
+        private T _data;
 
         public Tree(T data)
         {

@@ -1,19 +1,7 @@
-﻿using System.Net;
-
-namespace Lazcat.Blog.Models.Web
+﻿namespace Lazcat.Blog.Models.Web
 {
     public class Define
     {
-        public const string DefaultHttpClient = "Default";
-
-        public class UrlName
-        {
-            public const string Article = "Article";
-            public const string Category = "Category";
-            public const string Manager = "Manager";
-            public const string Edit = "Edit";
-        }
-        
         public enum StateCode
         {
             OK = 200,
@@ -38,7 +26,17 @@ namespace Lazcat.Blog.Models.Web
             HttpVersionNotSupported = 505,
             NoJsonContent = 9001,
             OtherException = 9999,
-            OperationFailed = 9101,
+            OperationFailed = 9101
+        }
+
+        public const string DefaultHttpClient = "Default";
+
+        public class UrlName
+        {
+            public const string Article = "Article";
+            public const string Category = "Category";
+            public const string Manager = "Manager";
+            public const string Edit = "Edit";
         }
 
         public class AuthorDefine
@@ -47,7 +45,7 @@ namespace Lazcat.Blog.Models.Web
             public const string AvatarPath = "AvatarPath";
             public const string Description = "Description";
         }
-        
+
         public class ProviderRoutes
         {
             public class ArticleRoute
@@ -57,18 +55,20 @@ namespace Lazcat.Blog.Models.Web
                 public const string GetOnlyPublished = "AllPublished";
                 public const string UpdateContent = "Content";
                 public const string Publish = "Publish";
+
                 public class QueryString
                 {
                     public const string IsGetContent = "IsGetContent";
                 }
             }
-            
         }
-        
-        
+
+
         public class StateMessage
         {
-            public const string OtherException = "There's somethings error. U can try to reload page to resolve the problem. If it's still existed. Please contact us.";
+            public const string OtherException =
+                "There's somethings error. U can try to reload page to resolve the problem. If it's still existed. Please contact us.";
+
             public const string NoJsonContent = "Return anything";
         }
     }

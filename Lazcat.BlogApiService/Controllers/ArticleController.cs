@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lazcat.Blog.ApplicationService.Articles;
-using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,37 +23,43 @@ namespace Lazcat.BlogApiService.Controllers
             return await _articleAppService.CreateOrUpdateArticle(input);
         }
 
-        [HttpGet, Route("all")]
+        [HttpGet]
+        [Route("all")]
         public async Task<IEnumerable<ArticleDto>> GetAll(bool isGetContent)
         {
             return await _articleAppService.GetArticleList(isGetContent);
         }
 
-        [HttpGet, Route("AllPublished")]
+        [HttpGet]
+        [Route("AllPublished")]
         public async Task<IEnumerable<ArticleDto>> GetAllPublished(bool isGetContent)
         {
             return await _articleAppService.GetArticleList(isGetContent, true);
         }
 
-        [HttpGet, Route("{id}")]
+        [HttpGet]
+        [Route("{id}")]
         public async Task<ArticleDto> Get(int id)
         {
             return await _articleAppService.GetArticle(id);
         }
 
-        [HttpPut, Route("content")]
+        [HttpPut]
+        [Route("content")]
         public async Task<ArticleDto> UpdateContent(CreateUpdateArticleInput input)
         {
             return await _articleAppService.UpdateArticle(input.Id, input);
         }
 
-        [HttpPut, Route("publish")]
+        [HttpPut]
+        [Route("publish")]
         public async Task PublishArticle(PublishArticleInput input)
         {
             await _articleAppService.PublishArticle(input);
         }
 
-        [HttpDelete, Route("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<bool> Delete(int id)
         {
             return await _articleAppService.DeleteArticle(id);

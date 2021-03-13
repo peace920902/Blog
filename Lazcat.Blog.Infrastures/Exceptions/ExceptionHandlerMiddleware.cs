@@ -10,8 +10,8 @@ namespace Lazcat.Blog.Infrastructure.Exceptions
 {
     public class ExceptionHandlerMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
+        private readonly RequestDelegate _next;
 
         public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
         {
@@ -27,7 +27,7 @@ namespace Lazcat.Blog.Infrastructure.Exceptions
             }
             catch (HttpResponseException ex)
             {
-                httpContext.Response.StatusCode = (int)ex.Response.StatusCode;
+                httpContext.Response.StatusCode = (int) ex.Response.StatusCode;
                 httpContext.Response.Headers.Add("Content-Type", "application/json");
                 await httpContext.Response.WriteAsync(ex.Response.ReasonPhrase);
             }
@@ -43,7 +43,7 @@ namespace Lazcat.Blog.Infrastructure.Exceptions
             var message = exception.Message;
             _logger.LogError(exception, $"Ex massage: {message}, StackTrace: {exception.StackTrace}", exception);
 
-            return httpContext.Response.WriteAsync(JsonSerializer.Serialize(new HttpException { Content = "Somethings error."}));
+            return httpContext.Response.WriteAsync(JsonSerializer.Serialize(new HttpException {Content = "Somethings error."}));
         }
     }
 }

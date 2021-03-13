@@ -8,9 +8,7 @@ using Lazcat.Blog.ApplicationService.Messages;
 using Lazcat.Blog.Domain.Articles;
 using Lazcat.Blog.Domain.Repository;
 using Lazcat.Blog.Infrastructure;
-using Lazcat.Blog.Infrastructure.Exceptions;
 using Lazcat.Blog.Models.Domain.Articles;
-using Lazcat.Blog.Models.Dtos;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +17,13 @@ namespace Lazcat.Blog.ApplicationService.Articles
 {
     public class ArticleAppService : IArticleAppService
     {
-        private readonly IRepository<int, Article> _articleRepository;
-        private readonly IMessageAppService _messageAppService;
         private readonly IArticleManager _articleManager;
+        private readonly IRepository<int, Article> _articleRepository;
         private readonly IMapper _mapper;
+        private readonly IMessageAppService _messageAppService;
 
-        public ArticleAppService(IRepository<int, Article> articleRepository, IMessageAppService messageAppService, IArticleManager articleManager, IMapper mapper)
+        public ArticleAppService(IRepository<int, Article> articleRepository, IMessageAppService messageAppService, IArticleManager articleManager,
+            IMapper mapper)
         {
             _articleRepository = articleRepository;
             _messageAppService = messageAppService;
@@ -55,7 +54,8 @@ namespace Lazcat.Blog.ApplicationService.Articles
 
         public async Task<IEnumerable<ArticleDto>> GetArticleList(bool isGetContent, bool isOnlyPublished = false)
         {
-            var articles = isOnlyPublished ? _articleRepository.GetAll().Include(x => x.Category).Where(x => x.IsPublished) 
+            var articles = isOnlyPublished
+                ? _articleRepository.GetAll().Include(x => x.Category).Where(x => x.IsPublished)
                 : _articleRepository.GetAll().Include(x => x.Category);
             var articleList = isGetContent
                 ? await articles.ToListAsync()

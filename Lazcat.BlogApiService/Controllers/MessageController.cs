@@ -18,28 +18,30 @@ namespace Lazcat.BlogApiService.Controllers
             _messageAppService = messageAppService;
         }
 
-        [HttpGet, Route("{articleId}")]
+        [HttpGet]
+        [Route("{articleId}")]
         public async Task<IEnumerable<MessageDto>> GetMessages(int articleId)
         {
             return await _messageAppService.GetMessages(articleId);
         }
-        
+
         [HttpPost]
         public async Task<MessageDto> CreateMessage(CreateUpdateMessageInput input)
         {
             return await _messageAppService.CreateMessage(input);
         }
-        
+
         [HttpPut]
         public async Task<MessageDto> UpdateMessage(CreateUpdateMessageInput input)
         {
             return await _messageAppService.UpdateMessage(input);
         }
-        
-        [HttpDelete,Route("{Id}")]
+
+        [HttpDelete]
+        [Route("{Id}")]
         public async Task<MessageDto> DeleteMessage(Guid id)
         {
-            return await _messageAppService.DeleteMessage(id);  
+            return await _messageAppService.DeleteMessage(id);
         }
     }
 }

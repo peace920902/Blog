@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Web;
 
-
 namespace Lazcat.Blog.Web.Provider.Articles
 {
     public class ArticleProviders : ProviderBase, IArticleProvider
     {
         private readonly HttpClient _http;
+
         public ArticleProviders(IHttpClientFactory httpFactory)
         {
             _http = httpFactory.CreateClient(Define.DefaultHttpClient);
         }
+
         public async Task<ResponseMessage<IEnumerable<ArticleDto>>> GetArticles(bool isGetContent = false, bool isOnlyPublished = false)
         {
             return isOnlyPublished
@@ -33,7 +34,8 @@ namespace Lazcat.Blog.Web.Provider.Articles
 
         public async Task<ResponseMessage<ArticleDto>> CreateArticle(CreateUpdateArticleInput input)
         {
-            return await SendNeedDeserializedRequest<ArticleDto, CreateUpdateArticleInput>(Define.ProviderRoutes.ArticleRoute.Article, _http.PostAsJsonAsync, input);
+            return await SendNeedDeserializedRequest<ArticleDto, CreateUpdateArticleInput>(Define.ProviderRoutes.ArticleRoute.Article, _http.PostAsJsonAsync,
+                input);
         }
 
         public async Task<ResponseMessage<ArticleDto>> UpdateArticle(CreateUpdateArticleInput input)
@@ -49,7 +51,8 @@ namespace Lazcat.Blog.Web.Provider.Articles
 
         public async Task<ResponseMessage<bool>> PublishArticle(PublishArticleInput input)
         {
-            return await SendEmptyResponseBodyRequest($"{Define.ProviderRoutes.ArticleRoute.Article}/{Define.ProviderRoutes.ArticleRoute.Publish}", _http.PutAsJsonAsync, input);
+            return await SendEmptyResponseBodyRequest($"{Define.ProviderRoutes.ArticleRoute.Article}/{Define.ProviderRoutes.ArticleRoute.Publish}",
+                _http.PutAsJsonAsync, input);
         }
     }
 }

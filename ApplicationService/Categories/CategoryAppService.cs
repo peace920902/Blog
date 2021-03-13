@@ -12,12 +12,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lazcat.Blog.ApplicationService.Categories
 {
-
     public class CategoryAppService : ICategoryAppService
     {
-        private readonly IRepository<int, Category> _repository;
         private readonly ICategoryManager _categoryManager;
         private readonly IMapper _mapper;
+        private readonly IRepository<int, Category> _repository;
 
         public CategoryAppService(IRepository<int, Category> repository, ICategoryManager categoryManager, IMapper mapper)
         {
@@ -49,7 +48,7 @@ namespace Lazcat.Blog.ApplicationService.Categories
         public async Task DeleteCategory(int id)
         {
             var res = await _repository.DeleteAsync(id);
-            if(!res) ExceptionBuilder.Build(HttpStatusCode.InternalServerError, new HttpException($"delete failed, check id existed"));
+            if (!res) ExceptionBuilder.Build(HttpStatusCode.InternalServerError, new HttpException("delete failed, check id existed"));
         }
     }
 }

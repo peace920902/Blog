@@ -4,7 +4,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using AntDesign;
 using Lazcat.Blog.Models.Infrastructure;
 using Lazcat.Blog.Models.Web;
 
@@ -13,7 +12,7 @@ namespace Lazcat.Blog.Web.Provider
     public abstract class ProviderBase
     {
         /// <summary>
-        /// 無回傳值的http method
+        ///     無回傳值的http method
         /// </summary>
         /// <param name="url"></param>
         /// <param name="httpFunc"></param>
@@ -27,7 +26,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode) message.StatusCode
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -44,13 +43,15 @@ namespace Lazcat.Blog.Web.Provider
                 };
             }
         }
+
         /// <summary>
-        /// 無回傳值的http method
+        ///     無回傳值的http method
         /// </summary>
         /// <param name="url"></param>
         /// <param name="httpFunc"></param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<bool>> SendEmptyResponseBodyRequest(string url, Func<string, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc)
+        protected async Task<ResponseMessage<bool>> SendEmptyResponseBodyRequest(string url,
+            Func<string, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode) message.StatusCode
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -78,14 +79,15 @@ namespace Lazcat.Blog.Web.Provider
         }
 
         /// <summary>
-        /// 無回傳值的http method
+        ///     無回傳值的http method
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
         /// <param name="httpFunc"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<bool>> SendEmptyResponseBodyRequest<T>(string url, Func<string, T, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc, T input)
+        protected async Task<ResponseMessage<bool>> SendEmptyResponseBodyRequest<T>(string url,
+            Func<string, T, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc, T input)
         {
             try
             {
@@ -94,7 +96,7 @@ namespace Lazcat.Blog.Web.Provider
                 var responseMessage = new ResponseMessage<bool>
                 {
                     Entity = isSuccessStatusCode,
-                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode)message.StatusCode,
+                    StateCode = isSuccessStatusCode ? Define.StateCode.OK : (Define.StateCode) message.StatusCode
                 };
                 if (isSuccessStatusCode) return responseMessage;
                 var exception = await message.Content.ReadFromJsonAsync<HttpException>();
@@ -113,18 +115,19 @@ namespace Lazcat.Blog.Web.Provider
         }
 
         /// <summary>
-        /// 通常用於http的GetFromJson<T> 
+        ///     通常用於http的GetFromJson<T>
         /// </summary>
         /// <typeparam name="TResponse"></typeparam>
         /// <param name="url"></param>
         /// <param name="httpFunc"></param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<TResponse>> SendRequest<TResponse>(string url, Func<string, JsonSerializerOptions, CancellationToken, Task<TResponse>> httpFunc)
+        protected async Task<ResponseMessage<TResponse>> SendRequest<TResponse>(string url,
+            Func<string, JsonSerializerOptions, CancellationToken, Task<TResponse>> httpFunc)
         {
             try
             {
                 var result = await httpFunc(url, null, default);
-                return new ResponseMessage<TResponse> { Entity = result };
+                return new ResponseMessage<TResponse> {Entity = result};
             }
             catch (JsonException jsonException)
             {
@@ -147,7 +150,7 @@ namespace Lazcat.Blog.Web.Provider
         }
 
         /// <summary>
-        /// 通常用於http的GetFromJson<T> 且須帶body
+        ///     通常用於http的GetFromJson<T> 且須帶body
         /// </summary>
         /// <typeparam name="TResponse"></typeparam>
         /// <typeparam name="TInput"></typeparam>
@@ -155,12 +158,13 @@ namespace Lazcat.Blog.Web.Provider
         /// <param name="httpFunc"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<TResponse>> SendRequest<TResponse, TInput>(string url, Func<string, TInput, JsonSerializerOptions, CancellationToken, Task<TResponse>> httpFunc, TInput input)
+        protected async Task<ResponseMessage<TResponse>> SendRequest<TResponse, TInput>(string url,
+            Func<string, TInput, JsonSerializerOptions, CancellationToken, Task<TResponse>> httpFunc, TInput input)
         {
             try
             {
                 var result = await httpFunc(url, input, null, default);
-                return new ResponseMessage<TResponse> { Entity = result };
+                return new ResponseMessage<TResponse> {Entity = result};
             }
             catch (JsonException jsonException)
             {
@@ -183,7 +187,7 @@ namespace Lazcat.Blog.Web.Provider
         }
 
         /// <summary>
-        /// 取得需反序列化的response body物件
+        ///     取得需反序列化的response body物件
         /// </summary>
         /// <typeparam name="TResponse">需反序列type</typeparam>
         /// <typeparam name="TInput">傳入物件type</typeparam>
@@ -191,19 +195,20 @@ namespace Lazcat.Blog.Web.Provider
         /// <param name="httpFunc">http func</param>
         /// <param name="input">傳入物件</param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<TResponse>> SendNeedDeserializedRequest<TResponse, TInput>(string url, Func<string, TInput, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc, TInput input)
+        protected async Task<ResponseMessage<TResponse>> SendNeedDeserializedRequest<TResponse, TInput>(string url,
+            Func<string, TInput, JsonSerializerOptions, CancellationToken, Task<HttpResponseMessage>> httpFunc, TInput input)
         {
             try
             {
                 var result = await httpFunc(url, input, null, default);
                 var isSuccessStatusCode = result.IsSuccessStatusCode;
                 if (isSuccessStatusCode)
-                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK };
+                    return new ResponseMessage<TResponse> {Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK};
                 var errorMessage = await result.Content.ReadFromJsonAsync<HttpException>();
                 return new ResponseMessage<TResponse>
                 {
                     Entity = default,
-                    StateCode = (Define.StateCode)result.StatusCode,
+                    StateCode = (Define.StateCode) result.StatusCode,
                     ErrorMessage = errorMessage?.Content
                 };
             }
@@ -228,7 +233,7 @@ namespace Lazcat.Blog.Web.Provider
         }
 
         /// <summary>
-        /// 取得需反序列化的response body物件
+        ///     取得需反序列化的response body物件
         /// </summary>
         /// <typeparam name="TResponse">需反序列type</typeparam>
         /// <typeparam name="TInput">傳入物件type</typeparam>
@@ -236,19 +241,20 @@ namespace Lazcat.Blog.Web.Provider
         /// <param name="httpFunc">http func</param>
         /// <param name="input">傳入物件</param>
         /// <returns></returns>
-        protected async Task<ResponseMessage<TResponse>> SendNeedDeserializedRequest<TResponse>(string url, Func<string, CancellationToken, Task<HttpResponseMessage>> httpFunc)
+        protected async Task<ResponseMessage<TResponse>> SendNeedDeserializedRequest<TResponse>(string url,
+            Func<string, CancellationToken, Task<HttpResponseMessage>> httpFunc)
         {
             try
             {
-                var result = await httpFunc(url,default);
+                var result = await httpFunc(url, default);
                 var isSuccessStatusCode = result.IsSuccessStatusCode;
                 if (isSuccessStatusCode)
-                    return new ResponseMessage<TResponse> { Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK };
+                    return new ResponseMessage<TResponse> {Entity = await result.Content.ReadFromJsonAsync<TResponse>(), StateCode = Define.StateCode.OK};
                 var errorMessage = await result.Content.ReadFromJsonAsync<HttpException>();
                 return new ResponseMessage<TResponse>
                 {
                     Entity = default,
-                    StateCode = (Define.StateCode)result.StatusCode,
+                    StateCode = (Define.StateCode) result.StatusCode,
                     ErrorMessage = errorMessage?.Content
                 };
             }

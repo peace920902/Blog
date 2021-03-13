@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Lazcat.Blog.Models.Dtos.Articles;
 using Lazcat.Blog.Models.Dtos.Messages;
 using Lazcat.Blog.Models.Web;
-using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 
 namespace Lazcat.Blog.Web.Provider.Messages
 {
-    public class MessageProvider:ProviderBase, IMessageProvider
+    public class MessageProvider : ProviderBase, IMessageProvider
     {
-        private readonly HttpClient _http;
         public const string Message = "message";
-        
+        private readonly HttpClient _http;
+
         public MessageProvider(IHttpClientFactory httpClientFactory)
         {
             _http = httpClientFactory.CreateClient(Define.DefaultHttpClient);

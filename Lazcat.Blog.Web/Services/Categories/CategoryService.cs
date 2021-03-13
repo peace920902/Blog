@@ -25,19 +25,17 @@ namespace Lazcat.Blog.Web.Services.Categories
 
         public async Task<StandardOutput<bool>> CreateCategory(string name)
         {
-            var responseMessage = await _categoryProvider.CreateCategory(new CreateUpdateCategoryInput { Name = name });
+            var responseMessage = await _categoryProvider.CreateCategory(new CreateUpdateCategoryInput {Name = name});
             if (responseMessage.StateCode != Define.StateCode.OK)
-            {
                 return new StandardOutput<bool>
                 {
                     Entity = false,
                     Message = $"Create category failed. Check if category Name: {name} is already existed."
                 };
-            }
             return new StandardOutput<bool>
             {
                 Entity = true,
-                Message = $"Create category succeed."
+                Message = "Create category succeed."
             };
         }
 
@@ -45,17 +43,15 @@ namespace Lazcat.Blog.Web.Services.Categories
         {
             var responseMessage = await _categoryProvider.UpdateCategory(input);
             if (responseMessage.StateCode != Define.StateCode.OK)
-            {
                 return new StandardOutput<bool>
                 {
                     Entity = false,
                     Message = $"Update category failed. Check if category Name: {input.Name} is already existed or id {input.Id} Not Found."
                 };
-            }
             return new StandardOutput<bool>
             {
                 Entity = true,
-                Message = $"Update category succeed."
+                Message = "Update category succeed."
             };
         }
 
@@ -63,17 +59,15 @@ namespace Lazcat.Blog.Web.Services.Categories
         {
             var responseMessage = await _categoryProvider.DeleteCategory(id);
             if (responseMessage.StateCode != Define.StateCode.OK)
-            {
                 return new StandardOutput<bool>
                 {
                     Entity = false,
                     Message = $"Delete category failed. Check if category id: {id} Not Found."
                 };
-            }
             return new StandardOutput<bool>
             {
                 Entity = true,
-                Message = $"Delete category succeed."
+                Message = "Delete category succeed."
             };
         }
     }

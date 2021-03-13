@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Lazcat.Blog.Models.Dtos.Messages;
 using Lazcat.Blog.Models.Web;
 using Lazcat.Blog.Web.Provider.Messages;
@@ -22,31 +21,23 @@ namespace Lazcat.Blog.Web.Services.Messages
         public async Task<Dictionary<MessageDto, List<MessageDto>>> GetMessages(int articleId)
         {
             var response = await _messageProvider.GetMessages(articleId);
-            if (response.Entity == null) return new();
+            if (response.Entity == null) return new Dictionary<MessageDto, List<MessageDto>>();
             var messages = response.Entity.ToList();
             var msgDict = messages.Where(x => !x.ReplyId.HasValue).ToDictionary(x => x, _ => new List<MessageDto>());
             foreach (var replyMessage in messages.Where(x => x.ReplyId.HasValue))
-            {
-                foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
-                {
-                    message.Value.Add(replyMessage);
-                }
-            }
+            foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
+                message.Value.Add(replyMessage);
             return msgDict;
         }
 
         public Dictionary<MessageDto, List<MessageDto>> GetMessages(IEnumerable<MessageDto> messages)
         {
-            if (messages== null) return new();
+            if (messages == null) return new Dictionary<MessageDto, List<MessageDto>>();
             var messageDtos = messages as MessageDto[] ?? messages.ToArray();
             var msgDict = messageDtos.Where(x => !x.ReplyId.HasValue).ToDictionary(x => x, _ => new List<MessageDto>());
             foreach (var replyMessage in messageDtos.Where(x => x.ReplyId.HasValue))
-            {
-                foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
-                {
-                    message.Value.Add(replyMessage);
-                }
-            }
+            foreach (var message in msgDict.Where(message => replyMessage.ReplyId == message.Key.Id))
+                message.Value.Add(replyMessage);
             return msgDict;
         }
 
@@ -58,7 +49,7 @@ namespace Lazcat.Blog.Web.Services.Messages
                 {
                     Message = "Update Message failed."
                 }
-                : new StandardOutput<MessageDto>{Entity = responseMessage.Entity, Message = "Update Success"};
+                : new StandardOutput<MessageDto> {Entity = responseMessage.Entity, Message = "Update Success"};
         }
 
         public async Task<StandardOutput<MessageDto>> CreateMessage(CreateUpdateMessageInput input)
@@ -69,7 +60,7 @@ namespace Lazcat.Blog.Web.Services.Messages
                 {
                     Message = "Create Message failed."
                 }
-                : new StandardOutput<MessageDto> { Entity = responseMessage.Entity, Message = "Create Success" };
+                : new StandardOutput<MessageDto> {Entity = responseMessage.Entity, Message = "Create Success"};
         }
 
         public async Task<StandardOutput<MessageDto>> DeleteMessage(Guid id)
@@ -80,7 +71,7 @@ namespace Lazcat.Blog.Web.Services.Messages
                 {
                     Message = "Delete Message failed."
                 }
-                : new StandardOutput<MessageDto> { Entity = responseMessage.Entity, Message = "Delete Success" };
+                : new StandardOutput<MessageDto> {Entity = responseMessage.Entity, Message = "Delete Success"};
         }
     }
 }

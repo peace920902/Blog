@@ -8,141 +8,135 @@ namespace Lazcat.BlogApiService.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
+                "Categories",
+                table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>("INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>("TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Categories", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "HashTags",
-                columns: table => new
+                "HashTags",
+                table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>("TEXT", nullable: false),
+                    Name = table.Column<string>("TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HashTags", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_HashTags", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Articles",
-                columns: table => new
+                "Articles",
+                table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>("INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    Content = table.Column<string>(type: "TEXT", nullable: true),
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EditTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IsPublished = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PublishTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Cover = table.Column<string>(type: "TEXT", nullable: true)
+                    Title = table.Column<string>("TEXT", maxLength: 50, nullable: true),
+                    Content = table.Column<string>("TEXT", nullable: true),
+                    CategoryId = table.Column<int>("INTEGER", nullable: false),
+                    Description = table.Column<string>("TEXT", maxLength: 100, nullable: true),
+                    CreateTime = table.Column<DateTime>("TEXT", nullable: false),
+                    EditTime = table.Column<DateTime>("TEXT", nullable: false),
+                    IsPublished = table.Column<bool>("INTEGER", nullable: false),
+                    PublishTime = table.Column<DateTime>("TEXT", nullable: true),
+                    Cover = table.Column<string>("TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Articles_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
+                        "FK_Articles_Categories_CategoryId",
+                        x => x.CategoryId,
+                        "Categories",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleTags",
-                columns: table => new
+                "ArticleTags",
+                table => new
                 {
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    HashTagId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    ArticleId = table.Column<int>("INTEGER", nullable: false),
+                    HashTagId = table.Column<Guid>("TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleTags", x => new { x.ArticleId, x.HashTagId });
+                    table.PrimaryKey("PK_ArticleTags", x => new {x.ArticleId, x.HashTagId});
                     table.ForeignKey(
-                        name: "FK_ArticleTags_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
-                        principalColumn: "Id",
+                        "FK_ArticleTags_Articles_ArticleId",
+                        x => x.ArticleId,
+                        "Articles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ArticleTags_HashTags_HashTagId",
-                        column: x => x.HashTagId,
-                        principalTable: "HashTags",
-                        principalColumn: "Id",
+                        "FK_ArticleTags_HashTags_HashTagId",
+                        x => x.HashTagId,
+                        "HashTags",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
+                "Messages",
+                table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false, defaultValueSql: "newid()"),
-                    Sender = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: true),
-                    ArticleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ReplyId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<Guid>("TEXT", nullable: false, defaultValueSql: "newid()"),
+                    Sender = table.Column<string>("TEXT", nullable: false),
+                    Content = table.Column<string>("TEXT", nullable: true),
+                    ArticleId = table.Column<int>("INTEGER", nullable: false),
+                    CreateTime = table.Column<DateTime>("TEXT", nullable: false),
+                    ReplyId = table.Column<Guid>("TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>("INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
-                        principalColumn: "Id",
+                        "FK_Messages_Articles_ArticleId",
+                        x => x.ArticleId,
+                        "Articles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_CategoryId",
-                table: "Articles",
-                column: "CategoryId");
+                "IX_Articles_CategoryId",
+                "Articles",
+                "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_Title",
-                table: "Articles",
-                column: "Title");
+                "IX_Articles_Title",
+                "Articles",
+                "Title");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArticleTags_HashTagId",
-                table: "ArticleTags",
-                column: "HashTagId");
+                "IX_ArticleTags_HashTagId",
+                "ArticleTags",
+                "HashTagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_ArticleId",
-                table: "Messages",
-                column: "ArticleId");
+                "IX_Messages_ArticleId",
+                "Messages",
+                "ArticleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArticleTags");
+                "ArticleTags");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                "Messages");
 
             migrationBuilder.DropTable(
-                name: "HashTags");
+                "HashTags");
 
             migrationBuilder.DropTable(
-                name: "Articles");
+                "Articles");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                "Categories");
         }
     }
 }

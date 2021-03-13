@@ -43,7 +43,7 @@ namespace Lazcat.Blog.Domain.Articles
         public async Task SetTitle(Article article, string title)
         {
             var oldArticle = await _repository.FirstOrDefaultAsync(x => x.Title.Equals(title));
-            if (oldArticle != null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException { Content = "Article's title is already Existed" });
+            if (oldArticle != null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, new HttpException {Content = "Article's title is already Existed"});
             article.Title = title;
         }
     }

@@ -19,19 +19,26 @@ namespace Lazcat.Blog.Domain.Repository
             _set = context.Set<T>();
         }
 
-        public IQueryable<T> GetAll() => _set;
+        public IQueryable<T> GetAll()
+        {
+            return _set;
+        }
 
-        public async Task<T> FindAsync(TId id) => await _set.FindAsync(id);
+        public async Task<T> FindAsync(TId id)
+        {
+            return await _set.FindAsync(id);
+        }
 
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp) => await _set.FirstOrDefaultAsync(exp);
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp)
+        {
+            return await _set.FirstOrDefaultAsync(exp);
+        }
 
         public async Task<T> CreateAsync(T item)
         {
-
             var entry = await _set.AddAsync(item);
             await _context.SaveChangesAsync();
             return entry.Entity;
-
         }
 
         public async Task<T> UpdateAsync(TId id, T item, bool insertIfNotExisted = false)
@@ -44,6 +51,7 @@ namespace Lazcat.Blog.Domain.Repository
                     return await CreateAsync(item);
                 return null;
             }
+
             entity = item;
             await _context.SaveChangesAsync();
             return entity;

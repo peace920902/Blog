@@ -10,13 +10,13 @@
     <PackageReference Include="Markdig" Version="0.23.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
- 
+
   <ItemGroup>
     <ProjectReference Include="..\Lazcat.Blog.EntityFramework\Lazcat.Blog.EntityFramework.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Infrastures\Lazcat.Blog.Infrastructure.csproj" />
     <ProjectReference Include="..\Lazcat.Blog.Models\Lazcat.Blog.Models.csproj" />
   </ItemGroup>
- 
+
   <ItemGroup>
     <Folder Include="Messages\" />
   </ItemGroup>
