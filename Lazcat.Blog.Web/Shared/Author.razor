@@ -3,16 +3,26 @@
 @inject IConfiguration Configuration
 
 
-<Card Style="width: 240px" Cover="coverTemplate">
-    <CardMeta Style="text-align: justify" Title="關於我" Description="@Configuration[$"{Define.AuthorDefine.Author}:{Define.AuthorDefine.Description}"]"></CardMeta>
+<Card Style="width: 240px" Class="author author-border" Cover="coverTemplate">
+    <CardMeta Class="author-description" Title="關於我" Description="@Configuration[$"{Define.AuthorDefine.Author}:{Define.AuthorDefine.Description}"]"></CardMeta>
 </Card>
 
 <style>
     .ant-card-meta > .ant-card-meta-detail > .ant-card-meta-title {
         font-weight: bold;
     }
+    .author-border {
+        border: 1px #EBFDE3 solid;
+    }
+    .author-description {
+        text-align: justify
+    }
+    .author .ant-card-cover {
+        border: 1px #EBFDE3 solid;
+        padding-bottom: 3px
+    }
 </style>
 
 @code {
-    private RenderFragment coverTemplate =>@<img alt="金城武我本人" title="金城武" src="@Configuration["Author:AvatarPath"]" />;
+    private RenderFragment coverTemplate => @<img class="" alt="金城武我本人" title="金城武" src="@Configuration["Author:AvatarPath"]" />;
 }

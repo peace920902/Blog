@@ -1,4 +1,6 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@using Microsoft.Extensions.Configuration
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration
 <Menu Style="background: #161b22;" Mode="MenuMode.Horizontal">
     <MenuItem Class="header-menu-item-hover" Key="index">
         <Icon Class="header-icon" Type="tablet" Theme="outline" />
@@ -11,20 +13,20 @@
 </Menu>
 
 <style>
-    .ant-layout > .ant-header > .ant-menu > .ant-menu-item > .header-icon {
+    .ant-layout > .ant-header > .ant-menu > .ant-menu-item .header-icon {
         font-size: 24px;
         color: aliceblue;
     }
 
-    .ant-layout > .ant-header > .ant-menu > .header-menu-item-hover:hover > .header-icon {
+    .ant-layout > .ant-header > .ant-menu > .header-menu-item-hover:hover .header-icon {
             color: #161b22;
         }
 
-    .ant-layout > .ant-header > .ant-menu > .ant-menu-item > .header-text-color {
+    .ant-layout > .ant-header > .ant-menu > .ant-menu-item .header-text-color {
         color: aliceblue;
     }
 
-    .ant-layout > .ant-header > .ant-menu > .ant-menu-item > .header-text-color:hover {
+    .ant-layout > .ant-header > .ant-menu > .ant-menu-item .header-text-color:hover {
         color: #161b22;
     }
 
@@ -40,7 +42,7 @@
 
     private async Task navToGitHub()
     {
-        await JSRuntime.InvokeAsync<object>("open", "https://github.com/peace920902", "_blank");
+        await JSRuntime.InvokeAsync<object>("open", Configuration["GithubPath"], "_blank");
     }
 
 

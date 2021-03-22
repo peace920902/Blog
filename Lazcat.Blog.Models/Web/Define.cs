@@ -1,6 +1,6 @@
 ﻿namespace Lazcat.Blog.Models.Web
 {
-    public class Define
+    public struct Define
     {
         public enum StateCode
         {
@@ -31,7 +31,7 @@
 
         public const string DefaultHttpClient = "Default";
 
-        public class UrlName
+        public struct UrlName
         {
             public const string Article = "Article";
             public const string Category = "Category";
@@ -39,16 +39,16 @@
             public const string Edit = "Edit";
         }
 
-        public class AuthorDefine
+        public struct AuthorDefine
         {
             public const string Author = "Author";
             public const string AvatarPath = "AvatarPath";
             public const string Description = "Description";
         }
 
-        public class ProviderRoutes
+        public struct ProviderRoutes
         {
-            public class ArticleRoute
+            public struct ArticleRoute
             {
                 public const string Article = "Article";
                 public const string GetAll = "All";
@@ -56,7 +56,7 @@
                 public const string UpdateContent = "Content";
                 public const string Publish = "Publish";
 
-                public class QueryString
+                public struct QueryString
                 {
                     public const string IsGetContent = "IsGetContent";
                 }
@@ -64,7 +64,7 @@
         }
 
 
-        public class StateMessage
+        public struct StateMessage
         {
             public const string OtherException =
                 "There's somethings error. U can try to reload page to resolve the problem. If it's still existed. Please contact us.";

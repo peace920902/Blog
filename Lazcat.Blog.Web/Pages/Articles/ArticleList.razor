@@ -20,7 +20,6 @@ else if (!Articles.Any())
 }
 else
 {
-    //todo fix overflow description
     <AntList Style="width: 100%" Split="true" DataSource="@Articles" ItemLayout="ListItemLayout.Vertical">
         <ChildContent Context="article">
             <ListItem Style="width: 100%" OnClick="()=>NavigateToArticle(article.Id)" Class="ant-card-hoverable" Extra="@extra">
@@ -29,13 +28,18 @@ else
                         @article.Title
                     </TitleTemplate>
                 </ListItemMeta>
-                @article.Description
+                <div class="word-break-force">
+                    @article.Description
+                </div>
             </ListItem>
         </ChildContent>
     </AntList>
 }
 
 <style>
+    .word-break-force {
+        word-break: break-all;
+    }
     .ant-list-split .ant-list-item {
         border-color: #A1A1A1;
         margin-bottom: 5px

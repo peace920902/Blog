@@ -3,7 +3,6 @@
 @using Lazcat.Blog.Models.Dtos.Messages
 @using Lazcat.Blog.Web.Services.Articles
 @using Lazcat.Blog.Web.Services.Messages
-@using Newtonsoft.Json
 @layout ArticleLayout
 @inject IMessageService MessageService
 @inject IArticleService ArticleService
@@ -11,8 +10,7 @@
     <Col Span="22" Offset="1">
     <Article ArticleDto="ArticleDto"></Article>
     </Col>
-    
-        <Lazcat.Blog.Web.Pages.Message MessageDict="_msgDict"></Lazcat.Blog.Web.Pages.Message>
+    <Lazcat.Blog.Web.Pages.Message MessageDict="_msgDict"></Lazcat.Blog.Web.Pages.Message>
    
 </Row>
 

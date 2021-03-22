@@ -11,9 +11,8 @@ else
     <div>
         <Title Style="text-align: center" Level="1">@ArticleDto.Title</Title>
         <Divider></Divider>
-        <div  style="text-align: left">
+        <div class="article-body" style="text-align: left">
             @((MarkupString) ArticleDto.Content)
-            @{ Console.WriteLine(ArticleDto.Content); }
         </div>
     </div>
 }
@@ -23,6 +22,11 @@ else
         word-wrap: break-word
         /* overflow: hidden; */
     }
+
+    .article-body img {
+        width: 80%;
+    }
+
 </style>
 
 

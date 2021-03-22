@@ -50,7 +50,7 @@
     [Parameter]
     public int SelectCategory { get; set; } = -2;
 
-    private IEnumerable<CategoryDto> _categories;
+    private List<CategoryDto> _categories;
     private string _name;
     private Blazorise.Modal _modalRef;
 
@@ -74,9 +74,9 @@
 
     private async Task GetCategories()
     {
-        _categories = await CategoryService.GetCategories();
-        _categories = _categories.Append(new CategoryDto { Id = -2, Name = "select category" });
-        _categories = _categories.Append(new CategoryDto { Id = -1, Name = "AddNew" });
+        _categories = (await CategoryService.GetCategories()).ToList();
+        _categories.Add(new CategoryDto { Id = -2, Name = "select category" });
+        _categories.Add(new CategoryDto { Id = -1, Name = "AddNew" });
     }
 
     private async Task CreateNewCategoryAsync()
