@@ -3,22 +3,23 @@
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
 @using System.Text.Json
+@using ButtonType = Blazorise.ButtonType
 @layout ManagerLayout
 @inject MessageService MessageService
 @inject IArticleService ArticleService
 @inject IJSRuntime JSRuntime
 
 <Blazorise.Form>
-    <Validations Mode="ValidationMode.Auto" Model="@createUpdateArticleInput">
+    <Validations Mode="ValidationMode.Auto" Model="@CreateUpdateArticleInput">
         <Field Horizontal="true">
             <Validation>
                 <FieldLabel For="title" ColumnSize="ColumnSize.Is1">
                     <p style="font-size: 16px;">標題:</p>
                 </FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.Is8">
-                    <TextEdit id="title" @bind-Text="@createUpdateArticleInput.Title">
+                    <TextEdit id="title" @bind-Text="@CreateUpdateArticleInput.Title">
                         <Feedback>
-                            <ValidationError />
+                            <ValidationError/>
                         </Feedback>
                     </TextEdit>
                 </FieldBody>
@@ -27,7 +28,7 @@
                 <p style="font-size: 16px;">分類:</p>
             </FieldLabel>
             <FieldBody ColumnSize="ColumnSize.Is2">
-                <CategoryDropdownList CategoryChoose="ChangeCategory" SelectCategory="@(createUpdateArticleInput.CategoryId == 0 ? -2 : createUpdateArticleInput.CategoryId)"></CategoryDropdownList>
+                <CategoryDropdownList CategoryChoose="ChangeCategory" SelectCategory="@(CreateUpdateArticleInput.CategoryId == 0 ? -2 : CreateUpdateArticleInput.CategoryId)"></CategoryDropdownList>
             </FieldBody>
         </Field>
         <Field Horizontal="true">
@@ -36,20 +37,32 @@
                     <p style="font-size: 16px;">文章描述:</p>
                 </FieldLabel>
                 <FieldBody ColumnSize="ColumnSize.Is11">
-                    <MemoEdit Style="resize: none" Rows="3" @bind-Text="@createUpdateArticleInput.Description">
+                    <MemoEdit Style="resize: none" Rows="3" @bind-Text="@CreateUpdateArticleInput.Description">
                         <Feedback>
-                            <ValidationError />
+                            <ValidationError/>
                         </Feedback>
                     </MemoEdit>
                 </FieldBody>
             </Validation>
         </Field>
         <Field>
-            <FieldLabel>
-                <p style="font-size: 16px;">文章內容</p>
-            </FieldLabel>
+            <Field Horizontal="true">
+                <Field ColumnSize="ColumnSize.Is4.WithOffset.OnDesktop.Is3">
+                    <label for="PreventTabTextArea" style="font-size: 16px;">文章內容</label>
+                </Field>
+                <Field ColumnSize="ColumnSize.Is3.WithOffset.OnDesktop.Is2">
+                    <Blazorise.Button Color="Color.Success" Type="ButtonType.Button" Clicked="ChangePreviewMode">預覽</Blazorise.Button>
+                </Field>
+            </Field>
             <FieldBody>
-                <MemoEdit Style="resize: none" Rows="25" id="PreventTabTextArea" @bind-Text="@createUpdateArticleInput.Content"></MemoEdit>
+                @if (!@previewMode)
+                {
+                    <MemoEdit Style="resize: none" Rows="25" id="PreventTabTextArea" @bind-Text="@CreateUpdateArticleInput.Content"></MemoEdit>
+                }
+                else
+                {
+                    <Article ArticleDto="(GetArticleContent())"></Article>
+                }
             </FieldBody>
         </Field>
         <Field>
@@ -63,37 +76,53 @@
 @code {
 
     [Parameter]
-    public CreateUpdateArticleInput createUpdateArticleInput { get; set; }
+    public CreateUpdateArticleInput CreateUpdateArticleInput { get; set; }
+    
+    private bool previewMode = false;
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
-        createUpdateArticleInput ??= new();
-        Console.WriteLine(JsonSerializer.Serialize(createUpdateArticleInput));
+        CreateUpdateArticleInput ??= new();
+        Console.WriteLine(JsonSerializer.Serialize(CreateUpdateArticleInput));
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
+        if(!previewMode)
             await JSRuntime.InvokeVoidAsync("jsinteropFunc.preventTabEvent");
-        }
+        else
+            await JSRuntime.InvokeVoidAsync("Prism.highlightAll");
     }
 
     private async Task SaveArticle()
     {
-        var article = await ArticleService.CreateOrUpdateArticle(createUpdateArticleInput);
+        var article = await ArticleService.CreateOrUpdateArticle(CreateUpdateArticleInput);
         if (article.Entity == null)
         {
             await MessageService.Error(article.Message);
             return;
         }
-        createUpdateArticleInput.Id = article.Entity.Id;
+        CreateUpdateArticleInput.Id = article.Entity.Id;
         await MessageService.Success(article.Message);
+    }
+
+    private async Task ChangePreviewMode()
+    {
+        previewMode = !previewMode;
+    }
+
+    private ArticleDto GetArticleContent()
+    {
+        return new ArticleDto()
+        {
+            Title = CreateUpdateArticleInput.Title,
+            Content = ArticleService.ConvertToHtml(CreateUpdateArticleInput.Content)
+        };
     }
 
     private void ChangeCategory(int id)
     {
-        createUpdateArticleInput.CategoryId = id;
+        CreateUpdateArticleInput.CategoryId = id;
     }
 }

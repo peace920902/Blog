@@ -75,7 +75,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
 
             return _mapper.Map<IEnumerable<Article>, IEnumerable<ArticleDto>>(articleList);
         }
-
+        
         public async Task<ArticleDto> UpdateArticle(int id, CreateUpdateArticleInput input)
         {
             if (input.CategoryId <= 0)
@@ -94,7 +94,7 @@ namespace Lazcat.Blog.ApplicationService.Articles
             var article = await _articleRepository.FindAsync(input.Id);
             if (article == null) throw ExceptionBuilder.Build(HttpStatusCode.NotFound, new HttpException($"Id: {input.Id} not match any article"));
             if (article.IsPublished == input.IsPublished) return;
-
+            
             article.IsPublished = input.IsPublished;
             article.PublishTime = input.IsPublished ? DateTime.Now : null;
 

@@ -1,8 +1,8 @@
 ﻿@using Lazcat.Blog.Web.Services.Articles
 @using Lazcat.Blog.Models.ViewModel
-@inject NavigationManager NavigationManager
 @using System.ComponentModel.Design
 @using Lazcat.Blog.Models.Web
+@inject NavigationManager NavigationManager
 @inject IArticleService ArticleService
 
 <Row>
@@ -27,9 +27,9 @@
                     @foreach (var simpleArticle in simpleArticles)
                     {
                         <Tooltip Class="categorylist-menu-item" Style="display: block" Placement="PlacementType.LeftTop" Title="@simpleArticle.Title">
-                        <MenuItem OnClick="_=>NavToArticle(simpleArticle.Id)" Class="categorylist-menu-item" Key="@simpleArticle.Id.ToString()">
-                            @simpleArticle.Title
-                        </MenuItem>
+                            <MenuItem OnClick="_=>NavToArticle(simpleArticle.Id)" Class="categorylist-menu-item" Key="@simpleArticle.Id.ToString()">
+                                @simpleArticle.Title
+                            </MenuItem>
                         </Tooltip>
                     }
                 </SubMenu>
