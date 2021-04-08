@@ -2,7 +2,6 @@
 @using Blazorise;
 @using Lazcat.Blog.Models.Dtos.Articles
 @using Lazcat.Blog.Web.Services.Articles
-@using System.Text.Json
 @using ButtonType = Blazorise.ButtonType
 @layout ManagerLayout
 @inject MessageService MessageService
@@ -55,7 +54,7 @@
                 </Field>
             </Field>
             <FieldBody>
-                @if (!@previewMode)
+                @if (!_previewMode)
                 {
                     <MemoEdit Style="resize: none" Rows="25" id="PreventTabTextArea" @bind-Text="@CreateUpdateArticleInput.Content"></MemoEdit>
                 }
@@ -66,7 +65,7 @@
             </FieldBody>
         </Field>
         <Field>
-            <Blazorise.Button Color="Color.Success" Type="Blazorise.ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
+            <Blazorise.Button Color="Color.Success" Type="ButtonType.Submit" Clicked="async () => await SaveArticle()" PreventDefaultOnSubmit="true">
                 Save
             </Blazorise.Button>
         </Field>
@@ -77,19 +76,18 @@
 
     [Parameter]
     public CreateUpdateArticleInput CreateUpdateArticleInput { get; set; }
-    
-    private bool previewMode = false;
+
+    private bool _previewMode = false;
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
         CreateUpdateArticleInput ??= new();
-        Console.WriteLine(JsonSerializer.Serialize(CreateUpdateArticleInput));
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(!previewMode)
+        if (!_previewMode)
             await JSRuntime.InvokeVoidAsync("jsinteropFunc.preventTabEvent");
         else
             await JSRuntime.InvokeVoidAsync("Prism.highlightAll");
@@ -107,22 +105,21 @@
         await MessageService.Success(article.Message);
     }
 
-    private async Task ChangePreviewMode()
+    private void ChangePreviewMode()
     {
-        previewMode = !previewMode;
+        _previewMode = !_previewMode;
     }
 
     private ArticleDto GetArticleContent()
-    {
-        return new ArticleDto()
+        => new()
         {
             Title = CreateUpdateArticleInput.Title,
             Content = ArticleService.ConvertToHtml(CreateUpdateArticleInput.Content)
         };
-    }
-
+    
     private void ChangeCategory(int id)
     {
         CreateUpdateArticleInput.CategoryId = id;
     }
+
 }
