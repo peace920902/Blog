@@ -5,24 +5,24 @@
 @inject IArticleService ArticleService
 @inject NavigationManager NavigationManager
 
-@if (Articles == null)
+@if (_articles == null)
 {
     <Spin Tip="Loading...">
-        @for (int i = 0; i < 3; i++)
+        @for (var i = 0; i < 3; i++)
         {
             <Skeleton Active="true"></Skeleton>
         }
     </Spin>
 }
-else if (!Articles.Any())
+else if (!_articles.Any())
 {
     <Empty></Empty>
 }
 else
 {
-    <AntList Style="width: 100%" Split="true" DataSource="@Articles" ItemLayout="ListItemLayout.Vertical">
+    <AntList Style="width: 100%" Split="true" DataSource="@_articles" ItemLayout="ListItemLayout.Vertical">
         <ChildContent Context="article">
-            <ListItem Style="width: 100%" OnClick="()=>NavigateToArticle(article.Id)" Class="ant-card-hoverable" Extra="@extra">
+            <ListItem Style="width: 100%" OnClick="()=>NavigateToArticle(article.Id)" Class="ant-card-hoverable" Extra="@_extra">
                 <ListItemMeta>
                     <TitleTemplate>
                         @article.Title
@@ -48,16 +48,15 @@ else
 
 
 @code {
-    private IEnumerable<SimpleArticle> Articles;
+    private IEnumerable<SimpleArticle> _articles;
 
-    RenderFragment extra = @<img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/>;
-
+    private RenderFragment _extra = @<img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"/>;
         @*RenderFragment<string> extra = cover =>@<img width="272" alt="logo" src="@cover" />;*@
 
     protected override async Task OnInitializedAsync()
     {
         var simpleArticles = await ArticleService.GetArticleList(isOnlyPublished:true);
-        Articles = simpleArticles.OrderByDescending(x => x.PublishTime);
+        _articles = simpleArticles.OrderByDescending(x => x.PublishTime);
     }
 
     private void NavigateToArticle(int id)

@@ -20,14 +20,17 @@
     [Parameter]
     public int Id { get; set; }
 
-    public ArticleDto ArticleDto { get; set; }
+    private ArticleDto ArticleDto { get; set; }
 
     private Dictionary<MessageDto, List<MessageDto>> _msgDict;
 
     protected override async Task OnParametersSetAsync()
     {
         ArticleDto = await ArticleService.GetArticle(Id);
-        ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
-        _msgDict =  MessageService.GetMessages(ArticleDto.Messages);
+        if (ArticleDto!=null)
+        {
+            ArticleDto.Content = ArticleService.ConvertToHtml(ArticleDto.Content);
+            _msgDict =  MessageService.GetMessages(ArticleDto.Messages);
+        }
     }
 }
